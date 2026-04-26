@@ -1005,21 +1005,25 @@
       await updateProfile(user, { displayName: formData.name });
 
       // 3. Save student profile to Firestore
-      await setDoc(doc(db, 'students', user.uid), {
-        uid:          user.uid,
-        name:         formData.name,
-        email:        formData.email,
-        examYear:     formData.year,
-        examDate:     formData.date,
-        subjects:     formData.subjects,
-        paystackRef:  paystackRef,
-        plan:         'annual',
-        accessStart:  serverTimestamp(),
-        accessExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-        sessions:     [],
-        createdAt:    serverTimestamp(),
-      });
-
+      try {
+        await setDoc(doc(db, 'students', user.uid), {
+          uid:          user.uid,
+          name:         formData.name,
+          email:        formData.email,
+          examYear:     formData.year,
+          examDate:     formData.date,
+          subjects:     formData.subjects,
+          paystackRef:  paystackRef,
+          plan:         'annual',
+          accessStart:  serverTimestamp(),
+          accessExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+          sessions:     [],
+          createdAt:    serverTimestamp(),
+        });
+        console.log('Firestore profile saved.');
+      } catch (fsErr) {
+        console.error('Firestore write failed:', fsErr.code, fsErr.message);
+      }
       // 4. Show success screen briefly, then redirect to dashboard
       document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
       document.getElementById('form-alert').className = 'form-alert';
@@ -1029,6 +1033,7 @@
 
       setStep(3);
       document.getElementById('success-screen').classList.add('active');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
 
       // Redirect to dashboard after 2 seconds
       setTimeout(() => {
@@ -1038,21 +1043,21 @@
     } catch (err) {
       btn.classList.remove('btn-loading');
       btn.disabled = false;
+      console.error('Registration error:', err.code, err.message);
 
-      // Handle specific Firebase errors
-      let msg = 'Something went wrong. Please contact support.';
+      let msg = 'Something went wrong. Please try again.';
       if (err.code === 'auth/email-already-in-use') {
         msg = 'This email is already registered. Please login instead.';
       } else if (err.code === 'auth/weak-password') {
         msg = 'Password is too weak. Please use at least 8 characters.';
       } else if (err.code === 'auth/invalid-email') {
         msg = 'The email address is not valid.';
+      } else if (err.code === 'auth/network-request-failed') {
+        msg = 'Network error. Please check your internet and try again.';
       }
 
       showAlert(msg, 'error');
-      console.error('Firebase error:', err);
     }
-  }
 </script>
 
 </body>
