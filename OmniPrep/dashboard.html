@@ -492,8 +492,8 @@
      SCRIPTS
 ══════════════════════════════════════ -->
 <script type="module">
-  import { buildShell, initPage } from './js/auth.js';
-  import { getSessions, daysUntilExam } from './js/firebase.js';
+  import { buildShell, initPage } from 'js/auth.js';
+  import { getSessions, daysUntilExam } from 'js/firebase.js';
 
   // ── 1. Inject shared shell (sidebar + topbar) ──
   document.getElementById('app-shell').innerHTML = buildShell();
