@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — OmniPrep</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Page-specific styles for login.html ── */
+
+    body {
+      background: var(--surface);
+    }
+
+    /* Split layout — form left, panel right */
+    .login-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+    }
+
+    /* Left — form */
+    .login-form-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .login-form-wrap {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Right — brand panel */
+    .login-brand-col {
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-12) var(--space-8);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* decorative circles */
+    .login-brand-col::before {
+      content: '';
+      position: absolute;
+      right: -80px; top: -80px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(5,150,105,0.1);
+    }
+
+    .login-brand-col::after {
+      content: '';
+      position: absolute;
+      left: -60px; bottom: -60px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(5,150,105,0.07);
+    }
+
+    .brand-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-tagline {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      line-height: 1.15;
+      margin-top: var(--space-8);
+      margin-bottom: var(--space-4);
+    }
+
+    .brand-tagline span { color: var(--green); }
+
+    .brand-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      margin-bottom: var(--space-8);
+    }
+
+    /* Module list on the right panel */
+    .brand-module {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .brand-module:last-child { border-bottom: none; }
+
+    .brand-module__icon {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(5,150,105,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .brand-module__name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .brand-module__desc {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 1px;
+    }
+
+    /* Forgot password link */
+    .forgot-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-3);
+      text-decoration: none;
+      float: right;
+      margin-top: 2px;
+    }
+
+    .forgot-link:hover {
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    /* Reset password panel — hidden by default */
+    .reset-panel {
+      display: none;
+      animation: fade-in 0.3s ease both;
+    }
+
+    .reset-panel.active { display: flex; flex-direction: column; gap: var(--space-5); }
+
+    /* Responsive */
+    @media (max-width: 760px) {
+      .login-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .login-brand-col { display: none; }
+
+      .login-form-col {
+        align-items: flex-start;
+        padding-top: var(--space-10);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-layout">
+
+  <!-- ══════════════════════
+       LEFT — FORM
+  ══════════════════════ -->
+  <div class="login-form-col">
+    <div class="login-form-wrap">
+
+      <!-- Logo -->
+      <a href="index.html" class="logo mb-8">
+        <div class="logo__mark">OP</div>
+        <div class="logo__name">Omni<span>Prep</span></div>
+      </a>
+
+      <!-- Alert -->
+      <div class="form-alert error" id="login-alert"></div>
+
+      <!-- ── LOGIN FORM ── -->
+      <div id="login-panel">
+
+        <div class="mb-8">
+          <h1 class="text-h2 mb-2">Welcome back</h1>
+          <p class="text-sm">
+            Enter your email and password to access your training.
+          </p>
+        </div>
+
+        <form class="auth-form" id="login-form" onsubmit="handleLogin(event)">
+
+          <div class="form-group">
+            <label class="form-label" for="login-email">
+              Email address
+            </label>
+            <input
+              class="form-input"
+              type="email"
+              id="login-email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <div class="flex-between">
+              <label class="form-label" for="login-password">
+                Password
+              </label>
+              <a href="#" class="forgot-link" onclick="showReset(event)">
+                Forgot password?
+              </a>
+            </div>
+            <input
+              class="form-input"
+              type="password"
+              id="login-password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg btn-block"
+            id="login-btn"
+          >
+            Login to OmniPrep
+          </button>
+
+        </form>
+
+        <div class="divider-text mt-6">or</div>
+
+        <a href="register.html" class="btn btn-secondary btn-block">
+          Create a new account
+        </a>
+
+        <p class="text-xs text-center mt-6">
+          Access to OmniPrep requires an active ₦500/year subscription.
+          <a href="register.html">Register here</a> if you do not have one.
+        </p>
+
+      </div>
+      <!-- /login-panel -->
+
+
+      <!-- ── FORGOT PASSWORD ── -->
+      <div class="reset-panel" id="reset-panel">
+
+        <div>
+          <button
+            class="form-header__back"
+            onclick="showLogin()"
+            style="background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);font-family:var(--font);padding:0;margin-bottom:var(--space-5)"
+          >
+            ← Back to login
+          </button>
+          <h2 class="text-h2 mb-2">Reset your password</h2>
+          <p class="text-sm">
+            Enter the email address you registered with.
+            We will send you a reset link.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reset-email">Email address</label>
+          <input
+            class="form-input"
+            type="email"
+            id="reset-email"
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="form-alert success" id="reset-success"></div>
+
+        <button
+          class="btn btn-primary btn-lg btn-block"
+          id="reset-btn"
+          onclick="handleReset()"
+        >
+          Send reset link
+        </button>
+
+        <p class="text-xs text-center mt-4">
+          Check your spam folder if you do not see the email within a few minutes.
+        </p>
+
+      </div>
+      <!-- /reset-panel -->
+
+    </div>
+  </div>
+  <!-- /login-form-col -->
+
+
+  <!-- ══════════════════════
+       RIGHT — BRAND PANEL
+  ══════════════════════ -->
+  <div class="login-brand-col">
+    <div class="brand-content">
+
+      <a href="index.html" class="logo logo--sm" style="text-decoration:none">
+        <div class="logo__mark" style="background:rgba(5,150,105,0.3)">OP</div>
+        <div class="logo__name" style="color:var(--white)">Omni<span>Prep</span></div>
+      </a>
+
+      <div class="brand-tagline">
+        Train today.<br>
+        Pass <span>JAMB</span><br>
+        tomorrow.
+      </div>
+
+      <p class="brand-sub">
+        Your four training modules are ready and waiting.
+        Log in and pick up where you left off.
+      </p>
+
+      <div class="brand-module">
+        <div class="brand-module__icon">🖱️</div>
+        <div>
+          <div class="brand-module__name">Mouscerciser</div>
+          <div class="brand-module__desc">Cursor precision training</div>
+        </div>
+      </div>
+
+      <div class="brand-module">
+        <div class="brand-module__icon">⌨️</div>
+        <div>
+          <div class="brand-module__name">Typing Tutor</div>
+          <div class="brand-module__desc">Keyboard speed and accuracy</div>
+        </div>
+      </div>
+
+      <div class="brand-module">
+        <div class="brand-module__icon">📋</div>
+        <div>
+          <div class="brand-module__name">CBT Simulator</div>
+          <div class="brand-module__desc">Full 180-question mock exam</div>
+        </div>
+      </div>
+
+      <div class="brand-module">
+        <div class="brand-module__icon">🔐</div>
+        <div>
+          <div class="brand-module__name">Correction Vault</div>
+          <div class="brand-module__desc">Step-by-step explanations</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /login-brand-col -->
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+
+<!-- Firebase bridge — imports from shared firebase.js and exposes to global scope -->
+<script type="module">
+  import {
+    auth, db,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    onAuthStateChanged,
+    doc, getDoc,
+  } from './js/firebase.js';
+
+  window._firebase = { auth, db, signInWithEmailAndPassword, sendPasswordResetEmail, doc, getDoc };
+
+  // Auto-redirect if already logged in
+  onAuthStateChanged(auth, user => {
+    if (user) window.location.href = 'dashboard.html';
+  });
+</script>
+
+<script>
+  // ══════════════════════════════════════════
+  // PANEL SWITCHING
+  // ══════════════════════════════════════════
+  function showReset(e) {
+    e.preventDefault();
+    document.getElementById('login-panel').style.display = 'none';
+    document.getElementById('reset-panel').classList.add('active');
+    document.getElementById('login-alert').className = 'form-alert';
+
+    // Pre-fill reset email if login email is already typed
+    const loginEmail = document.getElementById('login-email').value.trim();
+    if (loginEmail) {
+      document.getElementById('reset-email').value = loginEmail;
+    }
+  }
+
+  function showLogin() {
+    document.getElementById('reset-panel').classList.remove('active');
+    document.getElementById('login-panel').style.display = 'block';
+    document.getElementById('reset-success').className = 'form-alert';
+  }
+
+
+  // ══════════════════════════════════════════
+  // LOGIN HANDLER
+  // ══════════════════════════════════════════
+  async function handleLogin(event) {
+    event.preventDefault();
+
+    const email    = document.getElementById('login-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-password').value;
+    const btn      = document.getElementById('login-btn');
+    const alert    = document.getElementById('login-alert');
+
+    // Basic client-side check
+    if (!email || !password) {
+      showAlert('Please enter your email and password.', 'error');
+      return;
+    }
+
+    // Loading state
+    btn.classList.add('btn-loading');
+    btn.disabled = true;
+    alert.className = 'form-alert';
+
+    try {
+      const { auth, db, signInWithEmailAndPassword, doc, getDoc } = window._firebase;
+
+      // 1. Sign in with Firebase Auth
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      const user       = credential.user;
+
+      // 2. Fetch student profile from Firestore
+      const snap = await getDoc(doc(db, 'students', user.uid));
+
+      if (!snap.exists()) {
+        // Auth exists but no Firestore record — edge case
+        showAlert('Account data not found. Please contact support.', 'error');
+        btn.classList.remove('btn-loading');
+        btn.disabled = false;
+        return;
+      }
+
+      const data = snap.data();
+
+      // 3. Check subscription is still active
+      const expiry = new Date(data.accessExpiry);
+      const now    = new Date();
+
+      if (expiry < now) {
+        showAlert(
+          'Your subscription expired on ' + expiry.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }) +
+          '. Please renew for ₦500 to continue.',
+          'error'
+        );
+        btn.classList.remove('btn-loading');
+        btn.disabled = false;
+        return;
+      }
+
+      // 4. Store minimal session info in sessionStorage
+      // (Firebase Auth persists the actual session automatically)
+      sessionStorage.setItem('op_user', JSON.stringify({
+        uid:      user.uid,
+        name:     data.name,
+        email:    data.email,
+        year:     data.examYear,
+        date:     data.examDate,
+        subjects: data.subjects,
+        expiry:   data.accessExpiry,
+      }));
+
+      // 5. Redirect to dashboard
+      window.location.href = 'dashboard.html';
+
+    } catch (err) {
+      btn.classList.remove('btn-loading');
+      btn.disabled = false;
+
+      // Map Firebase error codes to friendly messages
+      let msg = 'Login failed. Please try again.';
+      switch (err.code) {
+        case 'auth/user-not-found':
+        case 'auth/invalid-credential':
+          msg = 'No account found with that email. Did you register yet?';
+          break;
+        case 'auth/wrong-password':
+          msg = 'Incorrect password. Please try again or reset your password.';
+          break;
+        case 'auth/invalid-email':
+          msg = 'Please enter a valid email address.';
+          break;
+        case 'auth/too-many-requests':
+          msg = 'Too many failed attempts. Please wait a few minutes and try again.';
+          break;
+        case 'auth/network-request-failed':
+          msg = 'No internet connection. Please check your network and try again.';
+          break;
+      }
+
+      showAlert(msg, 'error');
+    }
+  }
+
+
+  // ══════════════════════════════════════════
+  // PASSWORD RESET HANDLER
+  // ══════════════════════════════════════════
+  async function handleReset() {
+    const email   = document.getElementById('reset-email').value.trim().toLowerCase();
+    const btn     = document.getElementById('reset-btn');
+    const success = document.getElementById('reset-success');
+
+    if (!email) {
+      success.textContent = 'Please enter your email address.';
+      success.className   = 'form-alert error show';
+      return;
+    }
+
+    btn.classList.add('btn-loading');
+    btn.disabled = true;
+
+    try {
+      const { auth, sendPasswordResetEmail } = window._firebase;
+
+      await sendPasswordResetEmail(auth, email);
+
+      success.textContent = `A password reset link has been sent to ${email}. Check your inbox and spam folder.`;
+      success.className   = 'form-alert success show';
+
+      btn.classList.remove('btn-loading');
+      btn.disabled = false;
+
+    } catch (err) {
+      btn.classList.remove('btn-loading');
+      btn.disabled = false;
+
+      let msg = 'Could not send reset email. Please try again.';
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-email') {
+        msg = 'No account found with that email address.';
+      }
+
+      success.textContent = msg;
+      success.className   = 'form-alert error show';
+    }
+  }
+
+
+  // ══════════════════════════════════════════
+  // ALERT HELPER
+  // ══════════════════════════════════════════
+  function showAlert(msg, type) {
+    const el      = document.getElementById('login-alert');
+    el.textContent = msg;
+    el.className   = `form-alert ${type} show`;
+  }
+</script>
+
+</body>
+</html>
