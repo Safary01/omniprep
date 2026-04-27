@@ -611,12 +611,12 @@
      SCRIPTS
 ══════════════════════════════ -->
 <script type="module">
-  import { initPage }                                    from 'js/auth.js';
-  import { saveSession, calcUTMEScore, formatDuration }  from 'js/firebase.js';
+  import { initPage }                                   from '/js/auth.js';
+  import { saveSession, calcUTMEScore, formatDuration } from '/js/firebase.js';
 
-  // ── Auth check ──
-  // Simulator does NOT use the full shell (no sidebar)
-  // but we still need to verify the student is logged in.
+  async function init() {
+
+  // ── Auth check — redirect to login if not authenticated ──
   const student = await initPage();
   if (!student) return;
 
@@ -775,30 +775,37 @@
     const grid = document.getElementById('setup-subjects');
     grid.innerHTML = '';
 
+    // Show ALL available subjects — pre-tick the student's registered ones
     ALL_SUBJECTS.forEach(subj => {
       const isRegistered = studentSubjects.includes(subj);
       const pill = document.createElement('label');
-      pill.className = 'subj-pill' + (isRegistered ? ' selected' : '');
+      pill.className      = 'subj-pill' + (isRegistered ? ' selected' : '');
       pill.dataset.subject = subj;
-      pill.innerHTML = `
-        <input type="checkbox" value="${subj}"
-          ${isRegistered ? 'checked' : ''}
-          onchange="handleSubjChange(this)"
-        />
-        ${subj}
-        <span style="margin-left:auto;font-family:var(--mono);font-size:10px;opacity:0.6">40 Qs</span>
-      `;
+
+      const cb = document.createElement('input');
+      cb.type    = 'checkbox';
+      cb.value   = subj;
+      cb.checked = isRegistered;
+      cb.addEventListener('change', () => handleSubjChange(cb));
+
+      const name = document.createTextNode(' ' + subj + ' ');
+      const qs   = document.createElement('span');
+      qs.style.cssText = 'margin-left:auto;font-family:var(--mono);font-size:10px;opacity:0.6';
+      qs.textContent   = '40 Qs';
+
+      pill.appendChild(cb);
+      pill.appendChild(name);
+      pill.appendChild(qs);
       grid.appendChild(pill);
     });
 
-    // Init state from pre-selected
-    state.selectedSubjects = [...studentSubjects].slice(0, 3);
+    // Init state from student's registered subjects (max 3)
+    state.selectedSubjects = studentSubjects.slice(0, 3);
     updateSetupUI();
   }
 
-  window.handleSubjChange = function(cb) {
-    const label    = cb.closest('.subj-pill');
-    const checked  = document.querySelectorAll('#setup-subjects input:checked');
+  function handleSubjChange(cb) {
+    const checked = document.querySelectorAll('#setup-subjects input:checked');
     if (checked.length > 3) { cb.checked = false; return; }
 
     document.querySelectorAll('.subj-pill').forEach(l => {
@@ -809,14 +816,21 @@
       document.querySelectorAll('#setup-subjects input:checked')
     ).map(c => c.value);
 
-    // Disable unchosen when 3 selected
+    // Disable unchecked when 3 are selected
     document.querySelectorAll('#setup-subjects input').forEach(c => {
-      if (!c.checked) c.closest('.subj-pill').classList.toggle('disabled', checked.length >= 3);
+      if (!c.checked) {
+        c.disabled = checked.length >= 3;
+        c.closest('.subj-pill').classList.toggle('disabled', checked.length >= 3);
+      } else {
+        c.disabled = false;
+        c.closest('.subj-pill').classList.remove('disabled');
+      }
     });
 
     updateSetupUI();
-  };
+  }
 
+  // Mode selection — exposed to window for HTML onclick
   window.selectMode = function(card) {
     document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
@@ -844,7 +858,7 @@
   buildSetupSubjects();
 
   // ══════════════════════════════════════════
-  // START EXAM
+  // START EXAM — exposed to window for HTML onclick
   // ══════════════════════════════════════════
   window.startExam = function() {
     // Build flat question list
@@ -1162,11 +1176,15 @@
       timeUsed, mode: state.mode,
       subjects, errors,
       totalQuestions: total,
-    });
+    }) || 'new';
 
     // Redirect to results page with session ID
     window.location.href = `results.html?session=${sessionId}`;
   };
+
+  } // end init()
+
+  init();
 </script>
 
 </body>
