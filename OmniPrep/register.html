@@ -6,20 +6,14 @@
   <title>Register — OmniPrep</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* ── Page-specific styles for register.html ── */
+    body { background: var(--surface); }
 
-    body {
-      background: var(--surface);
-    }
-
-    /* Two-column layout: form left, summary right */
     .register-layout {
       min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 400px;
     }
 
-    /* Left — form column */
     .register-form-col {
       padding: var(--space-12) var(--space-10);
       display: flex;
@@ -30,7 +24,6 @@
       margin-inline: auto;
     }
 
-    /* Right — summary / what you get */
     .register-summary-col {
       background: var(--green);
       padding: var(--space-12) var(--space-8);
@@ -70,29 +63,15 @@
     }
 
     .summary-feature__icon {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       border-radius: var(--radius-sm);
       background: rgba(255,255,255,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
     }
 
-    .summary-feature__title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 2px;
-    }
-
-    .summary-feature__desc {
-      font-size: 12px;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.5;
-    }
+    .summary-feature__title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .summary-feature__desc  { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.5; }
 
     .summary-price-box {
       background: rgba(255,255,255,0.12);
@@ -102,276 +81,74 @@
       margin-top: var(--space-6);
     }
 
-    .summary-price-box__amount {
-      font-size: 40px;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-
-    .summary-price-box__period {
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      margin-top: 4px;
-    }
-
-    .summary-price-box__note {
-      font-size: 11px;
-      color: rgba(255,255,255,0.5);
-      margin-top: var(--space-3);
-      padding-top: var(--space-3);
-      border-top: 1px solid rgba(255,255,255,0.15);
-      line-height: 1.5;
-    }
-
-    /* Form header */
-    .form-header {
-      margin-bottom: var(--space-8);
-    }
+    .summary-price-box__amount { font-size: 40px; font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; }
+    .summary-price-box__period { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .summary-price-box__note   { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid rgba(255,255,255,0.15); line-height: 1.5; }
 
     .form-header__back {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-3);
-      text-decoration: none;
-      margin-bottom: var(--space-6);
-      transition: color 0.15s;
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: 13px; font-weight: 500; color: var(--ink-3);
+      text-decoration: none; margin-bottom: var(--space-6); transition: color 0.15s;
     }
+    .form-header__back:hover { color: var(--green); text-decoration: none; }
+    .form-header__title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: var(--space-2); }
+    .form-header__sub   { font-size: 14px; color: var(--ink-3); }
 
-    .form-header__back:hover {
-      color: var(--green);
-      text-decoration: none;
-    }
+    .steps-indicator { display: flex; align-items: center; gap: 0; margin-bottom: var(--space-8); }
 
-    .form-header__title {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: var(--space-2);
-    }
-
-    .form-header__sub {
-      font-size: 14px;
-      color: var(--ink-3);
-    }
-
-    /* Steps indicator */
-    .steps-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: var(--space-8);
-    }
-
-    .step-indicator {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      flex: 1;
-    }
+    .step-indicator { display: flex; align-items: center; gap: var(--space-2); flex: 1; }
 
     .step-indicator__dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
+      width: 28px; height: 28px; border-radius: 50%;
       border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink-4);
-      background: var(--white);
-      flex-shrink: 0;
-      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--ink-4); background: var(--white); flex-shrink: 0; transition: all 0.2s;
     }
 
-    .step-indicator.active .step-indicator__dot {
-      border-color: var(--green);
-      background: var(--green);
-      color: var(--white);
-    }
-
-    .step-indicator.done .step-indicator__dot {
-      border-color: var(--green);
-      background: var(--green-light);
-      color: var(--green-dark);
-    }
-
-    .step-indicator__label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--ink-4);
-      transition: color 0.2s;
-    }
-
+    .step-indicator.active .step-indicator__dot { border-color: var(--green); background: var(--green); color: var(--white); }
+    .step-indicator.done   .step-indicator__dot { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+    .step-indicator__label { font-size: 11px; font-weight: 600; color: var(--ink-4); transition: color 0.2s; }
     .step-indicator.active .step-indicator__label { color: var(--green-dark); }
     .step-indicator.done   .step-indicator__label { color: var(--green); }
 
-    .step-connector {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      margin-inline: var(--space-2);
-      transition: background 0.2s;
-    }
-
+    .step-connector { flex: 1; height: 1px; background: var(--border); margin-inline: var(--space-2); transition: background 0.2s; }
     .step-connector.done { background: var(--green-mid); }
 
-    /* Subject checkboxes */
-    .subject-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-2);
-    }
+    .subject-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
 
     .subject-checkbox {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      padding: 10px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink-2);
-      transition: all 0.15s;
-      user-select: none;
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); cursor: pointer;
+      font-size: 13px; font-weight: 500; color: var(--ink-2);
+      transition: all 0.15s; user-select: none;
     }
+    .subject-checkbox:hover { border-color: var(--green); color: var(--ink); }
+    .subject-checkbox input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; }
+    .subject-checkbox.checked { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 600; }
 
-    .subject-checkbox:hover {
-      border-color: var(--green);
-      color: var(--ink);
-    }
+    .subject-count { font-size: 12px; color: var(--ink-3); margin-top: var(--space-2); }
+    .subject-count .count-num { font-weight: 700; color: var(--green); font-family: var(--mono); }
 
-    .subject-checkbox input[type="checkbox"] {
-      accent-color: var(--green);
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-    }
+    .payment-summary { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-6); }
+    .payment-summary__row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-2); padding-block: var(--space-2); }
+    .payment-summary__row.total { border-top: 1px solid var(--border); margin-top: var(--space-2); padding-top: var(--space-3); font-size: 15px; font-weight: 700; color: var(--ink); }
+    .payment-summary__row.total span:last-child { color: var(--green); font-family: var(--mono); font-size: 18px; }
+    .paystack-badge { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--ink-3); margin-top: var(--space-3); }
+    .paystack-badge::before { content: '🔒'; font-size: 13px; }
 
-    .subject-checkbox.checked {
-      border-color: var(--green);
-      background: var(--green-light);
-      color: var(--green-dark);
-      font-weight: 600;
-    }
+    .form-step { display: none; }
+    .form-step.active { display: flex; flex-direction: column; gap: var(--space-5); animation: fade-in 0.3s ease both; }
 
-    .subject-count {
-      font-size: 12px;
-      color: var(--ink-3);
-      margin-top: var(--space-2);
-    }
-
-    .subject-count .count-num {
-      font-weight: 700;
-      color: var(--green);
-      font-family: var(--mono);
-    }
-
-    /* Payment step */
-    .payment-summary {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: var(--space-5) var(--space-6);
-      margin-bottom: var(--space-6);
-    }
-
-    .payment-summary__row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: var(--ink-2);
-      padding-block: var(--space-2);
-    }
-
-    .payment-summary__row.total {
-      border-top: 1px solid var(--border);
-      margin-top: var(--space-2);
-      padding-top: var(--space-3);
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .payment-summary__row.total span:last-child {
-      color: var(--green);
-      font-family: var(--mono);
-      font-size: 18px;
-    }
-
-    .paystack-badge {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: 12px;
-      color: var(--ink-3);
-      margin-top: var(--space-3);
-    }
-
-    .paystack-badge::before {
-      content: '🔒';
-      font-size: 13px;
-    }
-
-    /* Form sections — step 1, step 2 */
-    .form-step {
-      display: none;
-    }
-
-    .form-step.active {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-5);
-      animation: fade-in 0.3s ease both;
-    }
-
-    /* Success screen */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: var(--space-8) 0;
-      animation: scale-in 0.4s ease both;
-    }
-
+    .success-screen { display: none; text-align: center; padding: var(--space-8) 0; animation: scale-in 0.4s ease both; }
     .success-screen.active { display: block; }
+    .success-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--green-light); border: 3px solid var(--green); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto var(--space-6); }
 
-    .success-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--green-light);
-      border: 3px solid var(--green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      margin: 0 auto var(--space-6);
-    }
-
-    /* Responsive */
     @media (max-width: 860px) {
-      .register-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .register-summary-col {
-        display: none;
-      }
-
-      .register-form-col {
-        padding: var(--space-8) var(--space-5);
-        max-width: 100%;
-      }
+      .register-layout { grid-template-columns: 1fr; }
+      .register-summary-col { display: none; }
+      .register-form-col { padding: var(--space-8) var(--space-5); max-width: 100%; }
     }
   </style>
 </head>
@@ -379,17 +156,11 @@
 
 <div class="register-layout">
 
-  <!-- ══════════════════════
-       LEFT — FORM
-  ══════════════════════ -->
+  <!-- LEFT — FORM -->
   <div class="register-form-col">
 
-    <!-- Back link -->
-    <a href="index.html" class="form-header__back">
-      ← Back to home
-    </a>
+    <a href="index.html" class="form-header__back">← Back to home</a>
 
-    <!-- Logo -->
     <a href="index.html" class="logo mb-6">
       <div class="logo__mark">OP</div>
       <div class="logo__name">Omni<span>Prep</span></div>
@@ -413,13 +184,13 @@
       </div>
     </div>
 
-    <!-- Global alert -->
+    <!-- Alert -->
     <div class="form-alert error" id="form-alert"></div>
 
-    <!-- ── STEP 1: DETAILS ── -->
+    <!-- STEP 1: DETAILS -->
     <div class="form-step active" id="step-1">
 
-      <div class="form-header">
+      <div>
         <div class="form-header__title">Create your account</div>
         <div class="form-header__sub">
           All fields are required. Already have an account?
@@ -427,61 +198,28 @@
         </div>
       </div>
 
-      <!-- Full name -->
       <div class="form-group">
-        <label class="form-label" for="reg-name">
-          Full name <span class="required">*</span>
-        </label>
-        <input
-          class="form-input"
-          type="text"
-          id="reg-name"
-          placeholder="e.g. Usman Ibrahim"
-          autocomplete="name"
-          required
-        />
+        <label class="form-label" for="reg-name">Full name <span class="required">*</span></label>
+        <input class="form-input" type="text" id="reg-name" placeholder="e.g. Usman Ibrahim" autocomplete="name" required />
         <span class="form-error" id="err-name"></span>
       </div>
 
-      <!-- Email -->
       <div class="form-group">
-        <label class="form-label" for="reg-email">
-          Email address <span class="required">*</span>
-        </label>
-        <input
-          class="form-input"
-          type="email"
-          id="reg-email"
-          placeholder="you@example.com"
-          autocomplete="email"
-          required
-        />
+        <label class="form-label" for="reg-email">Email address <span class="required">*</span></label>
+        <input class="form-input" type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required />
         <span class="form-error" id="err-email"></span>
         <span class="form-hint">You will use this to log in.</span>
       </div>
 
-      <!-- Password -->
       <div class="form-group">
-        <label class="form-label" for="reg-password">
-          Password <span class="required">*</span>
-        </label>
-        <input
-          class="form-input"
-          type="password"
-          id="reg-password"
-          placeholder="At least 8 characters"
-          autocomplete="new-password"
-          required
-        />
+        <label class="form-label" for="reg-password">Password <span class="required">*</span></label>
+        <input class="form-input" type="password" id="reg-password" placeholder="At least 8 characters" autocomplete="new-password" required />
         <span class="form-error" id="err-password"></span>
       </div>
 
-      <!-- Exam year + Exam date -->
       <div class="grid-2" style="gap:var(--space-4)">
         <div class="form-group">
-          <label class="form-label" for="reg-year">
-            UTME year <span class="required">*</span>
-          </label>
+          <label class="form-label" for="reg-year">UTME year <span class="required">*</span></label>
           <select class="form-select" id="reg-year" required>
             <option value="">Select year</option>
             <option value="2025">2025</option>
@@ -489,63 +227,43 @@
           </select>
           <span class="form-error" id="err-year"></span>
         </div>
-
         <div class="form-group">
-          <label class="form-label" for="reg-date">
-            Exam date <span class="required">*</span>
-          </label>
-          <input
-            class="form-input"
-            type="date"
-            id="reg-date"
-            required
-          />
+          <label class="form-label" for="reg-date">Exam date <span class="required">*</span></label>
+          <input class="form-input" type="date" id="reg-date" required />
           <span class="form-hint">Approximate is fine.</span>
           <span class="form-error" id="err-date"></span>
         </div>
       </div>
 
-      <!-- Subjects -->
       <div class="form-group">
-        <label class="form-label">
-          Choose 3 subjects <span class="required">*</span>
-        </label>
+        <label class="form-label">Choose 3 subjects <span class="required">*</span></label>
         <span class="form-hint mb-2" style="display:block">
-          English Language is compulsory and already included.
-          Select exactly 3 more.
+          English Language is compulsory and already included. Select exactly 3 more.
         </span>
         <div class="subject-grid" id="subject-grid">
           <label class="subject-checkbox" data-subject="Mathematics">
-            <input type="checkbox" value="Mathematics" onchange="handleSubjectChange(this)" />
-            Mathematics
+            <input type="checkbox" value="Mathematics" onchange="handleSubjectChange(this)" /> Mathematics
           </label>
           <label class="subject-checkbox" data-subject="Physics">
-            <input type="checkbox" value="Physics" onchange="handleSubjectChange(this)" />
-            Physics
+            <input type="checkbox" value="Physics" onchange="handleSubjectChange(this)" /> Physics
           </label>
           <label class="subject-checkbox" data-subject="Chemistry">
-            <input type="checkbox" value="Chemistry" onchange="handleSubjectChange(this)" />
-            Chemistry
+            <input type="checkbox" value="Chemistry" onchange="handleSubjectChange(this)" /> Chemistry
           </label>
           <label class="subject-checkbox" data-subject="Biology">
-            <input type="checkbox" value="Biology" onchange="handleSubjectChange(this)" />
-            Biology
+            <input type="checkbox" value="Biology" onchange="handleSubjectChange(this)" /> Biology
           </label>
           <label class="subject-checkbox" data-subject="Economics">
-            <input type="checkbox" value="Economics" onchange="handleSubjectChange(this)" />
-            Economics
+            <input type="checkbox" value="Economics" onchange="handleSubjectChange(this)" /> Economics
           </label>
           <label class="subject-checkbox" data-subject="Government">
-            <input type="checkbox" value="Government" onchange="handleSubjectChange(this)" />
-            Government
+            <input type="checkbox" value="Government" onchange="handleSubjectChange(this)" /> Government
           </label>
           <label class="subject-checkbox" data-subject="Literature">
-            <input type="checkbox" value="Literature" onchange="handleSubjectChange(this)" />
-            Literature
+            <input type="checkbox" value="Literature" onchange="handleSubjectChange(this)" /> Literature
           </label>
           <label class="subject-checkbox" data-subject="Geography">
-            <input type="checkbox" value="Geography" onchange="handleSubjectChange(this)" />
-            Geography
+            <input type="checkbox" value="Geography" onchange="handleSubjectChange(this)" /> Geography
           </label>
         </div>
         <div class="subject-count mt-2">
@@ -554,35 +272,28 @@
         <span class="form-error" id="err-subjects"></span>
       </div>
 
-      <!-- Continue button -->
       <button class="btn btn-primary btn-lg btn-block" onclick="goToPayment()">
         Continue to payment →
       </button>
 
       <p class="text-xs text-center">
-        By registering you agree that OmniPrep will store your account
-        information securely on Google Firebase.
+        By registering you agree that OmniPrep will store your account information securely on Google Firebase.
       </p>
 
     </div>
     <!-- /step-1 -->
 
-
-    <!-- ── STEP 2: PAYMENT ── -->
+    <!-- STEP 2: PAYMENT -->
     <div class="form-step" id="step-2">
 
-      <div class="form-header">
+      <div>
         <div class="form-header__title">Complete your payment</div>
-        <div class="form-header__sub">
-          Review your details and pay securely via Paystack.
-        </div>
+        <div class="form-header__sub">Review your details and pay securely via Paystack.</div>
       </div>
 
-      <!-- Order summary -->
       <div class="payment-summary">
         <div class="payment-summary__row">
-          <span>OmniPrep Annual Access</span>
-          <span>₦500.00</span>
+          <span>OmniPrep Annual Access</span><span>₦500.00</span>
         </div>
         <div class="payment-summary__row">
           <span>Account</span>
@@ -593,32 +304,21 @@
           <span id="pay-subjects-display" style="font-size:12px;text-align:right;max-width:200px">—</span>
         </div>
         <div class="payment-summary__row">
-          <span>Access duration</span>
-          <span>1 year</span>
+          <span>Access duration</span><span>1 year</span>
         </div>
         <div class="payment-summary__row total">
-          <span>Total</span>
-          <span>₦500</span>
+          <span>Total</span><span>₦500</span>
         </div>
         <div class="paystack-badge">
           Secured by Paystack · No card details stored on OmniPrep
         </div>
       </div>
 
-      <!-- Pay button -->
-      <button
-        class="btn btn-primary btn-lg btn-block"
-        id="pay-btn"
-        onclick="initiatePayment()"
-      >
+      <button class="btn btn-primary btn-lg btn-block" id="pay-btn" onclick="initiatePayment()">
         Pay ₦500 with Paystack
       </button>
 
-      <!-- Back -->
-      <button
-        class="btn btn-secondary btn-block"
-        onclick="goBack()"
-      >
+      <button class="btn btn-secondary btn-block" onclick="goBack()">
         ← Go back and edit details
       </button>
 
@@ -630,31 +330,22 @@
     </div>
     <!-- /step-2 -->
 
-
-    <!-- ── SUCCESS SCREEN ── -->
+    <!-- SUCCESS SCREEN -->
     <div class="success-screen" id="success-screen">
       <div class="success-icon">✓</div>
       <h2 class="text-h2 mb-3">Payment confirmed!</h2>
       <p class="text-body mb-6">
-        Welcome to OmniPrep, <strong id="success-name"></strong>.
-        Your account is ready. Let's start training.
+        Welcome to OmniPrep! Your account is ready. Taking you to your dashboard now...
       </p>
       <a href="dashboard.html" class="btn btn-primary btn-lg">
         Go to my dashboard →
       </a>
-      <p class="text-xs mt-4">
-        Redirecting automatically in a moment...
-        <br>A confirmation has been sent to <span id="success-email" style="font-family:var(--mono)"></span>
-      </p>
     </div>
 
   </div>
   <!-- /register-form-col -->
 
-
-  <!-- ══════════════════════
-       RIGHT — SUMMARY
-  ══════════════════════ -->
+  <!-- RIGHT — SUMMARY -->
   <div class="register-summary-col">
 
     <a href="index.html" class="logo logo--sm">
@@ -662,14 +353,8 @@
       <div class="logo__name">Omni<span>Prep</span></div>
     </a>
 
-    <div class="summary-title">
-      Everything you need to pass JAMB — in one platform.
-    </div>
-
-    <p class="summary-sub">
-      One payment. One year. All four modules.
-      Start training today.
-    </p>
+    <div class="summary-title">Everything you need to pass JAMB — in one platform.</div>
+    <p class="summary-sub">One payment. One year. All four modules. Start training today.</p>
 
     <div class="summary-feature">
       <div class="summary-feature__icon">🖱️</div>
@@ -716,25 +401,24 @@
   <!-- /register-summary-col -->
 
 </div>
-<!-- /register-layout -->
 
 
 <!-- ══════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════ -->
 
-<!-- Firebase bridge — imports from shared firebase.js and exposes to global scope -->
+<!-- Firebase bridge -->
 <script type="module">
   try {
-    const fb = await import('./js/firebase.js');
+    const fb = await import('js/firebase.js');
     window._op = {
-      auth:                       fb.auth,
-      db:                         fb.db,
+      auth:                           fb.auth,
+      db:                             fb.db,
       createUserWithEmailAndPassword: fb.createUserWithEmailAndPassword,
-      updateProfile:              fb.updateProfile,
-      doc:                        fb.doc,
-      setDoc:                     fb.setDoc,
-      serverTimestamp:            fb.serverTimestamp,
+      updateProfile:                  fb.updateProfile,
+      doc:                            fb.doc,
+      setDoc:                         fb.setDoc,
+      serverTimestamp:                fb.serverTimestamp,
     };
     console.log('Firebase ready.');
   } catch(e) {
@@ -743,69 +427,39 @@
   }
 </script>
 
-<!-- Paystack inline script -->
+<!-- Paystack -->
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
 <script>
-  // ══════════════════════════════════════════
-  // STATE — holds form values across steps
-  // ══════════════════════════════════════════
-  const formData = {
-    name:     '',
-    email:    '',
-    password: '',
-    year:     '',
-    date:     '',
-    subjects: [],
-  };
+  // ── FORM STATE ──
+  const formData = { name:'', email:'', password:'', year:'', date:'', subjects:[] };
 
-
-  // ══════════════════════════════════════════
-  // SUBJECT CHECKBOX HANDLER
-  // ══════════════════════════════════════════
+  // ── SUBJECT CHECKBOXES ──
   function handleSubjectChange(checkbox) {
-    const label    = checkbox.closest('.subject-checkbox');
     const selected = document.querySelectorAll('#subject-grid input[type="checkbox"]:checked');
-
-    // Enforce max 3
-    if (selected.length > 3) {
-      checkbox.checked = false;
-      return;
-    }
-
-    // Toggle visual state
+    if (selected.length > 3) { checkbox.checked = false; return; }
     document.querySelectorAll('.subject-checkbox').forEach(l => {
       l.classList.toggle('checked', l.querySelector('input').checked);
     });
-
-    // Update counter
     document.getElementById('subject-count-num').textContent = selected.length;
-
-    // Disable unchecked boxes when 3 are selected
     document.querySelectorAll('#subject-grid input[type="checkbox"]').forEach(cb => {
       if (!cb.checked) cb.disabled = selected.length >= 3;
     });
-
     clearError('err-subjects');
   }
 
-
-  // ══════════════════════════════════════════
-  // VALIDATION HELPERS
-  // ══════════════════════════════════════════
+  // ── VALIDATION ──
   function showError(id, msg) {
     const el = document.getElementById(id);
-    if (el) { el.textContent = msg; }
-    const inputId = id.replace('err-', 'reg-');
-    const input   = document.getElementById(inputId);
+    if (el) el.textContent = msg;
+    const input = document.getElementById(id.replace('err-', 'reg-'));
     if (input) input.classList.add('error');
   }
 
   function clearError(id) {
     const el = document.getElementById(id);
     if (el) el.textContent = '';
-    const inputId = id.replace('err-', 'reg-');
-    const input   = document.getElementById(inputId);
+    const input = document.getElementById(id.replace('err-', 'reg-'));
     if (input) input.classList.remove('error');
   }
 
@@ -813,84 +467,41 @@
     const el = document.getElementById('form-alert');
     el.textContent = msg;
     el.className = `form-alert ${type} show`;
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
   function hideAlert() {
-    const el = document.getElementById('form-alert');
-    el.className = 'form-alert';
+    document.getElementById('form-alert').className = 'form-alert';
   }
 
   function validateStep1() {
     let valid = true;
-
-    // Name
     const name = document.getElementById('reg-name').value.trim();
-    if (!name || name.length < 2) {
-      showError('err-name', 'Please enter your full name.');
-      valid = false;
-    } else {
-      clearError('err-name');
-    }
+    if (!name || name.length < 2) { showError('err-name','Please enter your full name.'); valid=false; } else clearError('err-name');
 
-    // Email
     const email = document.getElementById('reg-email').value.trim();
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRe.test(email)) {
-      showError('err-email', 'Please enter a valid email address.');
-      valid = false;
-    } else {
-      clearError('err-email');
-    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('err-email','Please enter a valid email address.'); valid=false; } else clearError('err-email');
 
-    // Password
     const password = document.getElementById('reg-password').value;
-    if (!password || password.length < 8) {
-      showError('err-password', 'Password must be at least 8 characters.');
-      valid = false;
-    } else {
-      clearError('err-password');
-    }
+    if (!password || password.length < 8) { showError('err-password','Password must be at least 8 characters.'); valid=false; } else clearError('err-password');
 
-    // Year
     const year = document.getElementById('reg-year').value;
-    if (!year) {
-      showError('err-year', 'Select your exam year.');
-      valid = false;
-    } else {
-      clearError('err-year');
-    }
+    if (!year) { showError('err-year','Select your exam year.'); valid=false; } else clearError('err-year');
 
-    // Date
     const date = document.getElementById('reg-date').value;
-    if (!date) {
-      showError('err-date', 'Enter your approximate exam date.');
-      valid = false;
-    } else {
-      clearError('err-date');
-    }
+    if (!date) { showError('err-date','Enter your approximate exam date.'); valid=false; } else clearError('err-date');
 
-    // Subjects
     const checked = document.querySelectorAll('#subject-grid input[type="checkbox"]:checked');
-    if (checked.length !== 3) {
-      showError('err-subjects', 'Please select exactly 3 subjects.');
-      valid = false;
-    } else {
-      clearError('err-subjects');
-    }
+    if (checked.length !== 3) { showError('err-subjects','Please select exactly 3 subjects.'); valid=false; } else clearError('err-subjects');
 
     return valid;
   }
 
-
-  // ══════════════════════════════════════════
-  // STEP NAVIGATION
-  // ══════════════════════════════════════════
+  // ── STEP NAVIGATION ──
   function goToPayment() {
     hideAlert();
     if (!validateStep1()) return;
 
-    // Save form data
     formData.name     = document.getElementById('reg-name').value.trim();
     formData.email    = document.getElementById('reg-email').value.trim().toLowerCase();
     formData.password = document.getElementById('reg-password').value;
@@ -901,67 +512,57 @@
       ...Array.from(document.querySelectorAll('#subject-grid input:checked')).map(c => c.value),
     ];
 
-    // Update payment summary
     document.getElementById('pay-email-display').textContent    = formData.email;
     document.getElementById('pay-subjects-display').textContent = formData.subjects.join(', ');
 
-    // Transition
-    setStep(2);
+    // Show step 2
+    document.getElementById('step-1').classList.remove('active');
+    document.getElementById('step-2').classList.add('active');
+
+    // Update step indicators
+    document.getElementById('step-ind-1').classList.remove('active');
+    document.getElementById('step-ind-1').classList.add('done');
+    document.getElementById('connector-1').classList.add('done');
+    document.getElementById('step-ind-2').classList.add('active');
+
+    window.scrollTo({ top:0, behavior:'smooth' });
   }
 
   function goBack() {
-    setStep(1);
+    document.getElementById('step-2').classList.remove('active');
+    document.getElementById('step-1').classList.add('active');
+
+    document.getElementById('step-ind-2').classList.remove('active');
+    document.getElementById('step-ind-1').classList.remove('done');
+    document.getElementById('step-ind-1').classList.add('active');
+    document.getElementById('connector-1').classList.remove('done');
+
+    window.scrollTo({ top:0, behavior:'smooth' });
   }
 
-  function setStep(step) {
-    // Hide all steps
-    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-    document.getElementById(`step-${step}`).classList.add('active');
-
-    // Update indicator
-    for (let i = 1; i <= 3; i++) {
-      const ind  = document.getElementById(`step-ind-${i}`);
-      const conn = document.getElementById(`connector-${i}`);
-      ind.classList.remove('active', 'done');
-      if (conn) conn.classList.remove('done');
-
-      if (i < step)  { ind.classList.add('done');   if (conn) conn.classList.add('done'); }
-      if (i === step) ind.classList.add('active');
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-
-  // ══════════════════════════════════════════
-  // PAYSTACK PAYMENT
-  // ══════════════════════════════════════════
+  // ── PAYSTACK PAYMENT ──
   function initiatePayment() {
     const btn = document.getElementById('pay-btn');
     btn.classList.add('btn-loading');
     btn.disabled = true;
 
-    // Replace 'pk_test_xxxxxxxxxxxxxx' with your real Paystack public key
-    // Get it from: Paystack Dashboard → Settings → API Keys
     const handler = PaystackPop.setup({
-      key:       'pk_test_238a1eed2f3dca03dde3d5b82f10a21b0be35189',
-      email:     formData.email,
-      amount:    50000,    // Paystack uses kobo — ₦500 = 50000 kobo
-      currency:  'NGN',
-      ref:       'OP_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8).toUpperCase(),
+      key:      'pk_test_238a1eed2f3dca03dde3d5b82f10a21b0be35189',
+      email:    formData.email,
+      amount:   50000,
+      currency: 'NGN',
+      ref:      'OP_' + Date.now() + '_' + Math.random().toString(36).slice(2,8).toUpperCase(),
       metadata: {
         custom_fields: [
-          { display_name: 'Student Name',     variable_name: 'student_name',     value: formData.name },
-          { display_name: 'UTME Year',        variable_name: 'utme_year',        value: formData.year },
-          { display_name: 'Subjects',         variable_name: 'subjects',         value: formData.subjects.join(', ') },
+          { display_name:'Student Name', variable_name:'student_name', value: formData.name },
+          { display_name:'UTME Year',    variable_name:'utme_year',    value: formData.year },
+          { display_name:'Subjects',     variable_name:'subjects',     value: formData.subjects.join(', ') },
         ],
       },
       callback: function(response) {
-        // Payment successful — create Firebase account
         onPaymentSuccess(response.reference);
       },
       onClose: function() {
-        // User closed the popup without paying
         btn.classList.remove('btn-loading');
         btn.disabled = false;
         showAlert('Payment was not completed. Please try again.', 'error');
@@ -971,14 +572,11 @@
     handler.openIframe();
   }
 
-
-  // ══════════════════════════════════════════
-  // AFTER PAYMENT — CREATE FIREBASE ACCOUNT
-  // ══════════════════════════════════════════
+  // ── AFTER PAYMENT — CREATE FIREBASE ACCOUNT ──
   async function onPaymentSuccess(paystackRef) {
     const btn = document.getElementById('pay-btn');
 
-    // Wait for the Firebase module bridge to be ready (max 5 seconds)
+    // Wait for Firebase bridge (max 5 seconds)
     let attempts = 0;
     while (!window._op && !window._op_error && attempts < 50) {
       await new Promise(r => setTimeout(r, 100));
@@ -986,9 +584,8 @@
     }
 
     if (!window._op) {
-      const reason = window._op_error || 'Module timed out.';
-      console.error('Firebase not ready:', reason);
-      showAlert('A connection error occurred. Please check your internet and try again.', 'error');
+      console.error('Firebase not ready:', window._op_error || 'timeout');
+      showAlert('A connection error occurred. Please refresh and try again.', 'error');
       btn.classList.remove('btn-loading');
       btn.disabled = false;
       return;
@@ -999,12 +596,12 @@
 
       // 1. Create Firebase Auth account
       const credential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-      const user       = credential.user;
+      const user = credential.user;
 
       // 2. Set display name
       await updateProfile(user, { displayName: formData.name });
 
-      // 3. Save student profile to Firestore
+      // 3. Save profile to Firestore (non-blocking)
       try {
         await setDoc(doc(db, 'students', user.uid), {
           uid:          user.uid,
@@ -1024,19 +621,12 @@
       } catch (fsErr) {
         console.error('Firestore write failed:', fsErr.code, fsErr.message);
       }
-      // 4. Show success screen briefly, then redirect to dashboard
-document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-      document.getElementById('form-alert').className = 'form-alert';
 
-      const sName = document.getElementById('success-name');
-      const sEmail = document.getElementById('success-email');
-      const sScreen = document.getElementById('success-screen');
+      // 4. Show success screen then redirect
+      document.getElementById('step-2').classList.remove('active');
+      document.getElementById('success-screen').classList.add('active');
+      window.scrollTo({ top:0, behavior:'smooth' });
 
-      if (sName)   sName.textContent  = formData.name.split(' ')[0];
-      if (sEmail)  sEmail.textContent = formData.email;
-      if (sScreen) sScreen.classList.add('active');
-
-      // Redirect to dashboard after 2 seconds
       setTimeout(() => {
         window.location.href = 'dashboard.html';
       }, 2000);
@@ -1047,18 +637,14 @@ document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'
       console.error('Registration error:', err.code, err.message);
 
       let msg = 'Something went wrong. Please try again.';
-      if (err.code === 'auth/email-already-in-use') {
-        msg = 'This email is already registered. Please login instead.';
-      } else if (err.code === 'auth/weak-password') {
-        msg = 'Password is too weak. Please use at least 8 characters.';
-      } else if (err.code === 'auth/invalid-email') {
-        msg = 'The email address is not valid.';
-      } else if (err.code === 'auth/network-request-failed') {
-        msg = 'Network error. Please check your internet and try again.';
-      }
+      if (err.code === 'auth/email-already-in-use') msg = 'This email is already registered. Please login instead.';
+      else if (err.code === 'auth/weak-password')   msg = 'Password is too weak. Please use at least 8 characters.';
+      else if (err.code === 'auth/invalid-email')   msg = 'The email address is not valid.';
+      else if (err.code === 'auth/network-request-failed') msg = 'Network error. Please check your internet and try again.';
 
       showAlert(msg, 'error');
     }
+  }
 </script>
 
 </body>
