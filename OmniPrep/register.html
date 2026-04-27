@@ -410,7 +410,7 @@
 <!-- Firebase bridge -->
 <script type="module">
   try {
-    const fb = await import('js/firebase.js');
+    const fb = await import('/js/firebase.js');
     window._op = {
       auth:                           fb.auth,
       db:                             fb.db,
