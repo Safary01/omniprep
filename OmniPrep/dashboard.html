@@ -492,8 +492,11 @@
      SCRIPTS
 ══════════════════════════════════════ -->
 <script type="module">
-  import { buildShell, initPage } from 'js/auth.js';
-  import { getSessions, daysUntilExam } from 'js/firebase.js';
+  import { buildShell, initPage } from '/js/auth.js';
+  import { getSessions, daysUntilExam } from '/js/firebase.js';
+
+  // Wrap everything in an async function so return works correctly
+  async function init() {
 
   // ── 1. Inject shared shell (sidebar + topbar) ──
   document.getElementById('app-shell').innerHTML = buildShell();
@@ -653,6 +656,10 @@
     document.getElementById('stat-exam-count').textContent = '0';
     document.getElementById('stat-weak-pct').textContent   = '—';
   }
+
+  } // end init()
+
+  init();
 </script>
 
 </body>
