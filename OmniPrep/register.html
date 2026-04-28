@@ -330,19 +330,18 @@
     </div>
     <!-- /step-2 -->
 
-    <!-- SUCCESS SCREEN -->
+  <!-- SUCCESS SCREEN -->
     <div class="success-screen" id="success-screen">
       <div class="success-icon">✓</div>
-      <h2 class="text-h2 mb-3">Payment confirmed!</h2>
+      <h2 class="text-h2 mb-3">Registration successful!</h2>
       <p class="text-body mb-6">
-        Welcome to OmniPrep! Your account is ready. Taking you to your dashboard now...
+        Your account has been created and your ₦500 annual access is active.
+        Please login to start training.
       </p>
-      <a href="dashboard.html" class="btn btn-primary btn-lg">
-        Go to my dashboard →
+      <a href="login.html" class="btn btn-primary btn-lg">
+        Login to OmniPrep →
       </a>
     </div>
-
-  </div>
   <!-- /register-form-col -->
 
   <!-- RIGHT — SUMMARY -->
@@ -622,14 +621,10 @@
         console.error('Firestore write failed:', fsErr.code, fsErr.message);
       }
 
-      // 4. Show success screen then redirect
+      // 4. Show success screen — student clicks login manually
       document.getElementById('step-2').classList.remove('active');
       document.getElementById('success-screen').classList.add('active');
       window.scrollTo({ top:0, behavior:'smooth' });
-
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 2000);
 
     } catch (err) {
       btn.classList.remove('btn-loading');
