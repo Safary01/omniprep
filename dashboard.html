@@ -497,7 +497,7 @@
 
   (async () => {
 
-    document.getElementById('app-shell').innerHTML = renderShell();
+    renderShell();
 
     const student = await initPage();
     if (!student) return;
@@ -528,8 +528,8 @@
 
       const scores    = sessions.map(s => s.score || 0);
       const bestScore = Math.max(...scores);
-      document.getElementById('stat-best-score').textContent = bestScore;
-      document.getElementById('stat-exam-count').textContent = sessions.length;
+      document.getElementById('stat-best-score').textContent  = bestScore;
+      document.getElementById('stat-exam-count').textContent  = sessions.length;
       document.getElementById('exam-count-badge').textContent = `${sessions.length} total`;
 
       if (scores.length >= 2) {
@@ -547,24 +547,24 @@
         document.getElementById('stat-weak-subj').textContent = weak[0];
       }
 
-      const feed   = document.getElementById('activity-feed');
       const COLORS = { mock:'var(--green)', study:'var(--blue)' };
-      feed.innerHTML = sessions.slice(0, 4).map(s => {
-        const d     = s.createdAt?.toDate ? s.createdAt.toDate() : new Date();
-        const label = d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
-        const time  = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
-        return `
-          <div class="activity-item">
-            <div class="activity-dot" style="background:${COLORS[s.mode] || 'var(--amber)'}"></div>
-            <div>
-              <div class="activity-text">
-                <strong>${s.mode === 'mock' ? 'Mock Exam' : 'Study Session'}</strong>
-                — scored <strong>${s.score}</strong>/400
+      document.getElementById('activity-feed').innerHTML =
+        sessions.slice(0, 4).map(s => {
+          const d     = s.createdAt?.toDate ? s.createdAt.toDate() : new Date();
+          const label = d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+          const time  = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+          return `
+            <div class="activity-item">
+              <div class="activity-dot" style="background:${COLORS[s.mode] || 'var(--amber)'}"></div>
+              <div>
+                <div class="activity-text">
+                  <strong>${s.mode === 'mock' ? 'Mock Exam' : 'Study Session'}</strong>
+                  — scored <strong>${s.score}</strong>/400
+                </div>
+                <div class="activity-time">${label} · ${time}</div>
               </div>
-              <div class="activity-time">${label} · ${time}</div>
-            </div>
-          </div>`;
-      }).join('');
+            </div>`;
+        }).join('');
 
       if (latest.subjects) {
         const SUBJ_COLORS = {
