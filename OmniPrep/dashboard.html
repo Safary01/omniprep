@@ -301,7 +301,7 @@
 <div class="app-layout">
 
   <!-- Shell: sidebar + topbar injected here by auth.js -->
-  <div id="app-shell"></div>
+  <div id="shell"></div>
 
   <!-- Main content -->
   <main class="app-main">
@@ -492,12 +492,12 @@
      SCRIPTS
 ══════════════════════════════════════ -->
 <script type="module">
-  import { buildShell, initPage } from '/js/auth.js';
+  import { renderShell, initPage } from '/js/auth.js';
   import { getSessions, daysUntilExam } from '/js/firebase.js';
 
   (async () => {
 
-    document.getElementById('app-shell').innerHTML = buildShell();
+    document.getElementById('app-shell').innerHTML = renderShell();
 
     const student = await initPage();
     if (!student) return;
