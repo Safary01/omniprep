@@ -20,7 +20,7 @@ import {
   logout,
   daysUntilExam,
   formatDate,
-} from './js/firebase.js';
+} from './firebase.js';
 
 
 // ============================================================
