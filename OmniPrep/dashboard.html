@@ -497,42 +497,31 @@
 
   (async () => {
 
-    // 1. Inject shared shell
     document.getElementById('app-shell').innerHTML = buildShell();
 
-    // 2. Auth check
     const student = await initPage();
     if (!student) return;
 
-    // 3. Show content
     document.getElementById('loading-state').style.display = 'none';
     document.getElementById('dash-content').style.display  = 'block';
 
-    // 4. Welcome banner
     const days = daysUntilExam(student.examDate);
 
     document.getElementById('wb-title').textContent =
-      days !== null && days > 0
-        ? `Your UTME is ${days} days away.`
-        : 'Welcome to OmniPrep.';
+      days !== null && days > 0 ? `Your UTME is ${days} days away.` : 'Welcome to OmniPrep.';
 
     document.getElementById('wb-sub').textContent =
       `Subjects: ${(student.subjects || []).join(', ')}.`;
 
     document.getElementById('wb-pill').textContent =
-      days !== null && days > 0
-        ? `📅 ${days} days remaining — keep training`
-        : days === 0 ? '🎯 Exam day is today!' : '📅 Set your exam date in your profile';
+      days !== null && days > 0 ? `📅 ${days} days remaining` : '📅 Set your exam date in your profile';
 
-    // 5. Exam info sidebar
     document.getElementById('ei-subjects').textContent =
       (student.subjects || []).join(', ');
 
-    // 6. Days stat card
     document.getElementById('stat-days-left').textContent =
       days !== null ? (days > 0 ? days : 'Today') : '—';
 
-    // 7. Load sessions
     const sessions = await getSessions(student.uid);
 
     if (sessions.length > 0) {
@@ -540,6 +529,8 @@
       const scores    = sessions.map(s => s.score || 0);
       const bestScore = Math.max(...scores);
       document.getElementById('stat-best-score').textContent = bestScore;
+      document.getElementById('stat-exam-count').textContent = sessions.length;
+      document.getElementById('exam-count-badge').textContent = `${sessions.length} total`;
 
       if (scores.length >= 2) {
         const diff    = scores[0] - scores[1];
@@ -549,18 +540,13 @@
         else               { trendEl.textContent = '→';        trendEl.className = 'badge badge-gray'; }
       }
 
-      document.getElementById('stat-exam-count').textContent  = sessions.length;
-      document.getElementById('exam-count-badge').textContent = `${sessions.length} total`;
-
       const latest = sessions[0];
       if (latest.subjects) {
-        const subjEntries = Object.entries(latest.subjects).sort((a,b) => a[1] - b[1]);
-        const [weakName, weakPct] = subjEntries[0];
-        document.getElementById('stat-weak-pct').textContent  = weakPct + '%';
-        document.getElementById('stat-weak-subj').textContent = weakName;
+        const weak = Object.entries(latest.subjects).sort((a,b) => a[1] - b[1])[0];
+        document.getElementById('stat-weak-pct').textContent  = weak[1] + '%';
+        document.getElementById('stat-weak-subj').textContent = weak[0];
       }
 
-      // Activity feed
       const feed   = document.getElementById('activity-feed');
       const COLORS = { mock:'var(--green)', study:'var(--blue)' };
       feed.innerHTML = sessions.slice(0, 4).map(s => {
@@ -573,14 +559,13 @@
             <div>
               <div class="activity-text">
                 <strong>${s.mode === 'mock' ? 'Mock Exam' : 'Study Session'}</strong>
-                — scored <strong>${s.score}</strong>/400 · ${s.correct} correct
+                — scored <strong>${s.score}</strong>/400
               </div>
               <div class="activity-time">${label} · ${time}</div>
             </div>
           </div>`;
       }).join('');
 
-      // Subject accuracy
       if (latest.subjects) {
         const SUBJ_COLORS = {
           'English Language':'var(--green)', 'Mathematics':'var(--blue)',
@@ -592,7 +577,6 @@
         document.getElementById('subj-acc-card').style.display = 'block';
         document.getElementById('subj-acc-list').innerHTML =
           Object.entries(latest.subjects).map(([name, pct]) => {
-            const color    = SUBJ_COLORS[name] || 'var(--green)';
             const pctColor = pct >= 65 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
             return `
               <div class="subject-acc-row">
@@ -607,17 +591,14 @@
           }).join('');
       }
 
-      // Score chart
       document.getElementById('history-card').style.display = 'block';
-      const MAX_SCORE = 400;
-      const CHART_H   = 64;
       document.getElementById('mini-chart').innerHTML =
         sessions.slice(0, 6).reverse().map((s, i) => {
-          const barH  = Math.max(4, Math.round((s.score / MAX_SCORE) * CHART_H));
+          const barH  = Math.max(4, Math.round((s.score / 400) * 64));
           const color = s.score >= 300 ? 'var(--green)' : s.score >= 250 ? 'var(--blue)' : s.score >= 200 ? 'var(--amber)' : 'var(--red)';
           return `
             <div class="mini-bar-group">
-              <div class="mini-bar" style="height:${barH}px;background:${color}" title="Session ${i+1}: ${s.score}"></div>
+              <div class="mini-bar" style="height:${barH}px;background:${color}"></div>
               <div class="mini-bar-lbl">S${i+1}</div>
             </div>`;
         }).join('');
