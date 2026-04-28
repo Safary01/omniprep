@@ -495,172 +495,140 @@
   import { buildShell, initPage } from '/js/auth.js';
   import { getSessions, daysUntilExam } from '/js/firebase.js';
 
-  // Wrap everything in an async function so return works correctly
-  async function init() {
+  (async () => {
 
-  // ── 1. Inject shared shell (sidebar + topbar) ──
-  document.getElementById('app-shell').innerHTML = buildShell();
+    // 1. Inject shared shell
+    document.getElementById('app-shell').innerHTML = buildShell();
 
-  // ── 2. Auth check + student data ──
-  const student = await initPage();
-  if (!student) return;
+    // 2. Auth check
+    const student = await initPage();
+    if (!student) return;
 
-  // ── 3. Show content ──
-  document.getElementById('loading-state').style.display = 'none';
-  document.getElementById('dash-content').style.display  = 'block';
+    // 3. Show content
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('dash-content').style.display  = 'block';
 
-  // ── 4. Populate welcome banner ──
-  const days = daysUntilExam(student.examDate);
+    // 4. Welcome banner
+    const days = daysUntilExam(student.examDate);
 
-  document.getElementById('wb-title').textContent =
-    `Your UTME is ${days !== null && days > 0 ? days + ' days away.' : 'coming up.'}`;
+    document.getElementById('wb-title').textContent =
+      days !== null && days > 0
+        ? `Your UTME is ${days} days away.`
+        : 'Welcome to OmniPrep.';
 
-  document.getElementById('wb-sub').textContent =
-    `Subjects: ${(student.subjects || []).join(', ')}.`;
+    document.getElementById('wb-sub').textContent =
+      `Subjects: ${(student.subjects || []).join(', ')}.`;
 
-  document.getElementById('wb-pill').textContent =
-    days !== null && days > 0
-      ? `📅 ${days} days remaining — keep training`
-      : days === 0
-      ? '🎯 Exam day is today!'
-      : '📅 Set your exam date in your profile';
+    document.getElementById('wb-pill').textContent =
+      days !== null && days > 0
+        ? `📅 ${days} days remaining — keep training`
+        : days === 0 ? '🎯 Exam day is today!' : '📅 Set your exam date in your profile';
 
-  // ── 5. Populate exam info sidebar ──
-  document.getElementById('ei-subjects').textContent =
-    (student.subjects || []).join(', ');
+    // 5. Exam info sidebar
+    document.getElementById('ei-subjects').textContent =
+      (student.subjects || []).join(', ');
 
-  // ── 6. Days until exam stat card ──
-  document.getElementById('stat-days-left').textContent =
-    days !== null ? (days > 0 ? days : 'Today') : '—';
+    // 6. Days stat card
+    document.getElementById('stat-days-left').textContent =
+      days !== null ? (days > 0 ? days : 'Today') : '—';
 
-  // ── 7. Load sessions and populate stats ──
-  const sessions = await getSessions(student.uid);
+    // 7. Load sessions
+    const sessions = await getSessions(student.uid);
 
-  if (sessions.length > 0) {
+    if (sessions.length > 0) {
 
-    // Best score
-    const scores   = sessions.map(s => s.score || 0);
-    const bestScore = Math.max(...scores);
-    document.getElementById('stat-best-score').textContent = bestScore;
+      const scores    = sessions.map(s => s.score || 0);
+      const bestScore = Math.max(...scores);
+      document.getElementById('stat-best-score').textContent = bestScore;
 
-    // Score trend
-    if (scores.length >= 2) {
-      const diff = scores[0] - scores[1]; // newest - second newest
-      const trendEl = document.getElementById('score-trend');
-      if (diff > 0) {
-        trendEl.textContent = `+${diff}`;
-        trendEl.className   = 'badge badge-green';
-      } else if (diff < 0) {
-        trendEl.textContent = `${diff}`;
-        trendEl.className   = 'badge badge-red';
-      } else {
-        trendEl.textContent = '→';
-        trendEl.className   = 'badge badge-gray';
+      if (scores.length >= 2) {
+        const diff    = scores[0] - scores[1];
+        const trendEl = document.getElementById('score-trend');
+        if (diff > 0)      { trendEl.textContent = `+${diff}`; trendEl.className = 'badge badge-green'; }
+        else if (diff < 0) { trendEl.textContent = `${diff}`;  trendEl.className = 'badge badge-red'; }
+        else               { trendEl.textContent = '→';        trendEl.className = 'badge badge-gray'; }
       }
-    }
 
-    // Exam count
-    document.getElementById('stat-exam-count').textContent  = sessions.length;
-    document.getElementById('exam-count-badge').textContent = `${sessions.length} total`;
+      document.getElementById('stat-exam-count').textContent  = sessions.length;
+      document.getElementById('exam-count-badge').textContent = `${sessions.length} total`;
 
-    // Weakest subject from latest session
-    const latest = sessions[0];
-    if (latest.subjects) {
-      const subjEntries = Object.entries(latest.subjects);
-      subjEntries.sort((a, b) => a[1] - b[1]);
-      const [weakName, weakPct] = subjEntries[0];
-      document.getElementById('stat-weak-pct').textContent  = weakPct + '%';
-      document.getElementById('stat-weak-subj').textContent = weakName;
-    }
+      const latest = sessions[0];
+      if (latest.subjects) {
+        const subjEntries = Object.entries(latest.subjects).sort((a,b) => a[1] - b[1]);
+        const [weakName, weakPct] = subjEntries[0];
+        document.getElementById('stat-weak-pct').textContent  = weakPct + '%';
+        document.getElementById('stat-weak-subj').textContent = weakName;
+      }
 
-    // ── Activity feed ──
-    const feed     = document.getElementById('activity-feed');
-    const COLORS   = {
-      'mock':  'var(--green)',
-      'study': 'var(--blue)',
-    };
-    const actHTML  = sessions.slice(0, 4).map(s => {
-      const d     = s.createdAt?.toDate ? s.createdAt.toDate() : new Date();
-      const label = d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
-      const time  = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
-      return `
-        <div class="activity-item">
-          <div class="activity-dot" style="background:${COLORS[s.mode] || 'var(--amber)'}"></div>
-          <div>
-            <div class="activity-text">
-              <strong>${s.mode === 'mock' ? 'Mock Exam' : 'Study Session'}</strong>
-              — scored <strong>${s.score}</strong>/400
-              · ${s.correct} correct
-            </div>
-            <div class="activity-time">${label} · ${time}</div>
-          </div>
-        </div>`;
-    }).join('');
-    feed.innerHTML = actHTML || `<div class="empty-state" style="padding:var(--space-5) 0"><div class="empty-state__sub">No activity yet.</div></div>`;
-
-    // ── Subject accuracy (latest session) ──
-    if (latest.subjects) {
-      const SUBJ_COLORS = {
-        'English Language': 'var(--green)',
-        'Mathematics':      'var(--blue)',
-        'Physics':          'var(--amber)',
-        'Chemistry':        'var(--red)',
-        'Biology':          '#8B5CF6',
-        'Economics':        '#EC4899',
-        'Government':       '#14B8A6',
-        'Literature':       '#F97316',
-        'Geography':        '#6366F1',
-      };
-      const subjCard = document.getElementById('subj-acc-card');
-      const subjList = document.getElementById('subj-acc-list');
-      subjCard.style.display = 'block';
-
-      subjList.innerHTML = Object.entries(latest.subjects).map(([name, pct]) => {
-        const color = SUBJ_COLORS[name] || 'var(--green)';
-        const pctColor = pct >= 65 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+      // Activity feed
+      const feed   = document.getElementById('activity-feed');
+      const COLORS = { mock:'var(--green)', study:'var(--blue)' };
+      feed.innerHTML = sessions.slice(0, 4).map(s => {
+        const d     = s.createdAt?.toDate ? s.createdAt.toDate() : new Date();
+        const label = d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+        const time  = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
         return `
-          <div class="subject-acc-row">
-            <div class="subject-acc-meta">
-              <span class="subject-acc-name">${name}</span>
-              <span class="subject-acc-pct" style="color:${pctColor}">${pct}%</span>
-            </div>
-            <div class="progress">
-              <div class="progress__fill" style="width:${pct}%;background:${pctColor}"></div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:${COLORS[s.mode] || 'var(--amber)'}"></div>
+            <div>
+              <div class="activity-text">
+                <strong>${s.mode === 'mock' ? 'Mock Exam' : 'Study Session'}</strong>
+                — scored <strong>${s.score}</strong>/400 · ${s.correct} correct
+              </div>
+              <div class="activity-time">${label} · ${time}</div>
             </div>
           </div>`;
       }).join('');
+
+      // Subject accuracy
+      if (latest.subjects) {
+        const SUBJ_COLORS = {
+          'English Language':'var(--green)', 'Mathematics':'var(--blue)',
+          'Physics':'var(--amber)',          'Chemistry':'var(--red)',
+          'Biology':'#8B5CF6',              'Economics':'#EC4899',
+          'Government':'#14B8A6',           'Literature':'#F97316',
+          'Geography':'#6366F1',
+        };
+        document.getElementById('subj-acc-card').style.display = 'block';
+        document.getElementById('subj-acc-list').innerHTML =
+          Object.entries(latest.subjects).map(([name, pct]) => {
+            const color    = SUBJ_COLORS[name] || 'var(--green)';
+            const pctColor = pct >= 65 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+            return `
+              <div class="subject-acc-row">
+                <div class="subject-acc-meta">
+                  <span class="subject-acc-name">${name}</span>
+                  <span class="subject-acc-pct" style="color:${pctColor}">${pct}%</span>
+                </div>
+                <div class="progress">
+                  <div class="progress__fill" style="width:${pct}%;background:${pctColor}"></div>
+                </div>
+              </div>`;
+          }).join('');
+      }
+
+      // Score chart
+      document.getElementById('history-card').style.display = 'block';
+      const MAX_SCORE = 400;
+      const CHART_H   = 64;
+      document.getElementById('mini-chart').innerHTML =
+        sessions.slice(0, 6).reverse().map((s, i) => {
+          const barH  = Math.max(4, Math.round((s.score / MAX_SCORE) * CHART_H));
+          const color = s.score >= 300 ? 'var(--green)' : s.score >= 250 ? 'var(--blue)' : s.score >= 200 ? 'var(--amber)' : 'var(--red)';
+          return `
+            <div class="mini-bar-group">
+              <div class="mini-bar" style="height:${barH}px;background:${color}" title="Session ${i+1}: ${s.score}"></div>
+              <div class="mini-bar-lbl">S${i+1}</div>
+            </div>`;
+        }).join('');
+
+    } else {
+      document.getElementById('stat-best-score').textContent = '—';
+      document.getElementById('stat-exam-count').textContent = '0';
+      document.getElementById('stat-weak-pct').textContent   = '—';
     }
 
-    // ── Mini score chart ──
-    const histCard  = document.getElementById('history-card');
-    const miniChart = document.getElementById('mini-chart');
-    histCard.style.display = 'block';
-
-    const MAX_SCORE  = 400;
-    const CHART_H    = 64;
-    const chartSessions = sessions.slice(0, 6).reverse(); // oldest to newest
-
-    miniChart.innerHTML = chartSessions.map((s, i) => {
-      const barH  = Math.max(4, Math.round((s.score / MAX_SCORE) * CHART_H));
-      const color = s.score >= 300 ? 'var(--green)' : s.score >= 250 ? 'var(--blue)' : s.score >= 200 ? 'var(--amber)' : 'var(--red)';
-      return `
-        <div class="mini-bar-group">
-          <div class="mini-bar" style="height:${barH}px;background:${color}" title="Session ${i+1}: ${s.score}"></div>
-          <div class="mini-bar-lbl">S${i+1}</div>
-        </div>`;
-    }).join('');
-
-  } else {
-    // No sessions yet — show empty states
-    document.getElementById('stat-best-score').textContent = '—';
-    document.getElementById('stat-exam-count').textContent = '0';
-    document.getElementById('stat-weak-pct').textContent   = '—';
-  }
-
-  } // end init()
-
-  init();
+  })();
 </script>
-
 </body>
 </html>
