@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typing Tutor — OmniPrep</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .page-content { padding: var(--space-8); max-width: 860px; }
+
+    /* Page header */
+    .page-header { margin-bottom: var(--space-6); }
+    .page-header__title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: var(--space-2); }
+    .page-header__sub   { font-size: 14px; color: var(--ink-3); }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .stat-box { text-align: center; padding: var(--space-4); background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+    .stat-box__val { font-family: var(--mono); font-size: 26px; font-weight: 700; line-height: 1; }
+    .stat-box__lbl { font-size: 11px; color: var(--ink-4); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* Mode tabs */
+    .mode-tabs { display: flex; gap: var(--space-2); margin-bottom: var(--space-5); flex-wrap: wrap; }
+
+    .mode-tab {
+      font-size: 13px; font-weight: 600;
+      padding: 8px 20px; border-radius: 50px;
+      border: 1.5px solid var(--border);
+      cursor: pointer; background: var(--white);
+      color: var(--ink-3); font-family: var(--font);
+      transition: all 0.15s;
+    }
+
+    .mode-tab:hover  { border-color: var(--ink-3); color: var(--ink); }
+    .mode-tab.active { background: var(--green); border-color: var(--green); color: white; }
+
+    /* Tutor card */
+    .tutor-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: var(--space-5);
+    }
+
+    /* Passage display */
+    .passage-display {
+      font-family: var(--mono);
+      font-size: 18px;
+      line-height: 1.9;
+      letter-spacing: 0.02em;
+      padding: var(--space-5) var(--space-6);
+      border-radius: var(--radius);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      margin-bottom: var(--space-4);
+      min-height: 80px;
+      word-break: break-word;
+    }
+
+    /* Character states */
+    .char-done    { color: var(--green); }
+    .char-wrong   { color: var(--red); background: var(--red-light); border-radius: 2px; }
+    .char-current { border-left: 2px solid var(--ink); animation: blink 0.8s step-end infinite; }
+    .char-pending { color: var(--ink-4); }
+
+    @keyframes blink { 0%,100%{border-color:var(--ink)} 50%{border-color:transparent} }
+
+    /* Input */
+    .tutor-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--mono);
+      font-size: 15px;
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .tutor-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(5,150,105,0.1); }
+    .tutor-input.error { border-color: var(--red); background: var(--red-light); }
+
+    /* Actions */
+    .tutor-actions { display: flex; gap: var(--space-3); margin-top: var(--space-4); }
+
+    /* WPM progress bar */
+    .wpm-bar-wrap { margin-top: var(--space-5); }
+    .wpm-bar-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: var(--space-2); }
+    .wpm-bar { height: 8px; background: var(--surface-3); border-radius: 4px; overflow: hidden; }
+    .wpm-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+
+    /* Completion flash */
+    .complete-flash {
+      display: none;
+      text-align: center;
+      padding: var(--space-6);
+      background: var(--green-light);
+      border: 1px solid var(--green-mid);
+      border-radius: var(--radius);
+      margin-bottom: var(--space-4);
+      animation: fade-in 0.3s ease both;
+    }
+
+    .complete-flash.show { display: block; }
+    .complete-flash__score { font-size: 32px; font-weight: 800; color: var(--green-dark); font-family: var(--mono); }
+    .complete-flash__label { font-size: 13px; color: var(--green-dark); margin-top: 4px; }
+
+    /* Tip card */
+    .tip-card {
+      background: var(--blue-light);
+      border: 1px solid #BFDBFE;
+      border-radius: var(--radius);
+      padding: var(--space-4) var(--space-5);
+    }
+
+    .tip-title { font-size: 11px; font-weight: 700; color: #1D4ED8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2); }
+    .tip-text  { font-size: 13px; color: #1E40AF; line-height: 1.6; }
+
+    /* Best scores table */
+    .best-table { width: 100%; border-collapse: collapse; }
+    .best-table th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-4); text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); }
+    .best-table td { font-size: 13px; padding: var(--space-3); border-bottom: 1px solid var(--border); }
+    .best-table tr:last-child td { border-bottom: none; }
+    .best-table .wpm-val { font-family: var(--mono); font-weight: 700; color: var(--green); }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .page-content { padding: var(--space-4); }
+      .tutor-card { padding: var(--space-5); }
+      .passage-display { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+  <div id="shell"></div>
+
+  <main class="app-main">
+    <div class="page-content">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div class="page-header__title">⌨️ Typing Tutor</div>
+        <div class="page-header__sub">
+          Build keyboard speed and accuracy for UTME fill-in-the-blank questions.
+          Target: 40+ WPM with 95%+ accuracy.
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-box__val" id="stat-wpm" style="color:var(--green)">0</div>
+          <div class="stat-box__lbl">WPM</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box__val" id="stat-acc" style="color:var(--blue)">100%</div>
+          <div class="stat-box__lbl">Accuracy</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box__val" id="stat-time" style="color:var(--amber)">0s</div>
+          <div class="stat-box__lbl">Time</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box__val" id="stat-best" style="color:var(--purple, #8B5CF6)">—</div>
+          <div class="stat-box__lbl">Best WPM</div>
+        </div>
+      </div>
+
+      <!-- Mode tabs -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="words"     onclick="T.setMode('words', this)">Word Drill</button>
+        <button class="mode-tab"        data-mode="sentences" onclick="T.setMode('sentences', this)">Sentences</button>
+        <button class="mode-tab"        data-mode="numbers"   onclick="T.setMode('numbers', this)">Numbers & Symbols</button>
+        <button class="mode-tab"        data-mode="jamb"      onclick="T.setMode('jamb', this)">JAMB Passages</button>
+      </div>
+
+      <!-- Completion flash -->
+      <div class="complete-flash" id="complete-flash">
+        <div class="complete-flash__score" id="flash-wpm">0 WPM</div>
+        <div class="complete-flash__label" id="flash-label">Passage complete!</div>
+      </div>
+
+      <!-- Tutor card -->
+      <div class="tutor-card">
+
+        <!-- Passage -->
+        <div class="passage-display" id="passage-display"></div>
+
+        <!-- Input -->
+        <input
+          class="tutor-input"
+          id="tutor-input"
+          type="text"
+          placeholder="Click here and start typing..."
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          oninput="T.handleInput()"
+          onfocus="T.startTimer()"
+        />
+
+        <!-- Actions -->
+        <div class="tutor-actions">
+          <button class="btn btn-primary"   onclick="T.newPassage()">New Passage</button>
+          <button class="btn btn-secondary" onclick="T.reset()">Reset</button>
+          <a href="dashboard.html" class="btn btn-secondary">← Dashboard</a>
+        </div>
+
+        <!-- WPM bar -->
+        <div class="wpm-bar-wrap">
+          <div class="wpm-bar-label">
+            <span>Speed progress</span>
+            <span id="wpm-label">0 WPM · Target: 40 WPM</span>
+          </div>
+          <div class="wpm-bar"><div class="wpm-fill" id="wpm-fill"></div></div>
+        </div>
+
+      </div>
+
+      <!-- Bottom row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
+
+        <!-- Tip -->
+        <div class="tip-card">
+          <div class="tip-title">💡 UTME Typing Tip</div>
+          <div class="tip-text" id="tip-text">
+            JAMB Type-In questions require you to spell answers correctly without options.
+            Practise typing common scientific terms, mathematical notation, and proper nouns accurately.
+          </div>
+        </div>
+
+        <!-- Best scores -->
+        <div class="card">
+          <div class="section-header__title mb-3">Personal Bests</div>
+          <table class="best-table">
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>WPM</th>
+                <th>Accuracy</th>
+              </tr>
+            </thead>
+            <tbody id="best-scores-body">
+              <tr><td>Word Drill</td><td class="wpm-val" id="best-words">—</td><td id="best-words-acc">—</td></tr>
+              <tr><td>Sentences</td><td class="wpm-val" id="best-sentences">—</td><td id="best-sentences-acc">—</td></tr>
+              <tr><td>Numbers</td><td class="wpm-val"   id="best-numbers">—</td><td id="best-numbers-acc">—</td></tr>
+              <tr><td>JAMB</td><td class="wpm-val"      id="best-jamb">—</td><td id="best-jamb-acc">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+
+<script type="module">
+  import { renderShell, initPage } from './js/auth.js';
+
+  renderShell();
+  const student = await initPage('typing');
+  if (!student) return;
+
+  // ── PASSAGES ──
+  const PASSAGES = {
+    words: [
+      'sodium chloride calcium oxide nitrogen hydrogen peroxide velocity acceleration momentum photosynthesis respiration mitosis meiosis chromosome government legislature judiciary executive constitution',
+      'vertebrate invertebrate ecosystem biodiversity precipitation evaporation condensation deforestation industrialisation urbanisation colonisation independence referendum sovereignty federation',
+      'differentiation integration polynomial quadratic simultaneous equation logarithm probability statistics permutation combination arithmetic geometric sequence series',
+      'oxidation reduction electrolysis isotope radioactivity neutralisation precipitation titration stoichiometry thermodynamics equilibrium kinetics catalyst',
+      'metaphor simile personification alliteration onomatopoeia hyperbole irony paradox soliloquy protagonist antagonist denouement resolution narrative',
+    ],
+    sentences: [
+      'The mitochondria is the powerhouse of the cell and produces ATP through cellular respiration in all living organisms.',
+      'In Nigeria, the JAMB examination tests candidates in four subjects including the compulsory English Language paper.',
+      'The equation of a straight line is given by y equals mx plus c where m is the gradient and c is the intercept.',
+      'Osmosis is the movement of water molecules across a selectively permeable membrane from high to low water potential.',
+      'The periodic table organises elements by increasing atomic number and groups them by similar chemical properties and reactivity.',
+      'Photosynthesis occurs in the chloroplast and converts carbon dioxide and water into glucose using light energy from the sun.',
+      'The separation of powers doctrine divides government into the executive, legislative, and judicial branches to prevent abuse of power.',
+      'A quadratic equation of the form ax squared plus bx plus c equals zero can be solved using the quadratic formula.',
+    ],
+    numbers: [
+      '23 + 47 = 70 and 156 - 89 = 67 so 3 x 4 = 12 and 144 / 12 = 12',
+      'pH 7 is neutral; below 7 is acidic and above 7 is alkaline on the pH scale from 0 to 14',
+      '6.022 x 10^23 molecules per mole; the atomic mass of Carbon-12 is exactly 12 g/mol',
+      'v = u + at; s = ut + 0.5at^2; v^2 = u^2 + 2as where a is acceleration and t is time',
+      'H2SO4 + 2NaOH → Na2SO4 + 2H2O; molar mass of H2SO4 = 2 + 32 + 64 = 98 g/mol',
+    ],
+    jamb: [
+      'Choose the option that best completes the gap: The committee members together with their chairman were present at the meeting yesterday.',
+      'The gradient of the line passing through the points two five and four eleven is calculated by dividing the change in y by the change in x.',
+      'Which of the following is an example of personification: The sun smiled down upon the earth warming every living creature below it.',
+      'Photosynthesis occurs in the chloroplast and converts carbon dioxide and water into glucose using light energy captured by chlorophyll.',
+      'In a federal system of government power is shared between the central government and the component units which are called states.',
+      'The half life of a radioactive element is the time taken for half of the atoms in a sample to undergo radioactive decay.',
+    ],
+  };
+
+  const TIPS = [
+    'JAMB Type-In questions require correct spelling without options. Practise typing scientific terms accurately.',
+    'Keep your wrists relaxed. Tense hands slow you down and increase errors.',
+    'Focus on accuracy first — speed follows naturally with practice.',
+    'Use all ten fingers. Proper finger placement is faster than hunting and pecking.',
+    'On exam day, mistyping a fill-in answer costs you marks. Accuracy matters more than speed.',
+    'Practise JAMB Passages mode — it matches the vocabulary you will encounter in the real exam.',
+  ];
+
+  // ── TUTOR ENGINE ──
+  const T = (() => {
+    let mode      = 'words';
+    let passage   = '';
+    let typed     = '';
+    let startTime = null;
+    let timerInt  = null;
+    let elapsed   = 0;
+    let bestWPM   = {};
+    let bestAcc   = {};
+    let completed = false;
+
+    function setMode(m, el) {
+      mode = m;
+      document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      reset();
+      newPassage();
+      rotateTip();
+    }
+
+    function newPassage() {
+      const arr = PASSAGES[mode];
+      passage   = arr[Math.floor(Math.random() * arr.length)];
+      typed     = '';
+      completed = false;
+      document.getElementById('tutor-input').value     = '';
+      document.getElementById('tutor-input').className = 'tutor-input';
+      document.getElementById('complete-flash').classList.remove('show');
+      renderDisplay();
+      reset(false);
+    }
+
+    function renderDisplay() {
+      const el  = document.getElementById('passage-display');
+      let   html = '';
+      for (let i = 0; i < passage.length; i++) {
+        const ch = passage[i] === ' ' ? '&nbsp;' : passage[i];
+        if (i < typed.length) {
+          html += typed[i] === passage[i]
+            ? `<span class="char-done">${ch}</span>`
+            : `<span class="char-wrong">${ch}</span>`;
+        } else if (i === typed.length) {
+          html += `<span class="char-current">${ch}</span>`;
+        } else {
+          html += `<span class="char-pending">${ch}</span>`;
+        }
+      }
+      el.innerHTML = html;
+    }
+
+    function startTimer() {
+      if (startTime || completed) return;
+      startTime = Date.now();
+      timerInt  = setInterval(() => {
+        elapsed = Math.round((Date.now() - startTime) / 1000);
+        document.getElementById('stat-time').textContent = elapsed + 's';
+        updateWPM();
+      }, 500);
+    }
+
+    function updateWPM() {
+      if (!startTime || elapsed === 0) return;
+      const words = typed.trim().split(/\s+/).filter(Boolean).length;
+      const wpm   = Math.round((words / elapsed) * 60);
+      document.getElementById('stat-wpm').textContent = wpm;
+      const pct = Math.min(100, Math.round((wpm / 80) * 100));
+      document.getElementById('wpm-fill').style.width = pct + '%';
+      document.getElementById('wpm-label').textContent = `${wpm} WPM · Target: 40 WPM`;
+    }
+
+    function handleInput() {
+      if (completed) return;
+      const val = document.getElementById('tutor-input').value;
+      typed     = val;
+
+      const correct = passage.slice(0, typed.length) === typed;
+      document.getElementById('tutor-input').className =
+        'tutor-input' + (correct || typed.length === 0 ? '' : ' error');
+
+      // Accuracy
+      const correctChars = passage.split('').filter((c,i) => typed[i] === c).length;
+      const acc = typed.length > 0 ? Math.round((correctChars / typed.length) * 100) : 100;
+      document.getElementById('stat-acc').textContent = acc + '%';
+
+      renderDisplay();
+
+      if (typed === passage) {
+        onComplete(acc);
+      }
+    }
+
+    function onComplete(acc) {
+      completed = true;
+      clearInterval(timerInt);
+
+      const words = passage.trim().split(/\s+/).filter(Boolean).length;
+      const wpm   = elapsed > 0 ? Math.round((words / elapsed) * 60) : 0;
+
+      document.getElementById('stat-wpm').textContent  = wpm;
+      document.getElementById('stat-acc').textContent  = acc + '%';
+
+      // Update best
+      if (!bestWPM[mode] || wpm > bestWPM[mode]) {
+        bestWPM[mode] = wpm;
+        bestAcc[mode] = acc;
+        updateBestScores();
+        document.getElementById('stat-best').textContent = wpm;
+      }
+
+      // Flash
+      const flash = document.getElementById('complete-flash');
+      document.getElementById('flash-wpm').textContent = wpm + ' WPM';
+      document.getElementById('flash-label').textContent =
+        wpm >= 50 ? '🎯 Excellent speed!' :
+        wpm >= 35 ? '👏 Good pace — keep going!' :
+        '💪 Keep practising to reach 40 WPM';
+      flash.classList.add('show');
+
+      // New passage after 1.5 seconds
+      setTimeout(() => newPassage(), 1500);
+    }
+
+    function updateBestScores() {
+      ['words','sentences','numbers','jamb'].forEach(m => {
+        const wpmEl = document.getElementById(`best-${m}`);
+        const accEl = document.getElementById(`best-${m}-acc`);
+        if (wpmEl) wpmEl.textContent = bestWPM[m] ? bestWPM[m] : '—';
+        if (accEl) accEl.textContent = bestAcc[m] ? bestAcc[m] + '%' : '—';
+      });
+      // Update global best stat
+      const allBests = Object.values(bestWPM);
+      if (allBests.length > 0) {
+        document.getElementById('stat-best').textContent = Math.max(...allBests);
+      }
+    }
+
+    function reset(clearInput = true) {
+      clearInterval(timerInt);
+      startTime = null;
+      elapsed   = 0;
+      completed = false;
+      if (clearInput) {
+        typed = '';
+        document.getElementById('tutor-input').value     = '';
+        document.getElementById('tutor-input').className = 'tutor-input';
+        document.getElementById('complete-flash').classList.remove('show');
+      }
+      document.getElementById('stat-wpm').textContent  = '0';
+      document.getElementById('stat-acc').textContent  = '100%';
+      document.getElementById('stat-time').textContent = '0s';
+      document.getElementById('wpm-fill').style.width  = '0%';
+      document.getElementById('wpm-label').textContent = '0 WPM · Target: 40 WPM';
+      renderDisplay();
+    }
+
+    function rotateTip() {
+      const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
+      document.getElementById('tip-text').textContent = tip;
+    }
+
+    // Init
+    newPassage();
+
+    return { setMode, newPassage, handleInput, startTimer, reset };
+  })();
+
+  // Expose to window for inline onclick
+  window.T = T;
+</script>
+
+</body>
+</html>
