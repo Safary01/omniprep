@@ -206,14 +206,12 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
-          oninput="T.handleInput()"
-          onfocus="T.startTimer()"
         />
 
         <!-- Actions -->
         <div class="tutor-actions">
-          <button class="btn btn-primary"   onclick="T.newPassage()">New Passage</button>
-          <button class="btn btn-secondary" onclick="T.reset()">Reset</button>
+          <button class="btn btn-primary"   id="btn-new">New Passage</button>
+          <button class="btn btn-secondary" id="btn-reset">Reset</button>
           <a href="dashboard.html" class="btn btn-secondary">← Dashboard</a>
         </div>
 
@@ -267,14 +265,7 @@
 </div>
 
 
-<script type="module">
-  import { renderShell, initPage } from './js/auth.js';
-
-  renderShell();
-  const student = await initPage('typing');
-  if (!student) return;
-
-  // ── PASSAGES ──
+<script>
   const PASSAGES = {
     words: [
       'sodium chloride calcium oxide nitrogen hydrogen peroxide velocity acceleration momentum photosynthesis respiration mitosis meiosis chromosome government legislature judiciary executive constitution',
@@ -319,176 +310,184 @@
     'Practise JAMB Passages mode — it matches the vocabulary you will encounter in the real exam.',
   ];
 
-  // ── TUTOR ENGINE ──
-  const T = (() => {
-    let mode      = 'words';
-    let passage   = '';
-    let typed     = '';
-    let startTime = null;
-    let timerInt  = null;
-    let elapsed   = 0;
-    let bestWPM   = {};
-    let bestAcc   = {};
-    let completed = false;
+  let mode = 'words', passage = '', typed = '', startTime = null;
+  let timerInt = null, elapsed = 0, completed = false;
+  let bestWPM = {}, bestAcc = {};
 
-    function setMode(m, el) {
-      mode = m;
-      document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
-      el.classList.add('active');
-      reset();
-      newPassage();
-      rotateTip();
-    }
-
-    function newPassage() {
-      const arr = PASSAGES[mode];
-      passage   = arr[Math.floor(Math.random() * arr.length)];
-      typed     = '';
-      completed = false;
-      document.getElementById('tutor-input').value     = '';
-      document.getElementById('tutor-input').className = 'tutor-input';
-      document.getElementById('complete-flash').classList.remove('show');
-      renderDisplay();
-      reset(false);
-    }
-
-    function renderDisplay() {
-      const el  = document.getElementById('passage-display');
-      let   html = '';
-      for (let i = 0; i < passage.length; i++) {
-        const ch = passage[i] === ' ' ? '&nbsp;' : passage[i];
-        if (i < typed.length) {
-          html += typed[i] === passage[i]
-            ? `<span class="char-done">${ch}</span>`
-            : `<span class="char-wrong">${ch}</span>`;
-        } else if (i === typed.length) {
-          html += `<span class="char-current">${ch}</span>`;
-        } else {
-          html += `<span class="char-pending">${ch}</span>`;
-        }
-      }
-      el.innerHTML = html;
-    }
-
-    function startTimer() {
-      if (startTime || completed) return;
-      startTime = Date.now();
-      timerInt  = setInterval(() => {
-        elapsed = Math.round((Date.now() - startTime) / 1000);
-        document.getElementById('stat-time').textContent = elapsed + 's';
-        updateWPM();
-      }, 500);
-    }
-
-    function updateWPM() {
-      if (!startTime || elapsed === 0) return;
-      const words = typed.trim().split(/\s+/).filter(Boolean).length;
-      const wpm   = Math.round((words / elapsed) * 60);
-      document.getElementById('stat-wpm').textContent = wpm;
-      const pct = Math.min(100, Math.round((wpm / 80) * 100));
-      document.getElementById('wpm-fill').style.width = pct + '%';
-      document.getElementById('wpm-label').textContent = `${wpm} WPM · Target: 40 WPM`;
-    }
-
-    function handleInput() {
-      if (completed) return;
-      const val = document.getElementById('tutor-input').value;
-      typed     = val;
-
-      const correct = passage.slice(0, typed.length) === typed;
-      document.getElementById('tutor-input').className =
-        'tutor-input' + (correct || typed.length === 0 ? '' : ' error');
-
-      // Accuracy
-      const correctChars = passage.split('').filter((c,i) => typed[i] === c).length;
-      const acc = typed.length > 0 ? Math.round((correctChars / typed.length) * 100) : 100;
-      document.getElementById('stat-acc').textContent = acc + '%';
-
-      renderDisplay();
-
-      if (typed === passage) {
-        onComplete(acc);
+  function renderDisplay() {
+    const el = document.getElementById('passage-display');
+    if (!el) return;
+    let html = '';
+    for (let i = 0; i < passage.length; i++) {
+      const ch = passage[i] === ' ' ? '&nbsp;' : passage[i];
+      if (i < typed.length) {
+        html += typed[i] === passage[i]
+          ? `<span class="char-done">${ch}</span>`
+          : `<span class="char-wrong">${ch}</span>`;
+      } else if (i === typed.length) {
+        html += `<span class="char-current">${ch}</span>`;
+      } else {
+        html += `<span class="char-pending">${ch}</span>`;
       }
     }
+    el.innerHTML = html;
+  }
 
-    function onComplete(acc) {
-      completed = true;
-      clearInterval(timerInt);
+  function newPassage() {
+    const arr = PASSAGES[mode] || PASSAGES.words;
+    passage   = arr[Math.floor(Math.random() * arr.length)];
+    typed     = ''; completed = false;
+    const inp   = document.getElementById('tutor-input');
+    const flash = document.getElementById('complete-flash');
+    if (inp)   { inp.value = ''; inp.className = 'tutor-input'; }
+    if (flash) flash.classList.remove('show');
+    reset(false);
+    renderDisplay();
+  }
 
-      const words = passage.trim().split(/\s+/).filter(Boolean).length;
-      const wpm   = elapsed > 0 ? Math.round((words / elapsed) * 60) : 0;
-
-      document.getElementById('stat-wpm').textContent  = wpm;
-      document.getElementById('stat-acc').textContent  = acc + '%';
-
-      // Update best
-      if (!bestWPM[mode] || wpm > bestWPM[mode]) {
-        bestWPM[mode] = wpm;
-        bestAcc[mode] = acc;
-        updateBestScores();
-        document.getElementById('stat-best').textContent = wpm;
-      }
-
-      // Flash
-      const flash = document.getElementById('complete-flash');
-      document.getElementById('flash-wpm').textContent = wpm + ' WPM';
-      document.getElementById('flash-label').textContent =
-        wpm >= 50 ? '🎯 Excellent speed!' :
-        wpm >= 35 ? '👏 Good pace — keep going!' :
-        '💪 Keep practising to reach 40 WPM';
-      flash.classList.add('show');
-
-      // New passage after 1.5 seconds
-      setTimeout(() => newPassage(), 1500);
-    }
-
-    function updateBestScores() {
-      ['words','sentences','numbers','jamb'].forEach(m => {
-        const wpmEl = document.getElementById(`best-${m}`);
-        const accEl = document.getElementById(`best-${m}-acc`);
-        if (wpmEl) wpmEl.textContent = bestWPM[m] ? bestWPM[m] : '—';
-        if (accEl) accEl.textContent = bestAcc[m] ? bestAcc[m] + '%' : '—';
-      });
-      // Update global best stat
-      const allBests = Object.values(bestWPM);
-      if (allBests.length > 0) {
-        document.getElementById('stat-best').textContent = Math.max(...allBests);
-      }
-    }
-
-    function reset(clearInput = true) {
-      clearInterval(timerInt);
-      startTime = null;
-      elapsed   = 0;
-      completed = false;
-      if (clearInput) {
-        typed = '';
-        document.getElementById('tutor-input').value     = '';
-        document.getElementById('tutor-input').className = 'tutor-input';
-        document.getElementById('complete-flash').classList.remove('show');
-      }
-      document.getElementById('stat-wpm').textContent  = '0';
-      document.getElementById('stat-acc').textContent  = '100%';
-      document.getElementById('stat-time').textContent = '0s';
-      document.getElementById('wpm-fill').style.width  = '0%';
-      document.getElementById('wpm-label').textContent = '0 WPM · Target: 40 WPM';
-      renderDisplay();
-    }
-
-    function rotateTip() {
-      const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
-      document.getElementById('tip-text').textContent = tip;
-    }
-
-    // Init
+  function setMode(m, el) {
+    mode = m;
+    document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    reset();
     newPassage();
+    rotateTip();
+  }
 
-    return { setMode, newPassage, handleInput, startTimer, reset };
-  })();
+  function startTimer() {
+    if (startTime || completed) return;
+    startTime = Date.now();
+    timerInt  = setInterval(() => {
+      elapsed = Math.round((Date.now() - startTime) / 1000);
+      const el = document.getElementById('stat-time');
+      if (el) el.textContent = elapsed + 's';
+      updateWPM();
+    }, 500);
+  }
 
-  // Expose to window for inline onclick
-  window.T = T;
+  function updateWPM() {
+    if (!startTime || elapsed === 0) return;
+    const words = typed.trim().split(/\s+/).filter(Boolean).length;
+    const wpm   = Math.round((words / elapsed) * 60);
+    const pct   = Math.min(100, Math.round((wpm / 80) * 100));
+    const w = document.getElementById('stat-wpm');
+    const f = document.getElementById('wpm-fill');
+    const l = document.getElementById('wpm-label');
+    if (w) w.textContent  = wpm;
+    if (f) f.style.width  = pct + '%';
+    if (l) l.textContent  = `${wpm} WPM · Target: 40 WPM`;
+  }
+
+  function handleInput() {
+    if (completed) return;
+    const inp = document.getElementById('tutor-input');
+    if (!inp) return;
+    typed = inp.value;
+    const correct = passage.slice(0, typed.length) === typed;
+    inp.className = 'tutor-input' + (correct || typed.length === 0 ? '' : ' error');
+    const correctChars = passage.split('').filter((c, i) => typed[i] === c).length;
+    const acc = typed.length > 0 ? Math.round((correctChars / typed.length) * 100) : 100;
+    const a = document.getElementById('stat-acc');
+    if (a) a.textContent = acc + '%';
+    renderDisplay();
+    if (typed === passage) onComplete(acc);
+  }
+
+  function onComplete(acc) {
+    completed = true;
+    clearInterval(timerInt);
+    const words = passage.trim().split(/\s+/).filter(Boolean).length;
+    const wpm   = elapsed > 0 ? Math.round((words / elapsed) * 60) : 0;
+    const w = document.getElementById('stat-wpm');
+    const a = document.getElementById('stat-acc');
+    if (w) w.textContent = wpm;
+    if (a) a.textContent = acc + '%';
+    if (!bestWPM[mode] || wpm > bestWPM[mode]) {
+      bestWPM[mode] = wpm; bestAcc[mode] = acc;
+      updateBestScores();
+    }
+    const flash = document.getElementById('complete-flash');
+    const fw    = document.getElementById('flash-wpm');
+    const fl    = document.getElementById('flash-label');
+    if (fw) fw.textContent = wpm + ' WPM';
+    if (fl) fl.textContent = wpm >= 50 ? '🎯 Excellent!' : wpm >= 35 ? '👏 Good pace!' : '💪 Keep practising!';
+    if (flash) flash.classList.add('show');
+    setTimeout(() => newPassage(), 1500);
+  }
+
+  function updateBestScores() {
+    ['words','sentences','numbers','jamb'].forEach(m => {
+      const w = document.getElementById(`best-${m}`);
+      const a = document.getElementById(`best-${m}-acc`);
+      if (w) w.textContent = bestWPM[m] || '—';
+      if (a) a.textContent = bestAcc[m] ? bestAcc[m] + '%' : '—';
+    });
+    const allBests = Object.values(bestWPM);
+    if (allBests.length > 0) {
+      const b = document.getElementById('stat-best');
+      if (b) b.textContent = Math.max(...allBests);
+    }
+  }
+
+  function reset(clearInput = true) {
+    clearInterval(timerInt);
+    startTime = null; elapsed = 0; completed = false;
+    if (clearInput) {
+      typed = '';
+      const inp   = document.getElementById('tutor-input');
+      const flash = document.getElementById('complete-flash');
+      if (inp)   { inp.value = ''; inp.className = 'tutor-input'; }
+      if (flash) flash.classList.remove('show');
+    }
+    const s = document.getElementById('stat-wpm');
+    const a = document.getElementById('stat-acc');
+    const t = document.getElementById('stat-time');
+    const f = document.getElementById('wpm-fill');
+    const l = document.getElementById('wpm-label');
+    if (s) s.textContent = '0';
+    if (a) a.textContent = '100%';
+    if (t) t.textContent = '0s';
+    if (f) f.style.width = '0%';
+    if (l) l.textContent = '0 WPM · Target: 40 WPM';
+    renderDisplay();
+  }
+
+  function rotateTip() {
+    const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
+    const el  = document.getElementById('tip-text');
+    if (el) el.textContent = tip;
+  }
 </script>
 
+<script type="module">
+  import { renderShell, initPage } from './js/auth.js';
+
+  (async () => {
+    renderShell();
+    const student = await initPage('typing');
+    if (!student) return;
+
+    // Init passage now that auth is done
+    newPassage();
+    rotateTip();
+
+    // Wire mode tabs
+    document.querySelectorAll('.mode-tab').forEach(btn => {
+      btn.addEventListener('click', () => setMode(btn.dataset.mode, btn));
+    });
+
+    // Wire action buttons
+    document.getElementById('btn-new').addEventListener('click', () => newPassage());
+    document.getElementById('btn-reset').addEventListener('click', () => reset());
+
+    // Wire input
+    const inp = document.getElementById('tutor-input');
+    inp.addEventListener('input', handleInput);
+    inp.addEventListener('focus', startTimer);
+  })();
+</script>
+
+</body>
+</html>
 </body>
 </html>
