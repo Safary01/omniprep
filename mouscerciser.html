@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mouscerciser — OmniPrep</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .page-content { padding: var(--space-8); max-width: 1000px; }
+
+    /* Page header */
+    .page-header { margin-bottom: var(--space-5); }
+    .page-header__title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: var(--space-2); }
+    .page-header__sub   { font-size: 14px; color: var(--ink-3); }
+
+    /* Main layout */
+    .mouse-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-5);
+    }
+
+    /* Left panel */
+    .mouse-panel {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .panel-label {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.09em;
+      color: var(--ink-4); margin-bottom: var(--space-2);
+    }
+
+    /* Level cards */
+    .level-card {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      cursor: pointer; transition: all 0.14s;
+      background: var(--white);
+    }
+
+    .level-card:hover  { border-color: var(--ink-3); }
+    .level-card.active { border-color: var(--green); background: var(--green-light); }
+
+    .level-card__top {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 3px;
+    }
+
+    .level-card__name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .level-card.active .level-card__name { color: var(--green-dark); }
+    .level-card__desc { font-size: 11px; color: var(--ink-3); line-height: 1.4; }
+    .level-card.active .level-card__desc { color: var(--green-dark); opacity: 0.8; }
+
+    /* Mini stats */
+    .mini-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+    }
+
+    .mini-stat {
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px; text-align: center;
+    }
+
+    .mini-stat__val { font-family: var(--mono); font-size: 18px; font-weight: 700; line-height: 1; }
+    .mini-stat__lbl { font-size: 9px; color: var(--ink-4); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* Accuracy ring */
+    .acc-wrap {
+      display: flex; align-items: center;
+      gap: var(--space-3); background: var(--surface-2);
+      border-radius: var(--radius-sm); padding: var(--space-3);
+    }
+
+    .acc-ring { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
+    .acc-ring svg { transform: rotate(-90deg); }
+    .acc-ring .ring-bg { fill: none; stroke: var(--surface-3); stroke-width: 5; }
+    .acc-ring .ring-fg { fill: none; stroke: var(--green); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.4s ease; }
+    .acc-pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; }
+    .acc-info__label { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+    .acc-info__sub   { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+
+    /* Tip */
+    .mouse-tip {
+      background: var(--blue-light);
+      border: 1px solid #BFDBFE;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+    }
+
+    .mouse-tip__title { font-size: 10px; font-weight: 700; color: #1D4ED8; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .mouse-tip__text  { font-size: 11px; color: #1E40AF; line-height: 1.5; }
+
+    /* Best scores */
+    .best-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+    .best-row:last-child { border-bottom: none; }
+    .best-lbl { color: var(--ink-2); font-weight: 600; }
+    .best-val { font-family: var(--mono); color: var(--green); font-weight: 600; }
+
+    /* Right — game area */
+    .game-wrap {
+      display: flex; flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    /* HUD */
+    .hud {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 20px;
+      display: flex; align-items: center;
+      gap: var(--space-4); box-shadow: var(--shadow-sm);
+    }
+
+    .hud-item { text-align: center; min-width: 52px; }
+    .hud-val  { font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1; }
+    .hud-lbl  { font-size: 9px; color: var(--ink-4); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .hud-div  { width: 1px; height: 36px; background: var(--border); }
+
+    .hud-timer-wrap { flex: 1; display: flex; justify-content: center; }
+
+    .hud-timer {
+      display: flex; align-items: center; gap: var(--space-2);
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 50px; padding: 6px 18px;
+      font-family: var(--mono); font-size: 18px; font-weight: 700;
+      color: var(--ink); transition: all 0.3s;
+    }
+
+    .hud-timer.warn { background: var(--amber-light); border-color: var(--amber); color: #92400E; }
+    .hud-timer.danger { background: var(--red-light); border-color: var(--red); color: var(--red); animation: timer-pulse 0.8s ease-in-out infinite; }
+    @keyframes timer-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    .hud-actions { display: flex; gap: var(--space-2); }
+
+    /* Arena */
+    #arena {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+      cursor: crosshair;
+      min-height: 420px;
+      flex: 1;
+      box-shadow: var(--shadow-sm);
+    }
+
+    #arena.playing { background: var(--surface); }
+
+    /* Idle screen */
+    .arena-idle {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: var(--space-3); pointer-events: none;
+    }
+
+    .idle-icon  { font-size: 56px; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .idle-title { font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+    .idle-sub   { font-size: 13px; color: var(--ink-3); }
+    .idle-hint  { font-family: var(--mono); font-size: 11px; color: var(--ink-4); background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 3px 8px; }
+
+    /* Countdown overlay */
+    .countdown-overlay {
+      position: absolute; inset: 0;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(248,250,252,0.92); z-index: 20;
+      backdrop-filter: blur(4px);
+    }
+
+    .countdown-overlay.active { display: flex; }
+
+    .countdown-num {
+      font-family: var(--mono); font-size: 100px; font-weight: 800;
+      color: var(--green); line-height: 1;
+      animation: cdn-pop 0.4s ease both;
+    }
+
+    @keyframes cdn-pop { from{transform:scale(1.4);opacity:0} to{transform:scale(1);opacity:1} }
+
+    /* Targets */
+    .target {
+      position: absolute; border-radius: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer; transition: transform 0.08s ease;
+      display: flex; align-items: center; justify-content: center;
+      animation: target-in 0.15s ease both;
+    }
+
+    @keyframes target-in { from{transform:translate(-50%,-50%) scale(0)} to{transform:translate(-50%,-50%) scale(1)} }
+    .target:hover { transform: translate(-50%,-50%) scale(1.07); }
+    .target-inner { border-radius: 50%; }
+    .target-ring  { position: absolute; inset: 0; border-radius: 50%; border: 2px solid; animation: ring-pulse 1.5s ease-in-out infinite; }
+    @keyframes ring-pulse { 0%,100%{transform:scale(1);opacity:0.6} 50%{transform:scale(1.15);opacity:0.2} }
+
+    /* Score pop */
+    .score-pop {
+      position: absolute; font-family: var(--mono); font-weight: 700;
+      pointer-events: none; animation: score-float 0.7s ease both;
+      z-index: 30; transform: translateX(-50%);
+    }
+
+    @keyframes score-float { 0%{opacity:1;transform:translateX(-50%) translateY(0)} 100%{opacity:0;transform:translateX(-50%) translateY(-36px)} }
+
+    /* Miss X */
+    .miss-x {
+      position: absolute; font-size: 18px; color: var(--red);
+      transform: translate(-50%,-50%); pointer-events: none;
+      z-index: 30; animation: miss-anim 0.4s ease both;
+    }
+
+    @keyframes miss-anim { 0%{opacity:1;transform:translate(-50%,-50%) scale(0.5)} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)} }
+
+    /* Ripple */
+    .ripple {
+      position: absolute; border-radius: 50%;
+      transform: translate(-50%,-50%) scale(0);
+      pointer-events: none; z-index: 29;
+      animation: ripple-anim 0.4s ease both;
+    }
+
+    @keyframes ripple-anim { 0%{transform:translate(-50%,-50%) scale(0);opacity:0.6} 100%{transform:translate(-50%,-50%) scale(2.5);opacity:0} }
+
+    /* Results overlay */
+    .results-overlay {
+      position: absolute; inset: 0;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(248,250,252,0.95); z-index: 40;
+      backdrop-filter: blur(6px);
+    }
+
+    .results-overlay.active { display: flex; }
+
+    .results-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 28px 24px;
+      max-width: 360px; width: 90%;
+      box-shadow: var(--shadow-lg); text-align: center;
+      animation: card-in 0.3s ease both;
+    }
+
+    @keyframes card-in { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+    .res-emoji  { font-size: 44px; margin-bottom: var(--space-3); }
+    .res-score  { font-family: var(--mono); font-size: 52px; font-weight: 700; color: var(--green); line-height: 1; }
+    .res-pts    { font-size: 11px; color: var(--ink-3); font-family: var(--mono); margin-bottom: var(--space-3); }
+    .res-title  { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .res-sub    { font-size: 12px; color: var(--ink-3); margin-bottom: var(--space-4); line-height: 1.5; }
+    .res-best   { background: var(--amber-light); border: 1px solid var(--amber); border-radius: var(--radius-sm); padding: 6px 12px; margin-bottom: var(--space-4); font-size: 12px; font-weight: 600; color: #92400E; display: none; }
+    .res-best.show { display: block; }
+
+    .res-stats  { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-2); margin-bottom: var(--space-5); }
+    .res-stat   { background: var(--surface-2); border-radius: var(--radius-sm); padding: 10px 6px; }
+    .res-stat__val { font-family: var(--mono); font-size: 18px; font-weight: 700; }
+    .res-stat__lbl { font-size: 9px; color: var(--ink-4); margin-top: 2px; }
+
+    .res-btns { display: flex; gap: var(--space-2); }
+    .res-btn-menu  { flex: 1; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px; font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .res-btn-retry { flex: 2; background: var(--green); color: white; border: none; border-radius: var(--radius-sm); padding: 10px; font-family: var(--font); font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .res-btn-retry:hover { background: var(--green-dark); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mouse-layout  { grid-template-columns: 1fr; }
+      .mouse-panel   { display: none; }
+      .page-content  { padding: var(--space-4); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+  <div id="shell"></div>
+
+  <main class="app-main">
+    <div class="page-content">
+
+      <div class="page-header">
+        <div class="page-header__title">🖱️ Mouscerciser</div>
+        <div class="page-header__sub">
+          Train your cursor precision and clicking speed.
+          Eliminate misclicks before exam day.
+        </div>
+      </div>
+
+      <div class="mouse-layout">
+
+        <!-- LEFT PANEL -->
+        <div class="mouse-panel">
+
+          <!-- Difficulty -->
+          <div>
+            <div class="panel-label">Difficulty</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div class="level-card active" id="lvl-easy">
+                <div class="level-card__top">
+                  <div class="level-card__name">🟢 Easy</div>
+                  <span class="badge badge-green">Beginner</span>
+                </div>
+                <div class="level-card__desc">Large targets · slow · 30 secs</div>
+              </div>
+              <div class="level-card" id="lvl-medium">
+                <div class="level-card__top">
+                  <div class="level-card__name">🟡 Medium</div>
+                  <span class="badge badge-amber">Intermediate</span>
+                </div>
+                <div class="level-card__desc">Smaller targets · faster pace</div>
+              </div>
+              <div class="level-card" id="lvl-hard">
+                <div class="level-card__top">
+                  <div class="level-card__name">🔴 Hard</div>
+                  <span class="badge badge-red">Advanced</span>
+                </div>
+                <div class="level-card__desc">Tiny moving targets · very fast</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Round stats -->
+          <div>
+            <div class="panel-label">This Round</div>
+            <div class="mini-stats">
+              <div class="mini-stat"><div class="mini-stat__val" id="p-hits"    style="color:var(--green)">0</div><div class="mini-stat__lbl">Hits</div></div>
+              <div class="mini-stat"><div class="mini-stat__val" id="p-misses"  style="color:var(--red)">0</div><div class="mini-stat__lbl">Misses</div></div>
+              <div class="mini-stat"><div class="mini-stat__val" id="p-streak"  style="color:var(--amber)">0</div><div class="mini-stat__lbl">Streak</div></div>
+              <div class="mini-stat"><div class="mini-stat__val" id="p-bstreak" style="color:var(--blue)">0</div><div class="mini-stat__lbl">Best</div></div>
+            </div>
+          </div>
+
+          <!-- Accuracy -->
+          <div>
+            <div class="panel-label">Accuracy</div>
+            <div class="acc-wrap">
+              <div class="acc-ring">
+                <svg width="52" height="52" viewBox="0 0 52 52">
+                  <circle class="ring-bg" cx="26" cy="26" r="21"/>
+                  <circle class="ring-fg" id="ring-fg" cx="26" cy="26" r="21"
+                    stroke-dasharray="131.9" stroke-dashoffset="131.9"/>
+                </svg>
+                <div class="acc-pct" id="acc-pct">0%</div>
+              </div>
+              <div class="acc-info">
+                <div class="acc-info__label">Click accuracy</div>
+                <div class="acc-info__sub" id="acc-sub">Hit targets to score</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tip -->
+          <div>
+            <div class="panel-label">UTME Tip</div>
+            <div class="mouse-tip">
+              <div class="mouse-tip__title">💡 Tip</div>
+              <div class="mouse-tip__text" id="mouse-tip">Steady clicks reduce errors on exam day.</div>
+            </div>
+          </div>
+
+          <!-- Best scores -->
+          <div>
+            <div class="panel-label">Best Scores</div>
+            <div class="best-row"><span class="best-lbl">🟢 Easy</span><span class="best-val" id="best-easy">—</span></div>
+            <div class="best-row"><span class="best-lbl">🟡 Medium</span><span class="best-val" id="best-med">—</span></div>
+            <div class="best-row"><span class="best-lbl">🔴 Hard</span><span class="best-val" id="best-hard">—</span></div>
+          </div>
+
+        </div>
+        <!-- /left panel -->
+
+        <!-- RIGHT — GAME -->
+        <div class="game-wrap">
+
+          <!-- HUD -->
+          <div class="hud">
+            <div class="hud-item">
+              <div class="hud-val" id="hud-score" style="color:var(--green)">0</div>
+              <div class="hud-lbl">Score</div>
+            </div>
+            <div class="hud-div"></div>
+            <div class="hud-item">
+              <div class="hud-val" id="hud-hits" style="color:var(--green)">0</div>
+              <div class="hud-lbl">Hits</div>
+            </div>
+            <div class="hud-item">
+              <div class="hud-val" id="hud-misses" style="color:var(--red)">0</div>
+              <div class="hud-lbl">Misses</div>
+            </div>
+            <div class="hud-div"></div>
+            <div class="hud-timer-wrap">
+              <div class="hud-timer" id="hud-timer">⏱ <span id="timer-val">30</span>s</div>
+            </div>
+            <div class="hud-div"></div>
+            <div class="hud-item">
+              <div class="hud-val" id="hud-streak" style="color:var(--amber)">0</div>
+              <div class="hud-lbl">Streak</div>
+            </div>
+            <div class="hud-actions">
+              <button class="btn btn-primary btn-sm"   id="btn-start">▶ Start</button>
+              <button class="btn btn-danger  btn-sm"   id="btn-stop" style="display:none">■ Stop</button>
+            </div>
+          </div>
+
+          <!-- Arena -->
+          <div id="arena">
+            <div class="arena-idle" id="arena-idle">
+              <div class="idle-icon">🖱️</div>
+              <div class="idle-title">Ready to train?</div>
+              <div class="idle-sub">Click targets as fast and accurately as you can.</div>
+              <div class="idle-hint">Space or Enter to start</div>
+            </div>
+            <div class="countdown-overlay" id="countdown-overlay">
+              <div class="countdown-num" id="countdown-num">3</div>
+            </div>
+            <div class="results-overlay" id="results-overlay">
+              <div class="results-card">
+                <div class="res-emoji" id="res-emoji">🎯</div>
+                <div class="res-score" id="res-score">0</div>
+                <div class="res-pts">points</div>
+                <div class="res-title" id="res-title">Nice!</div>
+                <div class="res-sub"   id="res-sub">Keep practising.</div>
+                <div class="res-best"  id="res-best">🏆 New personal best!</div>
+                <div class="res-stats">
+                  <div class="res-stat"><div class="res-stat__val" id="rs-hits"   style="color:var(--green)">0</div><div class="res-stat__lbl">Hits</div></div>
+                  <div class="res-stat"><div class="res-stat__val" id="rs-misses" style="color:var(--red)">0</div><div class="res-stat__lbl">Misses</div></div>
+                  <div class="res-stat"><div class="res-stat__val" id="rs-acc"    style="color:var(--blue)">0%</div><div class="res-stat__lbl">Accuracy</div></div>
+                </div>
+                <div class="res-btns">
+                  <button class="res-btn-menu"  id="res-btn-menu">Menu</button>
+                  <button class="res-btn-retry" id="res-btn-retry">Play Again →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /game wrap -->
+
+      </div>
+    </div>
+  </main>
+</div>
+
+
+<!-- Game engine — plain script -->
+<script>
+  const LEVELS = {
+    easy:   { dur:30, spawn:1400, life:2200, sizes:[70,80,90],  pts:[15,10,5],  colors:['#059669','#3B82F6','#F59E0B'], moving:false },
+    medium: { dur:30, spawn:1000, life:1600, sizes:[44,54,66],  pts:[25,18,10], colors:['#059669','#8B5CF6','#F59E0B'], moving:false },
+    hard:   { dur:30, spawn:700,  life:1100, sizes:[28,36,46],  pts:[40,28,16], colors:['#EF4444','#059669','#8B5CF6'], moving:true  },
+  };
+
+  const TIPS = [
+    'Steady clicks reduce errors on exam day.',
+    'Keep your wrist relaxed — tense clicking causes drift.',
+    'Precision matters more than speed. Aim for 80%+ accuracy.',
+    'Practise Hard mode to make Easy feel effortless.',
+    'On JAMB day, precise clicks on small buttons save valuable seconds.',
+  ];
+
+  let G = {
+    level:'easy', active:false,
+    score:0, hits:0, misses:0, streak:0, bestStreak:0,
+    timeLeft:30, tI:null, sI:null, cdTimer:null,
+    targets:[], best:{ easy:null, medium:null, hard:null },
+  };
+
+  function sel(id) { return document.getElementById(id); }
+
+  function updHUD() {
+    sel('hud-score').textContent  = G.score;
+    sel('hud-hits').textContent   = G.hits;
+    sel('hud-misses').textContent = G.misses;
+    sel('hud-streak').textContent = G.streak;
+    sel('p-hits').textContent     = G.hits;
+    sel('p-misses').textContent   = G.misses;
+    sel('p-streak').textContent   = G.streak;
+    sel('p-bstreak').textContent  = G.bestStreak;
+  }
+
+  function updAcc() {
+    const total = G.hits + G.misses;
+    const pct   = total > 0 ? Math.round((G.hits / total) * 100) : 0;
+    sel('acc-pct').textContent = pct + '%';
+    const circ = 131.9;
+    sel('ring-fg').style.strokeDashoffset = circ - (circ * pct / 100);
+    sel('ring-fg').style.stroke = pct >= 70 ? 'var(--green)' : pct >= 40 ? 'var(--amber)' : 'var(--red)';
+    sel('acc-sub').textContent  =
+      pct >= 80 ? 'Excellent precision! 🎯' :
+      pct >= 60 ? 'Good — keep it steady.' :
+      pct >= 40 ? 'Focus on accuracy.' : 'Slow down and aim.';
+  }
+
+  function updTimer() {
+    sel('timer-val').textContent = G.timeLeft;
+    const el = sel('hud-timer');
+    el.className = 'hud-timer';
+    if (G.timeLeft <= 10) el.classList.add('danger');
+    else if (G.timeLeft <= 15) el.classList.add('warn');
+  }
+
+  function clearAll() {
+    clearInterval(G.tI);
+    clearInterval(G.sI);
+    clearInterval(G.cdTimer);
+    G.targets.forEach(t => { clearInterval(t.mI); clearTimeout(t.eT); });
+    G.targets = [];
+  }
+
+  function selectLevel(lv) {
+    if (G.active) return;
+    G.level = lv;
+    document.querySelectorAll('.level-card').forEach(c => c.classList.remove('active'));
+    sel(`lvl-${lv}`).classList.add('active');
+    G.timeLeft = LEVELS[lv].dur;
+    updTimer();
+    sel('mouse-tip').textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+  }
+
+  function beginCountdown() {
+    if (G.active) return;
+    clearAll();
+    G.score = 0; G.hits = 0; G.misses = 0; G.streak = 0; G.bestStreak = 0;
+    updHUD(); updAcc();
+    sel('results-overlay').classList.remove('active');
+    sel('arena-idle').style.display = 'none';
+
+    const ov  = sel('countdown-overlay');
+    const num = sel('countdown-num');
+    ov.classList.add('active');
+    let c = 3; num.textContent = c;
+
+    G.cdTimer = setInterval(() => {
+      c--;
+      if (c <= 0) {
+        clearInterval(G.cdTimer);
+        ov.classList.remove('active');
+        startGame();
+      } else {
+        num.textContent = c;
+        num.style.animation = 'none';
+        num.offsetHeight;
+        num.style.animation = 'cdn-pop 0.4s ease both';
+      }
+    }, 800);
+  }
+
+  function startGame() {
+    G.active = true;
+    const arena = sel('arena');
+    arena.classList.add('playing');
+    sel('btn-start').style.display = 'none';
+    sel('btn-stop').style.display  = 'block';
+    const cfg = LEVELS[G.level];
+    G.timeLeft = cfg.dur;
+    updTimer();
+    spawnTarget();
+    G.sI = setInterval(spawnTarget, cfg.spawn);
+    G.tI = setInterval(() => {
+      G.timeLeft--;
+      updTimer();
+      if (G.timeLeft <= 0) endGame();
+    }, 1000);
+  }
+
+  function stopGame() {
+    clearAll();
+    G.active = false;
+    sel('arena').classList.remove('playing');
+    sel('btn-start').style.display = 'block';
+    sel('btn-stop').style.display  = 'none';
+    showIdle();
+  }
+
+  function endGame() {
+    clearAll();
+    G.active = false;
+    sel('arena').classList.remove('playing');
+    sel('btn-start').style.display = 'block';
+    sel('btn-stop').style.display  = 'none';
+    showResults();
+  }
+
+  function spawnTarget() {
+    if (!G.active) return;
+    const arena = sel('arena');
+    const cfg   = LEVELS[G.level];
+    const si    = Math.floor(Math.random() * cfg.sizes.length);
+    const sz    = cfg.sizes[si];
+    const pts   = cfg.pts[si];
+    const color = cfg.colors[si];
+    const maxX  = arena.clientWidth  - sz - 16;
+    const maxY  = arena.clientHeight - sz - 16;
+    let x = sz/2 + 8 + Math.random() * maxX;
+    let y = sz/2 + 8 + Math.random() * maxY;
+
+    const el    = document.createElement('div');
+    el.className = 'target';
+    el.style.cssText = `left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${color}18;border:2px solid ${color};box-shadow:0 0 10px ${color}44;`;
+
+    const inner = document.createElement('div');
+    inner.className = 'target-inner';
+    inner.style.cssText = `width:${sz*.42}px;height:${sz*.42}px;background:${color};`;
+    el.appendChild(inner);
+
+    const ring = document.createElement('div');
+    ring.className = 'target-ring';
+    ring.style.borderColor = color;
+    el.appendChild(ring);
+
+    inner.style.transition = `width ${cfg.life}ms linear,height ${cfg.life}ms linear`;
+    setTimeout(() => { inner.style.width = `${sz*.15}px`; inner.style.height = `${sz*.15}px`; }, 20);
+
+    el.addEventListener('click', e => { e.stopPropagation(); hitTarget(el, x, y, pts, color, sz); });
+    arena.appendChild(el);
+
+    let mI = null;
+    if (cfg.moving) {
+      let vx = (Math.random() - .5) * 3, vy = (Math.random() - .5) * 3;
+      mI = setInterval(() => {
+        x += vx; y += vy;
+        if (x < sz/2+4 || x > arena.clientWidth-sz/2-4)  vx *= -1;
+        if (y < sz/2+4 || y > arena.clientHeight-sz/2-4) vy *= -1;
+        x = Math.max(sz/2+4, Math.min(arena.clientWidth-sz/2-4, x));
+        y = Math.max(sz/2+4, Math.min(arena.clientHeight-sz/2-4, y));
+        el.style.left = x + 'px'; el.style.top = y + 'px';
+      }, 16);
+    }
+
+    const eT = setTimeout(() => {
+      if (el.parentNode) { el.parentNode.removeChild(el); G.misses++; G.streak = 0; updHUD(); updAcc(); }
+      G.targets = G.targets.filter(t => t.el !== el);
+    }, cfg.life);
+
+    G.targets.push({ el, mI, eT });
+  }
+
+  function hitTarget(el, x, y, pts, color, sz) {
+    const tObj = G.targets.find(t => t.el === el);
+    if (tObj) { clearTimeout(tObj.eT); clearInterval(tObj.mI); }
+    G.targets = G.targets.filter(t => t.el !== el);
+    if (el.parentNode) el.parentNode.removeChild(el);
+
+    G.score += pts; G.hits++; G.streak++;
+    if (G.streak > G.bestStreak) G.bestStreak = G.streak;
+
+    const arena = sel('arena');
+
+    const rp = document.createElement('div');
+    rp.className = 'ripple';
+    rp.style.cssText = `left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${color}33;border:2px solid ${color};`;
+    arena.appendChild(rp);
+    setTimeout(() => rp.remove(), 400);
+
+    const sp = document.createElement('div');
+    sp.className = 'score-pop';
+    sp.style.cssText = `left:${x}px;top:${y - sz/2}px;font-size:14px;color:${color};`;
+    sp.textContent = `+${pts}`;
+    arena.appendChild(sp);
+    setTimeout(() => sp.remove(), 700);
+
+    updHUD(); updAcc();
+  }
+
+  function handleArenaMiss(e) {
+    if (!G.active || e.target !== sel('arena')) return;
+    G.misses++; G.streak = 0;
+    const arena = sel('arena');
+    const rect  = arena.getBoundingClientRect();
+    const xEl   = document.createElement('div');
+    xEl.className   = 'miss-x';
+    xEl.style.left  = (e.clientX - rect.left) + 'px';
+    xEl.style.top   = (e.clientY - rect.top)  + 'px';
+    xEl.textContent = '✕';
+    arena.appendChild(xEl);
+    setTimeout(() => xEl.remove(), 400);
+    updHUD(); updAcc();
+  }
+
+  function showResults() {
+    const total = G.hits + G.misses;
+    const pct   = total > 0 ? Math.round((G.hits / total) * 100) : 0;
+    const lv    = G.level;
+    const isNew = G.best[lv] === null || G.score > G.best[lv];
+    if (isNew) {
+      G.best[lv] = G.score;
+      const bestEl = sel(`best-${lv === 'medium' ? 'med' : lv}`);
+      if (bestEl) bestEl.textContent = G.score;
+    }
+
+    sel('res-score').textContent  = G.score;
+    sel('rs-hits').textContent    = G.hits;
+    sel('rs-misses').textContent  = G.misses;
+    sel('rs-acc').textContent     = pct + '%';
+    sel('res-best').classList.toggle('show', isNew);
+
+    let emoji = '🖱️', title = 'Keep going!', sub = 'Every round improves precision.';
+    if (pct >= 85 && G.score > 400) { emoji = '🎯'; title = 'Outstanding!'; sub = 'Elite accuracy. Exam-ready.'; }
+    else if (pct >= 70) { emoji = '👏'; title = 'Great job!';    sub = 'Strong accuracy — push for higher score.'; }
+    else if (pct >= 50) { emoji = '💪'; title = 'Getting there!'; sub = 'Slow down and aim carefully.'; }
+
+    sel('res-emoji').textContent = emoji;
+    sel('res-title').textContent = title;
+    sel('res-sub').textContent   = sub;
+    sel('results-overlay').classList.add('active');
+  }
+
+  function showIdle() {
+    sel('results-overlay').classList.remove('active');
+    sel('arena-idle').style.display = 'flex';
+    sel('arena').classList.remove('playing');
+  }
+
+  // Arena miss click
+  document.addEventListener('DOMContentLoaded', () => {
+    sel('arena').addEventListener('click', handleArenaMiss);
+
+    // Level cards
+    ['easy','medium','hard'].forEach(lv => {
+      sel(`lvl-${lv}`).addEventListener('click', () => selectLevel(lv));
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!G.active) beginCountdown(); }
+      if (e.key === 'Escape') stopGame();
+    });
+  });
+</script>
+
+<!-- Auth module -->
+<script type="module">
+  import { renderShell, initPage } from './js/auth.js';
+
+  (async () => {
+    renderShell();
+    const student = await initPage('mouscerciser');
+    if (!student) return;
+
+    // Wire start/stop buttons after auth
+    document.getElementById('btn-start').addEventListener('click', beginCountdown);
+    document.getElementById('btn-stop').addEventListener('click', stopGame);
+    document.getElementById('res-btn-retry').addEventListener('click', beginCountdown);
+    document.getElementById('res-btn-menu').addEventListener('click', showIdle);
+  })();
+</script>
+
+</body>
+</html>
