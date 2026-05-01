@@ -612,8 +612,9 @@
      SCRIPTS
 ══════════════════════════════ -->
 <script type="module">
-  import { initPage }                                   from './js/auth.js';
-  import { saveSession, calcUTMEScore, formatDuration } from './js/firebase.js';
+  import { initPage } from './js/auth.js';
+import { saveSession, calcUTMEScore, formatDuration } from './js/firebase.js';
+import { QUESTIONS } from './js/questions.js';
 
   async function init() {
 
@@ -627,129 +628,7 @@
   // The simulator loops them to fill the required count.
   // Replace / expand this bank with your full question set.
   // ══════════════════════════════════════════
-  const BANK = {
-    "English Language": [
-      { q: "Choose the word most nearly opposite in meaning to <em>GARRULOUS</em>.", opts:["Talkative","Reticent","Verbose","Loquacious"], ans:1 },
-      { q: "In which sentence is <em>set</em> used as a noun?", opts:["She set the table.","The sun will set at 6pm.","They bought a chess set.","Set your books down."], ans:2 },
-      { q: "Select the option that best completes: The manager, together with his staff, _____ present.", opts:["were","are","was","have been"], ans:2 },
-      { q: "Identify the figure of speech: <em>The wind whispered through the trees.</em>", opts:["Simile","Hyperbole","Personification","Onomatopoeia"], ans:2 },
-      { q: "Choose the correctly spelt word.", opts:["Accomodate","Accommodate","Acommodate","Accommadate"], ans:1 },
-      { q: "Select the option with the correct apostrophe use.", opts:["The girl's shoes are dirty.","The girls shoe's are dirty.","The girl's shoe's are dirty.","The girls' shoe is dirty."], ans:0 },
-      { q: "Which is a complex sentence?", opts:["She sang and danced.","He is tall but slim.","Because she was tired, she slept early.","Run fast or miss the bus."], ans:2 },
-      { q: "<em>EPHEMERAL</em> most nearly means:", opts:["Eternal","Short-lived","Spiritual","Mysterious"], ans:1 },
-      { q: "Rewrite in indirect speech: He said, 'I am going to Lagos tomorrow.'", opts:["He said he was going to Lagos the next day.","He said he is going to Lagos tomorrow.","He said he will go to Lagos tomorrow.","He said he went to Lagos the next day."], ans:0 },
-      { q: "Which sentence contains a dangling modifier?", opts:["Running fast, John caught the bus.","Running fast, the bus was caught.","John, running fast, caught the bus.","The bus was caught by John running fast."], ans:1 },
-    ],
-    "Mathematics": [
-      { q: "If S<sub>n</sub> = 3n² + 5n, find the 8th term of the AP.", opts:["48","51","53","50"], ans:3 },
-      { q: "Simplify: (√3 + √2)(√3 − √2)", opts:["1","5","√6","√5"], ans:0 },
-      { q: "Find x if log₂(x + 3) = 4.", opts:["11","13","12","16"], ans:1 },
-      { q: "A circle has area 154 cm². Find its circumference. (π = 22/7)", opts:["22 cm","44 cm","66 cm","88 cm"], ans:1 },
-      { q: "If 2x − 3y = 7 and x + y = 6, find x.", opts:["3","4","5","6"], ans:2 },
-      { q: "Evaluate: ∫(2x + 3) dx from 0 to 2.", opts:["10","12","8","14"], ans:0 },
-      { q: "A bag has 4 red and 6 blue balls. Two drawn without replacement. P(both red)?", opts:["2/15","4/15","1/6","2/9"], ans:0 },
-      { q: "Find the gradient of the line through (2, 5) and (4, 11).", opts:["2","3","4","6"], ans:1 },
-      { q: "10th term of the GP: 2, 6, 18, …?", opts:["2×3⁹","3×2⁹","2×9³","6×3⁸"], ans:0 },
-      { q: "Solve: |2x − 1| = 5", opts:["x = 3 only","x = −2 only","x = 3 or x = −2","x = 2 or x = −3"], ans:2 },
-    ],
-    "Physics": [
-      { q: "A 5 kg body moves at 4 m/s. Its kinetic energy is:", opts:["10 J","20 J","40 J","80 J"], ans:2 },
-      { q: "Which is a vector quantity?", opts:["Speed","Mass","Temperature","Velocity"], ans:3 },
-      { q: "SI unit of electric resistance:", opts:["Ampere","Volt","Ohm","Farad"], ans:2 },
-      { q: "Wave: frequency 50 Hz, wavelength 2 m. Speed?", opts:["25 m/s","50 m/s","100 m/s","200 m/s"], ans:2 },
-      { q: "An object in equilibrium has net force:", opts:["Maximum","Minimum","Zero","Constant"], ans:2 },
-      { q: "Image formed by a plane mirror:", opts:["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"], ans:1 },
-      { q: "Ohm's law: current is proportional to:", opts:["Resistance","Power","Voltage","Charge"], ans:2 },
-      { q: "Half-life 20 years. Fraction remaining after 60 years:", opts:["1/4","1/6","1/8","1/16"], ans:2 },
-      { q: "A pool appears shallower due to:", opts:["Reflection","Diffraction","Refraction","Dispersion"], ans:2 },
-      { q: "Work done is zero when angle between force and displacement is:", opts:["0°","45°","90°","180°"], ans:2 },
-    ],
-    "Chemistry": [
-      { q: "Which is the oxide of a non-metal?", opts:["Na₂O","MgO","SO₃","CaO"], ans:2 },
-      { q: "Atomic number 17 belongs to Group:", opts:["I","VI","VII","VIII"], ans:2 },
-      { q: "Gas produced when zinc reacts with dilute HCl:", opts:["Oxygen","Chlorine","Hydrogen","Carbon dioxide"], ans:2 },
-      { q: "IUPAC name of CH₃CH₂OH:", opts:["Methanol","Propanol","Ethanol","Butanol"], ans:2 },
-      { q: "Avogadro's number:", opts:["6.02×10²²","6.02×10²³","6.02×10²⁴","6.02×10²⁵"], ans:1 },
-      { q: "Bond present in NaCl:", opts:["Covalent","Ionic","Metallic","Hydrogen"], ans:1 },
-      { q: "pH of neutral solution at 25°C:", opts:["0","7","14","1"], ans:1 },
-      { q: "Converting sugar to alcohol is called:", opts:["Oxidation","Hydrolysis","Fermentation","Polymerisation"], ans:2 },
-      { q: "Which is an allotrope of carbon?", opts:["Silicon","Diamond","Graphite","Both B and C"], ans:3 },
-      { q: "Molar mass of H₂SO₄:", opts:["96 g/mol","98 g/mol","100 g/mol","94 g/mol"], ans:1 },
-    ],
-    "Biology": [
-      { q: "Powerhouse of the cell:", opts:["Nucleus","Ribosome","Mitochondria","Chloroplast"], ans:2 },
-      { q: "Universal blood donor group:", opts:["A","B","AB","O"], ans:3 },
-      { q: "Photosynthesis takes place in the:", opts:["Mitochondria","Nucleus","Chloroplast","Cytoplasm"], ans:2 },
-      { q: "Scientific name of man:", opts:["Homo erectus","Homo sapiens","Homo habilis","Homo heidelbergensis"], ans:1 },
-      { q: "DNA is found in the:", opts:["Cell membrane","Cytoplasm","Nucleus","Ribosome"], ans:2 },
-      { q: "Which is NOT a function of the liver?", opts:["Detoxification","Bile production","Insulin secretion","Glycogen storage"], ans:2 },
-      { q: "Osmosis: water moves from region of:", opts:["High solute to low","Low water potential to high","High water potential to low","Low concentration to high"], ans:2 },
-      { q: "Part of brain controlling balance:", opts:["Cerebrum","Cerebellum","Medulla","Thalamus"], ans:1 },
-      { q: "Meiosis results in:", opts:["2 identical cells","4 identical cells","2 genetically different cells","4 genetically different cells"], ans:3 },
-      { q: "Enzyme breaking starch in the mouth:", opts:["Pepsin","Lipase","Amylase","Trypsin"], ans:2 },
-    ],
-    "Economics": [
-      { q: "Which is NOT a factor of production?", opts:["Land","Labour","Money","Capital"], ans:2 },
-      { q: "Supply increases, demand constant — equilibrium price will:", opts:["Rise","Fall","Remain same","Double"], ans:1 },
-      { q: "GDP stands for:", opts:["Gross Domestic Product","General Domestic Price","Gross Domestic Price","General Development Product"], ans:0 },
-      { q: "Inflation is best described as:", opts:["Rise in unemployment","Fall in interest rates","Sustained rise in price level","Fall in export value"], ans:2 },
-      { q: "Unemployment during economic downturns:", opts:["Frictional","Structural","Cyclical","Seasonal"], ans:2 },
-      { q: "Price elasticity of demand measures:", opts:["How price changes with income","Responsiveness of demand to price","How supply responds to price","Responsiveness of price to supply"], ans:1 },
-      { q: "A monopoly exists when:", opts:["Many sellers","One seller many buyers","Two sellers","Many buyers and sellers"], ans:1 },
-      { q: "Circular flow of income involves:", opts:["Households and firms","Government only","Banks only","All of the above"], ans:3 },
-      { q: "Which is a merit good?", opts:["Cigarettes","Alcohol","Education","Luxury cars"], ans:2 },
-      { q: "Opportunity cost is:", opts:["Monetary cost","Next best alternative foregone","Total cost","Marginal cost"], ans:1 },
-    ],
-    "Government": [
-      { q: "Separation of powers was propounded by:", opts:["John Locke","Thomas Hobbes","Montesquieu","Jean-Jacques Rousseau"], ans:2 },
-      { q: "Nigeria became a republic in:", opts:["1960","1963","1966","1979"], ans:1 },
-      { q: "Federalism: power is:", opts:["Concentrated at centre","Shared between central and component units","Exercised by military","Vested in single party"], ans:1 },
-      { q: "Which organ makes laws?", opts:["Executive","Judiciary","Legislature","Civil service"], ans:2 },
-      { q: "A constitution easily amended is:", opts:["Rigid","Flexible","Federal","Unitary"], ans:1 },
-      { q: "ECOWAS was established in:", opts:["1960","1963","1975","1980"], ans:2 },
-      { q: "Judicial independence means:", opts:["Judges make any law","Courts free from executive interference","Lawyers set fees","Judges elected by people"], ans:1 },
-      { q: "A pressure group differs from a party in that it:", opts:["Seeks to win elections","Does not seek to form government","Has no members","Has a constitution"], ans:1 },
-      { q: "First executive President of Nigeria:", opts:["Nnamdi Azikiwe","Shehu Shagari","Olusegun Obasanjo","Murtala Muhammed"], ans:1 },
-      { q: "Rule of law means:", opts:["Military rules","Everyone subject to law","Only leaders above law","Laws made by judges"], ans:1 },
-    ],
-    "Literature": [
-      { q: "A soliloquy is when a character:", opts:["Speaks to another","Speaks thoughts aloud alone","Whispers to audience","Writes a letter on stage"], ans:1 },
-      { q: "'Life is a journey' is an example of:", opts:["Simile","Metaphor","Irony","Alliteration"], ans:1 },
-      { q: "The protagonist is:", opts:["The villain","The narrator","The main character","The author"], ans:2 },
-      { q: "An epic poem is characterised by:", opts:["Short lyric style","Hero of great stature and grand adventure","Comic elements","Personal emotions of poet"], ans:1 },
-      { q: "Denouement refers to:", opts:["Climax","Opening scene","Resolution of plot","Type of poem"], ans:2 },
-      { q: "Dramatic irony is when:", opts:["Audience and characters share knowledge","Audience knows something character does not","Character is sarcastic","Plot has surprise ending"], ans:1 },
-      { q: "A sonnet has how many lines?", opts:["10","12","14","16"], ans:2 },
-      { q: "In medias res means:", opts:["In the middle of things","At the beginning","At the end","Through flashback"], ans:0 },
-      { q: "Which is a comedy of manners?", opts:["Macbeth","Hamlet","The Importance of Being Earnest","King Lear"], ans:2 },
-      { q: "A round character is one who is:", opts:["Morally good","Complex and fully developed","Never changes","A supporting character"], ans:1 },
-    ],
-    "Geography": [
-      { q: "The longest river in Africa is:", opts:["Congo","Niger","Zambezi","Nile"], ans:3 },
-      { q: "Which is a metamorphic rock?", opts:["Granite","Sandstone","Marble","Limestone"], ans:2 },
-      { q: "The Tropic of Cancer is at latitude:", opts:["0°","23.5°N","23.5°S","66.5°N"], ans:1 },
-      { q: "Lagos is located in which geopolitical zone?", opts:["North West","South East","South West","South South"], ans:2 },
-      { q: "The process of wind erosion is called:", opts:["Attrition","Corrasion","Deflation","Hydraulic action"], ans:2 },
-      { q: "Which ocean is the largest?", opts:["Atlantic","Indian","Arctic","Pacific"], ans:3 },
-      { q: "Harmattan is caused by:", opts:["South-west monsoon","North-east trade wind","Sea breeze","Convectional currents"], ans:1 },
-      { q: "A contour line joins points of equal:", opts:["Temperature","Rainfall","Altitude","Pressure"], ans:2 },
-      { q: "The savanna vegetation is found in which climate zone?", opts:["Equatorial","Tropical","Mediterranean","Desert"], ans:1 },
-      { q: "Urban settlement is characterised by:", opts:["Low population density","Predominantly agricultural activity","High population density","Scattered houses"], ans:2 },
-    ],
-  };
-
-  const SUBJ_COLORS = {
-    "English Language": { color: "#059669", bg: "#D1FAE5" },
-    "Mathematics":      { color: "#3B82F6", bg: "#DBEAFE" },
-    "Physics":          { color: "#F59E0B", bg: "#FEF3C7" },
-    "Chemistry":        { color: "#EF4444", bg: "#FEE2E2" },
-    "Biology":          { color: "#8B5CF6", bg: "#EDE9FE" },
-    "Economics":        { color: "#EC4899", bg: "#FCE7F3" },
-    "Government":       { color: "#14B8A6", bg: "#CCFBF1" },
-    "Literature":       { color: "#F97316", bg: "#FFEDD5" },
-    "Geography":        { color: "#6366F1", bg: "#E0E7FF" },
-  };
-
+  const BANK = QUESTIONS;
   const KEYS = ['A', 'B', 'C', 'D'];
 
   // ══════════════════════════════════════════
