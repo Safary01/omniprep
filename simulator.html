@@ -613,53 +613,55 @@
 ══════════════════════════════ -->
 <script type="module">
   import { initPage } from './js/auth.js';
-import { saveSession, calcUTMEScore, formatDuration } from './js/firebase.js';
-import { QUESTIONS } from './js/questions.js';
-const BANK = QUESTIONS;
-  async function init() {
+  import { saveSession, calcUTMEScore, formatDuration } from './js/firebase.js';
+  import { QUESTIONS } from './js/questions.js';
 
-  // ── Auth check — redirect to login if not authenticated ──
-  const student = await initPage();
-  if (!student) return;
-
-  // ══════════════════════════════════════════
-  // QUESTION BANK
-  // Each subject has 10 sample questions.
-  // The simulator loops them to fill the required count.
-  // Replace / expand this bank with your full question set.
-  // ══════════════════════════════════════════
+  // ── Constants at module top level — accessible everywhere ──
   const BANK = QUESTIONS;
   const KEYS = ['A', 'B', 'C', 'D'];
-
-  // ══════════════════════════════════════════
-  // STATE
-  // ══════════════════════════════════════════
-  let state = {
-    selectedSubjects: [],
-    mode:       'mock',
-    questions:  [],   // flat array of question objects
-    current:    0,
-    timerSecs:  7200,
-    timerInt:   null,
-    startTime:  null,
-    submitted:  false,
+  const SUBJ_COLORS = {
+    'English Language': { color: '#059669', bg: '#D1FAE5' },
+    'Mathematics':      { color: '#3B82F6', bg: '#DBEAFE' },
+    'Physics':          { color: '#F59E0B', bg: '#FEF3C7' },
+    'Chemistry':        { color: '#EF4444', bg: '#FEE2E2' },
+    'Biology':          { color: '#8B5CF6', bg: '#EDE9FE' },
+    'Economics':        { color: '#EC4899', bg: '#FCE7F3' },
+    'Government':       { color: '#14B8A6', bg: '#CCFBF1' },
+    'Literature':       { color: '#F97316', bg: '#FFEDD5' },
+    'Geography':        { color: '#6366F1', bg: '#E0E7FF' },
   };
 
-  // ══════════════════════════════════════════
-  // SETUP — populate subjects from student profile
-  // ══════════════════════════════════════════
-  const ALL_SUBJECTS = Object.keys(BANK).filter(s => s !== 'English Language');
-  const studentSubjects = (student.subjects || []).filter(s => s !== 'English Language');
+  let state = {
+    selectedSubjects: [],
+    mode: 'mock',
+    questions: [],
+    current: 0,
+    timerSecs: 7200,
+    timerInt: null,
+    startTime: null,
+    submitted: false,
+  };
 
+  let student = null;
+
+  // ── Auth ──
+  (async () => {
+    student = await initPage();
+    if (!student) return;
+    buildSetupSubjects();
+  })();
+
+  // ── Setup ──
   function buildSetupSubjects() {
-    const grid = document.getElementById('setup-subjects');
-    grid.innerHTML = '';
+    const ALL_SUBJECTS    = Object.keys(BANK).filter(s => s !== 'English Language');
+    const studentSubjects = (student.subjects || []).filter(s => s !== 'English Language');
+    const grid            = document.getElementById('setup-subjects');
+    grid.innerHTML        = '';
 
-    // Show ALL available subjects — pre-tick the student's registered ones
     ALL_SUBJECTS.forEach(subj => {
       const isRegistered = studentSubjects.includes(subj);
       const pill = document.createElement('label');
-      pill.className      = 'subj-pill' + (isRegistered ? ' selected' : '');
+      pill.className       = 'subj-pill' + (isRegistered ? ' selected' : '');
       pill.dataset.subject = subj;
 
       const cb = document.createElement('input');
@@ -679,7 +681,6 @@ const BANK = QUESTIONS;
       grid.appendChild(pill);
     });
 
-    // Init state from student's registered subjects (max 3)
     state.selectedSubjects = studentSubjects.slice(0, 3);
     updateSetupUI();
   }
@@ -687,16 +688,12 @@ const BANK = QUESTIONS;
   function handleSubjChange(cb) {
     const checked = document.querySelectorAll('#setup-subjects input:checked');
     if (checked.length > 3) { cb.checked = false; return; }
-
     document.querySelectorAll('.subj-pill').forEach(l => {
       l.classList.toggle('selected', l.querySelector('input').checked);
     });
-
     state.selectedSubjects = Array.from(
       document.querySelectorAll('#setup-subjects input:checked')
     ).map(c => c.value);
-
-    // Disable unchecked when 3 are selected
     document.querySelectorAll('#setup-subjects input').forEach(c => {
       if (!c.checked) {
         c.disabled = checked.length >= 3;
@@ -706,11 +703,9 @@ const BANK = QUESTIONS;
         c.closest('.subj-pill').classList.remove('disabled');
       }
     });
-
     updateSetupUI();
   }
 
-  // Mode selection — exposed to window for HTML onclick
   window.selectMode = function(card) {
     document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
@@ -723,9 +718,7 @@ const BANK = QUESTIONS;
     const n   = state.selectedSubjects.length;
     const btn = document.getElementById('start-btn');
     const rem = 3 - n;
-
     document.getElementById('chip-questions').textContent = `${60 + n * 40} questions`;
-
     if (rem > 0) {
       btn.textContent = `Select ${rem} more subject${rem > 1 ? 's' : ''} to begin`;
       btn.disabled    = true;
@@ -735,29 +728,29 @@ const BANK = QUESTIONS;
     }
   }
 
-  buildSetupSubjects();
-
-  // ══════════════════════════════════════════
-  // START EXAM — exposed to window for HTML onclick
-  // ══════════════════════════════════════════
+  // ── Start Exam ──
   window.startExam = function() {
-    // Build flat question list
     state.questions = [];
 
-    // English Language: 60 questions
-    const engBank = BANK['English Language'];
-    for (let i = 0; i < 60; i++) {
-      const q = engBank[i % engBank.length];
-      state.questions.push({ subject: 'English Language', ...q, userAns: null, flagged: false });
+    // Shuffle helper
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
     }
 
-    // 3 chosen subjects: 40 each
+    // English: 60 questions shuffled
+    const engQs = shuffle(BANK['English Language']).slice(0, 60);
+    engQs.forEach(q => state.questions.push({ subject: 'English Language', ...q, userAns: null, flagged: false }));
+
+    // Other subjects: 40 each shuffled
     state.selectedSubjects.forEach(subj => {
       const bank = BANK[subj] || [];
-      for (let i = 0; i < 40; i++) {
-        const q = bank[i % bank.length];
-        state.questions.push({ subject: subj, ...q, userAns: null, flagged: false });
-      }
+      const shuffled = shuffle(bank).slice(0, 40);
+      shuffled.forEach(q => state.questions.push({ subject: subj, ...q, userAns: null, flagged: false }));
     });
 
     state.current   = 0;
@@ -765,7 +758,6 @@ const BANK = QUESTIONS;
     state.startTime = Date.now();
     state.timerSecs = state.mode === 'mock' ? 7200 : 999999;
 
-    // Switch screens
     document.getElementById('setup-screen').style.display = 'none';
     document.getElementById('exam-screen').classList.add('active');
 
@@ -775,21 +767,18 @@ const BANK = QUESTIONS;
     if (state.mode === 'mock') startTimer();
   };
 
-  // ══════════════════════════════════════════
-  // SUBJECT TABS
-  // ══════════════════════════════════════════
+  // ── Subject Tabs ──
   function buildSubjTabs() {
     const allSubjects = ['English Language', ...state.selectedSubjects];
     const tabs        = document.getElementById('subj-tabs');
     tabs.innerHTML    = '';
-
     allSubjects.forEach(subj => {
       const count = state.questions.filter(q => q.subject === subj).length;
       const tab   = document.createElement('button');
-      tab.className      = 'subj-tab' + (subj === 'English Language' ? ' active' : '');
+      tab.className       = 'subj-tab' + (subj === 'English Language' ? ' active' : '');
       tab.dataset.subject = subj;
-      tab.innerHTML = `${subj.split(' ')[0]} <span class="subj-tab-count">${count}</span>`;
-      tab.onclick   = () => jumpToSubject(subj);
+      tab.innerHTML       = `${subj.split(' ')[0]} <span class="subj-tab-count">${count}</span>`;
+      tab.onclick         = () => jumpToSubject(subj);
       tabs.appendChild(tab);
     });
   }
@@ -806,9 +795,7 @@ const BANK = QUESTIONS;
     );
   }
 
-  // ══════════════════════════════════════════
-  // RENDER QUESTION
-  // ══════════════════════════════════════════
+  // ── Render Question ──
   function renderQuestion() {
     const q     = state.questions[state.current];
     const total = state.questions.length;
@@ -819,34 +806,30 @@ const BANK = QUESTIONS;
     document.getElementById('q-position').textContent  = `${idx + 1} / ${total}`;
 
     const badge = document.getElementById('q-subj-badge');
-    badge.textContent   = q.subject;
+    badge.textContent      = q.subject;
     badge.style.background = sc.bg;
     badge.style.color      = sc.color;
 
     document.getElementById('q-text').innerHTML = q.q;
 
-    // Flag button
     const flagBtn   = document.getElementById('flag-btn');
     const flagLabel = document.getElementById('flag-label');
     flagBtn.classList.toggle('active', q.flagged);
     flagLabel.textContent = q.flagged ? 'Flagged' : 'Flag';
 
-    // Options
     const ol = document.getElementById('options-list');
     ol.innerHTML = '';
     q.opts.forEach((opt, i) => {
-      const div = document.createElement('div');
+      const div     = document.createElement('div');
       div.className = 'option' + (q.userAns === i ? ' selected' : '');
       div.innerHTML = `<div class="option-key">${KEYS[i]}</div><div>${opt}</div>`;
       div.onclick   = () => selectAnswer(i);
       ol.appendChild(div);
     });
 
-    // Prev / next buttons
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
     btnPrev.disabled = idx === 0;
-
     if (idx === total - 1) {
       btnNext.textContent = 'Submit ✓';
       btnNext.onclick     = showSubmitModal;
@@ -860,23 +843,18 @@ const BANK = QUESTIONS;
     updateNavStats();
   }
 
-  // ══════════════════════════════════════════
-  // ANSWER SELECTION & FLAG
-  // ══════════════════════════════════════════
+  // ── Answer & Flag ──
   function selectAnswer(i) {
     state.questions[state.current].userAns = i;
     renderQuestion();
   }
 
   window.toggleFlag = function() {
-    state.questions[state.current].flagged =
-      !state.questions[state.current].flagged;
+    state.questions[state.current].flagged = !state.questions[state.current].flagged;
     renderQuestion();
   };
 
-  // ══════════════════════════════════════════
-  // NAVIGATION
-  // ══════════════════════════════════════════
+  // ── Navigation ──
   window.navigate = function(dir) {
     const next = state.current + dir;
     if (next >= 0 && next < state.questions.length) {
@@ -885,7 +863,6 @@ const BANK = QUESTIONS;
     }
   };
 
-  // Keyboard shortcuts
   document.addEventListener('keydown', e => {
     if (!document.getElementById('exam-screen').classList.contains('active')) return;
     if (document.getElementById('submit-modal').classList.contains('active')) return;
@@ -897,39 +874,31 @@ const BANK = QUESTIONS;
     if (e.key === 's' || e.key === 'S') showSubmitModal();
   });
 
-  // ══════════════════════════════════════════
-  // NAVIGATOR SIDEBAR
-  // ══════════════════════════════════════════
+  // ── Navigator Sidebar ──
   function buildNavSidebar() {
     const body        = document.getElementById('nav-body');
     body.innerHTML    = '';
     const allSubjects = ['English Language', ...state.selectedSubjects];
-
     allSubjects.forEach(subj => {
       const sc       = SUBJ_COLORS[subj] || { color: '#94A3B8', bg: '#F1F5F9' };
       const startIdx = state.questions.findIndex(q => q.subject === subj);
       const count    = state.questions.filter(q => q.subject === subj).length;
-
-      const section = document.createElement('div');
-
-      const label   = document.createElement('div');
+      const section  = document.createElement('div');
+      const label    = document.createElement('div');
       label.className   = 'nav-subject-label';
       label.style.color = sc.color;
       label.textContent = subj.split(' ')[0];
-
-      const grid    = document.createElement('div');
-      grid.className = 'nav-grid';
-      grid.id        = `ng-${subj.replace(/\s/g,'-')}`;
-
+      const grid        = document.createElement('div');
+      grid.className    = 'nav-grid';
+      grid.id           = `ng-${subj.replace(/\s/g,'-')}`;
       for (let i = 0; i < count; i++) {
-        const dot   = document.createElement('div');
-        dot.className   = 'nav-dot';
-        dot.textContent = startIdx + i + 1;
+        const dot         = document.createElement('div');
+        dot.className     = 'nav-dot';
+        dot.textContent   = startIdx + i + 1;
         const capturedIdx = startIdx + i;
         dot.onclick       = () => { state.current = capturedIdx; renderQuestion(); };
         grid.appendChild(dot);
       }
-
       section.appendChild(label);
       section.appendChild(grid);
       body.appendChild(section);
@@ -942,46 +911,37 @@ const BANK = QUESTIONS;
       const startIdx = state.questions.findIndex(q => q.subject === subj);
       const grid     = document.getElementById(`ng-${subj.replace(/\s/g,'-')}`);
       if (!grid) return;
-
-      state.questions
-        .filter(q => q.subject === subj)
-        .forEach((q, i) => {
-          const dot       = grid.children[i];
-          if (!dot) return;
-          const globalIdx = startIdx + i;
-          dot.className   = 'nav-dot';
-          if (globalIdx === state.current) dot.classList.add('current');
-          else if (q.flagged)              dot.classList.add('flagged');
-          else if (q.userAns !== null)     dot.classList.add('answered');
-        });
+      state.questions.filter(q => q.subject === subj).forEach((q, i) => {
+        const dot       = grid.children[i];
+        if (!dot) return;
+        const globalIdx = startIdx + i;
+        dot.className   = 'nav-dot';
+        if (globalIdx === state.current) dot.classList.add('current');
+        else if (q.flagged)              dot.classList.add('flagged');
+        else if (q.userAns !== null)     dot.classList.add('answered');
+      });
     });
   }
 
   function updateNavStats() {
-    const answered   = state.questions.filter(q => q.userAns !== null).length;
-    const flagged    = state.questions.filter(q => q.flagged).length;
-    const remaining  = state.questions.length - answered;
-
-    document.getElementById('ns-answered').textContent  = answered;
-    document.getElementById('ns-flagged').textContent   = flagged;
-    document.getElementById('ns-remaining').textContent = remaining;
-    document.getElementById('ms-answered').textContent  = answered;
-    document.getElementById('ms-flagged').textContent   = flagged;
+    const answered  = state.questions.filter(q => q.userAns !== null).length;
+    const flagged   = state.questions.filter(q => q.flagged).length;
+    const remaining = state.questions.length - answered;
+    document.getElementById('ns-answered').textContent   = answered;
+    document.getElementById('ns-flagged').textContent    = flagged;
+    document.getElementById('ns-remaining').textContent  = remaining;
+    document.getElementById('ms-answered').textContent   = answered;
+    document.getElementById('ms-flagged').textContent    = flagged;
     document.getElementById('ms-unanswered').textContent = remaining;
   }
 
-  // ══════════════════════════════════════════
-  // TIMER
-  // ══════════════════════════════════════════
+  // ── Timer ──
   function startTimer() {
     clearInterval(state.timerInt);
     state.timerInt = setInterval(() => {
       state.timerSecs--;
       updateTimerDisplay();
-      if (state.timerSecs <= 0) {
-        clearInterval(state.timerInt);
-        submitExam();
-      }
+      if (state.timerSecs <= 0) { clearInterval(state.timerInt); submitExam(); }
     }, 1000);
     updateTimerDisplay();
   }
@@ -997,9 +957,7 @@ const BANK = QUESTIONS;
     if (state.timerSecs <= 120) el.classList.add('danger');
   }
 
-  // ══════════════════════════════════════════
-  // SUBMIT MODAL
-  // ══════════════════════════════════════════
+  // ── Submit Modal ──
   window.showSubmitModal = function() {
     updateNavStats();
     document.getElementById('submit-modal').classList.add('active');
@@ -1009,62 +967,46 @@ const BANK = QUESTIONS;
     document.getElementById('submit-modal').classList.remove('active');
   };
 
-  // ══════════════════════════════════════════
-  // SUBMIT EXAM + SAVE TO FIREBASE
-  // ══════════════════════════════════════════
+  // ── Submit Exam ──
   window.submitExam = async function() {
     if (state.submitted) return;
     state.submitted = true;
     clearInterval(state.timerInt);
     closeSubmitModal();
 
-    const elapsed    = Math.round((Date.now() - state.startTime) / 1000);
-    const timeUsed   = formatDuration(elapsed);
-    const qs         = state.questions;
-    const total      = qs.length;
-    const correct    = qs.filter(q => q.userAns === q.ans).length;
-    const wrong      = qs.filter(q => q.userAns !== null && q.userAns !== q.ans).length;
-    const skipped    = qs.filter(q => q.userAns === null).length;
-    const score      = calcUTMEScore(correct, total);
+    const elapsed  = Math.round((Date.now() - state.startTime) / 1000);
+    const timeUsed = formatDuration(elapsed);
+    const qs       = state.questions;
+    const total    = qs.length;
+    const correct  = qs.filter(q => q.userAns === q.ans).length;
+    const wrong    = qs.filter(q => q.userAns !== null && q.userAns !== q.ans).length;
+    const skipped  = qs.filter(q => q.userAns === null).length;
+    const score    = calcUTMEScore(correct, total);
 
-    // Subject breakdown: { "Mathematics": pct, ... }
     const subjects = {};
     ['English Language', ...state.selectedSubjects].forEach(subj => {
-      const sq      = qs.filter(q => q.subject === subj);
-      const sc      = sq.filter(q => q.userAns === q.ans).length;
+      const sq = qs.filter(q => q.subject === subj);
+      const sc = sq.filter(q => q.userAns === q.ans).length;
       subjects[subj] = Math.round((sc / sq.length) * 100);
     });
 
-    // Error list for Correction Vault (wrong + skipped questions)
     const errors = qs
       .map((q, i) => ({ ...q, num: i + 1 }))
       .filter(q => q.userAns !== q.ans)
       .map(q => ({
-        num:     q.num,
-        subject: q.subject,
-        type:    q.userAns === null ? 'skipped' : 'wrong',
-        q:       q.q,
-        opts:    q.opts,
-        correct: q.ans,
-        yours:   q.userAns,
-        explain: '', // To be populated from full question bank
+        num: q.num, subject: q.subject,
+        type: q.userAns === null ? 'skipped' : 'wrong',
+        q: q.q, opts: q.opts, correct: q.ans, yours: q.userAns, explain: '',
       }));
 
-    // Save session to Firestore
     const sessionId = await saveSession(student.uid, {
       score, correct, wrong, skipped,
       timeUsed, mode: state.mode,
-      subjects, errors,
-      totalQuestions: total,
+      subjects, errors, totalQuestions: total,
     }) || 'new';
 
-    // Redirect to results page with session ID
     window.location.href = `results.html?session=${sessionId}`;
   };
-
-  } // end init()
-
-  init();
 </script>
 
 </body>
