@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniPrep Desktop — Download</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #059669;
+      --green-light: #D1FAE5;
+      --green-dark:  #047857;
+      --ink:         #0F172A;
+      --ink-2:       #334155;
+      --ink-3:       #64748B;
+      --ink-4:       #94A3B8;
+      --surface:     #F8FAFC;
+      --white:       #FFFFFF;
+      --border:      #E2E8F0;
+      --font:        'Plus Jakarta Sans', sans-serif;
+      --mono:        'JetBrains Mono', monospace;
+    }
+
+    html, body {
+      font-family: var(--font);
+      background: var(--ink);
+      color: var(--white);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      background: rgba(15,23,42,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo__mark {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 12px; font-weight: 600;
+      color: var(--white);
+    }
+
+    .logo__name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo__name span { color: var(--green); }
+
+    .navbar__link {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      transition: color 0.15s;
+    }
+
+    .navbar__link:hover { color: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 64px;
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse at center, rgba(5,150,105,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid rgba(5,150,105,0.4);
+      background: rgba(5,150,105,0.1);
+      border-radius: 50px;
+      padding: 4px 14px;
+      margin-bottom: 24px;
+    }
+
+    .hero__title {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero__title span { color: var(--green); }
+
+    .hero__sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 0 auto 48px;
+    }
+
+    /* ── DOWNLOAD CARDS ── */
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .download-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .download-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(5,150,105,0.4);
+      transform: translateY(-3px);
+    }
+
+    .download-card:hover::before { opacity: 1; }
+
+    .download-card.recommended {
+      border-color: rgba(5,150,105,0.5);
+      background: rgba(5,150,105,0.08);
+    }
+
+    .download-card.recommended::before { opacity: 1; }
+
+    .rec-badge {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green);
+      background: rgba(5,150,105,0.15);
+      border: 1px solid rgba(5,150,105,0.3);
+      border-radius: 50px;
+      padding: 2px 8px;
+    }
+
+    .platform-icon {
+      font-size: 40px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .platform-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .platform-version {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      font-family: var(--mono);
+      margin-bottom: 20px;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-download.primary {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    .btn-download.primary:hover {
+      background: var(--green-dark);
+      transform: scale(1.02);
+    }
+
+    .btn-download.secondary {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-download.secondary:hover {
+      background: rgba(255,255,255,0.14);
+      color: var(--white);
+    }
+
+    .file-size {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      font-family: var(--mono);
+      margin-top: 10px;
+    }
+
+    /* ── FEATURES ── */
+    .features-section {
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 64px 24px;
+    }
+
+    .features-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-h {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .feature-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(5,150,105,0.15);
+      border: 1px solid rgba(5,150,105,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .feature-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .feature-desc  { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ── INSTALL STEPS ── */
+    .install-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 40px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 32px;
+      position: relative;
+    }
+
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(5,150,105,0.4);
+      background: rgba(5,150,105,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 14px; font-weight: 700;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+
+    .step-content { padding-top: 8px; }
+    .step-title   { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .step-desc    { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    .step-desc code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: rgba(255,255,255,0.08);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--green);
+    }
+
+    /* ── SYSREQ ── */
+    .sysreq-section {
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 48px 24px;
+    }
+
+    .sysreq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 32px auto 0;
+    }
+
+    .sysreq-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .sysreq-platform {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sysreq-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.6);
+    }
+
+    .sysreq-row:last-child { border-bottom: none; }
+    .sysreq-row span:last-child { color: var(--white); font-weight: 500; }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 8px;
+    }
+
+    .footer a { color: var(--green); }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .navbar { padding: 16px 20px; }
+      .download-grid { grid-template-columns: 1fr; }
+      .sysreq-grid   { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 500px) {
+      .hero { padding: 56px 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <div class="logo">
+    <div class="logo__mark">OP</div>
+    <div class="logo__name">Omni<span>Prep</span> Desktop</div>
+  </div>
+</nav>
+
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero__tag">Desktop App — v1.0.0</div>
+  <h1 class="hero__title">
+    OmniPrep on your<br>
+    <span>desktop.</span>
+  </h1>
+  <p class="hero__sub">
+    The full OmniPrep experience — CBT Simulator, Mouscerciser,
+    Typing Tutor, and Correction Vault — installed on your computer.
+    No browser required.
+  </p>
+</section>
+
+
+<!-- ── DOWNLOAD CARDS ── -->
+<div class="download-grid">
+
+  <!-- Windows -->
+  <div class="download-card recommended">
+    <div class="rec-badge">Most popular</div>
+    <span class="platform-icon">🪟</span>
+    <div class="platform-name">Windows</div>
+    <div class="platform-version">Windows 10 / 11 · 64-bit</div>
+    <a
+      href="https://github.com/Safary01/omniprep-desktop-app/releases/download/v1.0.0/OmniPrep.zip"
+      class="btn-download primary"
+      id="win-btn"
+    >
+      ⬇ Download for Windows
+    </a>
+    <div class="file-size" id="win-size">Size: — MB · .zip</div>
+  </div>
+
+  <!-- macOS -->
+  <div class="download-card">
+    <span class="platform-icon">🍎</span>
+    <div class="platform-name">macOS</div>
+    <div class="platform-version">macOS 10.13+ · Intel & Apple Silicon</div>
+    <a
+      href="https://github.com/Safary01/omniprep-desktop-app/releases/download/v1.0.0/OmniPrep-darwin-x64.rar"
+      class="btn-download secondary"
+    >
+      ⬇ Download for macOS
+    </a>
+    <div class="file-size">Size: 196 MB · .rar</div>
+  </div>
+
+  <!-- Linux -->
+  <div class="download-card">
+    <span class="platform-icon">🐧</span>
+    <div class="platform-name">Linux</div>
+    <div class="platform-version">Ubuntu 18.04+ · 64-bit</div>
+    <a
+      href="https://github.com/Safary01/omniprep-desktop-app/releases/download/v1.0.0/OmniPrep-linux-x64.zip"
+      class="btn-download secondary"
+    >
+      ⬇ Download for Linux
+    </a>
+    <div class="file-size">Size: 91.9 MB · .zip</div>
+  </div>
+
+</div>
+
+
+<!-- ── FEATURES ── -->
+<section class="features-section">
+  <div class="features-inner">
+    <div class="section-title">Why desktop?</div>
+    <h2 class="section-h">Everything you need. No browser required.</h2>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <div>
+          <div class="feature-title">Faster performance</div>
+          <div class="feature-desc">Native app speed. No loading tabs, no browser slowdowns during your mock exam.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📋</div>
+        <div>
+          <div class="feature-title">Full CBT Simulator</div>
+          <div class="feature-desc">180 questions, strict 2-hour timer, auto-submit — exactly like the real JAMB exam.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🖱️</div>
+        <div>
+          <div class="feature-title">Mouscerciser</div>
+          <div class="feature-desc">Train cursor precision and clicking speed directly on your desktop.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⌨️</div>
+        <div>
+          <div class="feature-title">Typing Tutor</div>
+          <div class="feature-desc">Keyboard speed drills for UTME fill-in-the-blank questions.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔐</div>
+        <div>
+          <div class="feature-title">Correction Vault</div>
+          <div class="feature-desc">Step-by-step explanations for every wrong answer after each session.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🌐</div>
+        <div>
+          <div class="feature-title">Same account</div>
+          <div class="feature-desc">Log in with your existing OmniPrep account. Your sessions sync automatically.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── INSTALL STEPS ── -->
+<section class="install-section">
+  <div class="section-title" style="text-align:center">Installation</div>
+  <h2 class="section-h" style="text-align:center">Up and running in minutes</h2>
+
+  <div class="steps-list">
+
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Download the file for your platform</div>
+        <div class="step-desc">
+          Click the download button above for Windows, macOS, or Linux.
+          The file will save to your Downloads folder.
+        </div>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Extract the archive</div>
+        <div class="step-desc">
+          Right-click the downloaded <code>.zip</code> or <code>.rar</code> file
+          and select <code>Extract All</code> (Windows) or open with your archive tool.
+          This creates an OmniPrep folder.
+        </div>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Open the app</div>
+        <div class="step-desc">
+          Open the extracted folder and double-click <code>OmniPrep.exe</code> (Windows),
+          <code>OmniPrep.app</code> (macOS), or <code>OmniPrep</code> (Linux).
+        </div>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Log in with your OmniPrep account</div>
+        <div class="step-desc">
+          Use the same email and password from your ₦500 subscription.
+          No new account needed. Don't have one?
+          <a href="https://safary01.github.io/omniprep/register.html" style="color:var(--green)">Register here</a>.
+        </div>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Start training</div>
+        <div class="step-desc">
+          You are ready. Open any module and begin your UTME preparation.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── SYSTEM REQUIREMENTS ── -->
+<section class="sysreq-section">
+  <div class="section-title" style="text-align:center">System Requirements</div>
+  <div class="sysreq-grid">
+
+    <div class="sysreq-card">
+      <div class="sysreq-platform">🪟 Windows</div>
+      <div class="sysreq-row"><span>OS</span><span>Windows 10 or 11</span></div>
+      <div class="sysreq-row"><span>Architecture</span><span>64-bit</span></div>
+      <div class="sysreq-row"><span>RAM</span><span>2 GB minimum</span></div>
+      <div class="sysreq-row"><span>Storage</span><span>200 MB free</span></div>
+      <div class="sysreq-row"><span>Internet</span><span>Required for login</span></div>
+    </div>
+
+    <div class="sysreq-card">
+      <div class="sysreq-platform">🍎 macOS</div>
+      <div class="sysreq-row"><span>OS</span><span>macOS 10.13 or later</span></div>
+      <div class="sysreq-row"><span>Architecture</span><span>Intel 64-bit</span></div>
+      <div class="sysreq-row"><span>RAM</span><span>2 GB minimum</span></div>
+      <div class="sysreq-row"><span>Storage</span><span>300 MB free</span></div>
+      <div class="sysreq-row"><span>Internet</span><span>Required for login</span></div>
+    </div>
+
+    <div class="sysreq-card">
+      <div class="sysreq-platform">🐧 Linux</div>
+      <div class="sysreq-row"><span>OS</span><span>Ubuntu 18.04+</span></div>
+      <div class="sysreq-row"><span>Architecture</span><span>64-bit</span></div>
+      <div class="sysreq-row"><span>RAM</span><span>2 GB minimum</span></div>
+      <div class="sysreq-row"><span>Storage</span><span>200 MB free</span></div>
+      <div class="sysreq-row"><span>Internet</span><span>Required for login</span></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="logo" style="justify-content:center">
+    <div class="logo__mark">OP</div>
+    <div class="logo__name">Omni<span>Prep</span></div>
+  </div>
+  <p style="margin-top:16px">
+    Prefer to use OmniPrep in your browser?
+    <a href="https://safary01.github.io/omniprep/">Visit the web version</a>
+  </p>
+  <p style="margin-top:8px">
+    &copy; 2026 OmniPrep · Built by Usman Ibrahim (Safary) . Powered by Afraah Multi Ventures Services Ltd
+  </p>
+</footer>
+
+<script>
+  // Auto-detect OS and highlight the right download card
+  const ua = navigator.userAgent.toLowerCase();
+  if (ua.includes('win')) {
+    document.querySelectorAll('.download-card')[0].style.order = '-1';
+  } else if (ua.includes('mac')) {
+    document.querySelectorAll('.download-card')[1].classList.add('recommended');
+    document.querySelectorAll('.download-card')[1].querySelector('.btn-download').classList.replace('secondary','primary');
+  } else if (ua.includes('linux')) {
+    document.querySelectorAll('.download-card')[2].classList.add('recommended');
+    document.querySelectorAll('.download-card')[2].querySelector('.btn-download').classList.replace('secondary','primary');
+  }
+</script>
+
+</body>
+</html>
