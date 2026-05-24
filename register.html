@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register — OmniPrep</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="icon" type="image/png" href="./favicon.png">
   <style>
     body { background: var(--surface); }
 
@@ -288,16 +288,20 @@
     <div class="form-step" id="step-2">
 
       <div>
-        <div class="form-header__title">Complete your payment</div>
-        <div class="form-header__sub">Review your details and pay securely via Paystack.</div>
+        <div class="form-header__title">Make your payment</div>
+        <div class="form-header__sub">
+          Transfer ₦500 to the account below, then send us proof.
+          Your account will be created within 24 hours.
+        </div>
       </div>
 
+      <!-- Order summary -->
       <div class="payment-summary">
         <div class="payment-summary__row">
           <span>OmniPrep Annual Access</span><span>₦500.00</span>
         </div>
         <div class="payment-summary__row">
-          <span>Account</span>
+          <span>Your email</span>
           <span id="pay-email-display" style="font-family:var(--mono);font-size:12px">—</span>
         </div>
         <div class="payment-summary__row">
@@ -310,39 +314,155 @@
         <div class="payment-summary__row total">
           <span>Total</span><span>₦500</span>
         </div>
-        <div class="paystack-badge">
-          Secured by Paystack · No card details stored on OmniPrep
+      </div>
+
+      <!-- Bank details -->
+      <div style="background:var(--green-light);border:1.5px solid var(--green-mid);border-radius:var(--radius);padding:var(--space-5) var(--space-6);">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-dark);margin-bottom:var(--space-4)">
+          🏦 Bank Transfer Details
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--ink-3)">Bank</span>
+            <span style="font-size:13px;font-weight:700;color:var(--ink)">Taj Bank</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--ink-3)">Account Number</span>
+            <div style="display:flex;align-items:center;gap:var(--space-2)">
+              <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark);letter-spacing:0.05em">0013911640</span>
+              <button onclick="copyText('0013911640', this)" style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--green);background:var(--green-light);color:var(--green-dark);cursor:pointer;font-family:var(--font)">Copy</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--ink-3)">Account Name</span>
+            <span style="font-size:13px;font-weight:700;color:var(--ink)">Usman Ibrahim</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--ink-3)">Amount</span>
+            <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark)">₦500.00</span>
+          </div>
+        </div>
+
+        <!-- Narration instruction -->
+        <div style="margin-top:var(--space-4);padding:12px 14px;background:var(--amber-light);border:1px solid #FCD34D;border-radius:var(--radius-sm)">
+          <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:4px">⚠️ IMPORTANT — Narration / Description</div>
+          <div style="font-size:13px;color:#92400E;line-height:1.6">
+            When making the transfer, use your <strong>email address</strong> as the narration or description.
+            This is how we identify your payment.
+          </div>
+          <div style="margin-top:var(--space-2);font-family:var(--mono);font-size:13px;font-weight:700;color:#92400E;background:rgba(255,255,255,0.6);padding:6px 10px;border-radius:4px" id="narration-display">—</div>
+        </div>
+
+      </div>
+
+      <!-- Also has second account -->
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-4) var(--space-5)">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-4);margin-bottom:var(--space-3)">
+          Alternative Account
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+          <div style="display:flex;justify-content:space-between;font-size:12px;">
+            <span style="color:var(--ink-3)">Bank</span>
+            <span style="font-weight:600;color:var(--ink)">Opay</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+            <span style="color:var(--ink-3)">Account Number</span>
+            <div style="display:flex;align-items:center;gap:var(--space-2)">
+              <span style="font-family:var(--mono);font-weight:700;color:var(--ink);letter-spacing:0.04em">2086837242</span>
+              <button onclick="copyText('2086837242', this)" style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--border);background:var(--white);color:var(--ink-3);cursor:pointer;font-family:var(--font)">Copy</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;">
+            <span style="color:var(--ink-3)">Account Name</span>
+            <span style="font-weight:600;color:var(--ink)">Usman Ibrahim</span>
+          </div>
         </div>
       </div>
 
-      <button class="btn btn-primary btn-lg btn-block" id="pay-btn" onclick="initiatePayment()">
-        Pay ₦500 with Paystack
+      <!-- Send proof section -->
+      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:var(--space-5) var(--space-6)">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:var(--space-3)">
+          📤 After paying — send proof here
+        </div>
+        <p style="font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:var(--space-4)">
+          Send your payment screenshot and full name to either:
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/2349127303813?text=Hello%2C%20I%20just%20paid%20for%20OmniPrep.%20My%20name%20is%20____%20and%20my%20email%20is%20____" target="_blank"
+            style="display:flex;align-items:center;gap:var(--space-3);padding:12px 16px;background:#25D366;border-radius:var(--radius-sm);text-decoration:none;transition:opacity 0.15s"
+            onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+            <span style="font-size:22px">💬</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:white">WhatsApp — 09127303813</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.8)">Tap to open WhatsApp and send your proof</div>
+            </div>
+          </a>
+
+          <!-- Email -->
+          <a id="email-proof-link" href="mailto:uthmanibraheem47@gmail.com"
+            style="display:flex;align-items:center;gap:var(--space-3);padding:12px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;transition:background 0.15s"
+            onmouseover="this.style.background='var(--surface-3)'" onmouseout="this.style.background='var(--surface-2)'">
+            <span style="font-size:22px">📧</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--ink)">uthmanibraheem47@gmail.com</div>
+              <div style="font-size:11px;color:var(--ink-3)">Send payment proof by email</div>
+            </div>
+          </a>
+        </div>
+
+        <div style="margin-top:var(--space-4);padding:10px 14px;background:var(--blue-light);border:1px solid #BFDBFE;border-radius:var(--radius-sm)">
+          <div style="font-size:12px;color:#1D4ED8;line-height:1.6">
+            💡 <strong>Include in your message:</strong> Your full name, your email address, and a screenshot of the payment.
+            Your account will be created within <strong>24 hours</strong> of receiving your proof.
+          </div>
+        </div>
+      </div>
+
+      <!-- I have paid button -->
+      <button class="btn btn-primary btn-lg btn-block" id="paid-btn" onclick="onPaidClicked()">
+        ✅ I have sent payment proof
       </button>
 
       <button class="btn btn-secondary btn-block" onclick="goBack()">
         ← Go back and edit details
       </button>
 
-      <p class="text-xs text-center mt-4">
-        Paystack accepts debit cards, bank transfer, and USSD.
-        Your access starts immediately after payment is confirmed.
-      </p>
-
     </div>
     <!-- /step-2 -->
 
-  <!-- SUCCESS SCREEN -->
+    <!-- SUCCESS SCREEN -->
     <div class="success-screen" id="success-screen">
-      <div class="success-icon">✓</div>
-      <h2 class="text-h2 mb-3">Registration successful!</h2>
-      <p class="text-body mb-6">
-        Your account has been created and your ₦500 annual access is active.
-        Please login to start training.
+      <div class="success-icon">⏳</div>
+      <h2 class="text-h2 mb-3">Details received!</h2>
+      <p class="text-body mb-3">
+        Thank you, <strong id="success-name"></strong>.
       </p>
-      <a href="login.html" class="btn btn-primary btn-lg">
-        Login to OmniPrep →
+      <p class="text-body mb-6">
+        Once we confirm your ₦500 payment, we will create your account and
+        notify you within <strong>24 hours</strong>. You will then be able to
+        log in at the link below.
+      </p>
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-5);margin-bottom:var(--space-6);text-align:left">
+        <div style="font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:var(--space-3)">YOUR REGISTRATION DETAILS</div>
+        <div style="font-size:13px;color:var(--ink-2);line-height:2">
+          <div><span style="color:var(--ink-3)">Name:</span> <strong id="s-name">—</strong></div>
+          <div><span style="color:var(--ink-3)">Email:</span> <strong id="s-email" style="font-family:var(--mono);font-size:12px">—</strong></div>
+          <div><span style="color:var(--ink-3)">Subjects:</span> <strong id="s-subjects">—</strong></div>
+          <div><span style="color:var(--ink-3)">Year:</span> <strong id="s-year">—</strong></div>
+        </div>
+      </div>
+      <a href="login.html" class="btn btn-primary btn-lg btn-block">
+        Go to login page →
       </a>
+      <p class="text-xs text-center mt-4">
+        Questions? WhatsApp us: <strong>09127303813</strong>
+      </p>
     </div>
+
+  </div>
   <!-- /register-form-col -->
 
   <!-- RIGHT — SUMMARY -->
@@ -407,32 +527,26 @@
      SCRIPTS
 ══════════════════════════════════════ -->
 
-<!-- Firebase bridge -->
-<script type="module">
-  try {
-    const fb = await import('./js/firebase.js');
-    window._op = {
-      auth:                           fb.auth,
-      db:                             fb.db,
-      createUserWithEmailAndPassword: fb.createUserWithEmailAndPassword,
-      updateProfile:                  fb.updateProfile,
-      doc:                            fb.doc,
-      setDoc:                         fb.setDoc,
-      serverTimestamp:                fb.serverTimestamp,
-    };
-    console.log('Firebase ready.');
-  } catch(e) {
-    console.error('Firebase module failed to load:', e);
-    window._op_error = e.message;
-  }
-</script>
-
-<!-- Paystack -->
-<script src="https://js.paystack.co/v1/inline.js"></script>
-
 <script>
   // ── FORM STATE ──
   const formData = { name:'', email:'', password:'', year:'', date:'', subjects:[] };
+
+  // ── COPY TO CLIPBOARD ──
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.style.background = 'var(--green)';
+      btn.style.color = 'white';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 2000);
+    });
+  }
 
   // ── SUBJECT CHECKBOXES ──
   function handleSubjectChange(checkbox) {
@@ -476,6 +590,7 @@
 
   function validateStep1() {
     let valid = true;
+
     const name = document.getElementById('reg-name').value.trim();
     if (!name || name.length < 2) { showError('err-name','Please enter your full name.'); valid=false; } else clearError('err-name');
 
@@ -512,8 +627,24 @@
       ...Array.from(document.querySelectorAll('#subject-grid input:checked')).map(c => c.value),
     ];
 
+    // Populate payment summary
     document.getElementById('pay-email-display').textContent    = formData.email;
     document.getElementById('pay-subjects-display').textContent = formData.subjects.join(', ');
+    document.getElementById('narration-display').textContent    = formData.email;
+
+    // Update WhatsApp link with pre-filled message
+    const msg = encodeURIComponent(
+      `Hello, I just paid ₦500 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.`
+    );
+    document.querySelector('a[href*="wa.me"]').href = `https://wa.me/2349127303813?text=${msg}`;
+
+    // Update email link
+    const subject = encodeURIComponent('OmniPrep Payment Proof');
+    const body    = encodeURIComponent(
+      `Hello,\n\nI have paid ₦500 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.\n\nThank you.`
+    );
+    document.getElementById('email-proof-link').href =
+      `mailto:uthmanibraheem47@gmail.com?subject=${subject}&body=${body}`;
 
     // Show step 2
     document.getElementById('step-1').classList.remove('active');
@@ -531,115 +662,51 @@
   function goBack() {
     document.getElementById('step-2').classList.remove('active');
     document.getElementById('step-1').classList.add('active');
-
     document.getElementById('step-ind-2').classList.remove('active');
     document.getElementById('step-ind-1').classList.remove('done');
     document.getElementById('step-ind-1').classList.add('active');
     document.getElementById('connector-1').classList.remove('done');
-
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
-  // ── PAYSTACK PAYMENT ──
-  function initiatePayment() {
-    const btn = document.getElementById('pay-btn');
-    btn.classList.add('btn-loading');
-    btn.disabled = true;
+  // ── I HAVE PAID BUTTON ──
+  function onPaidClicked() {
+    const btn = document.getElementById('paid-btn');
+    btn.disabled    = true;
+    btn.textContent = 'Details saved...';
 
-    const handler = PaystackPop.setup({
-      key:      'pk_test_238a1eed2f3dca03dde3d5b82f10a21b0be35189',
+    // Save registration details to localStorage
+    // so the student can reference them later
+    const regData = {
+      name:     formData.name,
       email:    formData.email,
-      amount:   50000,
-      currency: 'NGN',
-      ref:      'OP_' + Date.now() + '_' + Math.random().toString(36).slice(2,8).toUpperCase(),
-      metadata: {
-        custom_fields: [
-          { display_name:'Student Name', variable_name:'student_name', value: formData.name },
-          { display_name:'UTME Year',    variable_name:'utme_year',    value: formData.year },
-          { display_name:'Subjects',     variable_name:'subjects',     value: formData.subjects.join(', ') },
-        ],
-      },
-      callback: function(response) {
-        onPaymentSuccess(response.reference);
-      },
-      onClose: function() {
-        btn.classList.remove('btn-loading');
-        btn.disabled = false;
-        showAlert('Payment was not completed. Please try again.', 'error');
-      },
-    });
+      password: formData.password,
+      year:     formData.year,
+      date:     formData.date,
+      subjects: formData.subjects,
+      savedAt:  new Date().toISOString(),
+      status:   'pending',
+    };
+    localStorage.setItem('op_pending_reg', JSON.stringify(regData));
 
-    handler.openIframe();
-  }
+    // Show success screen
+    document.getElementById('step-2').classList.remove('active');
+    document.getElementById('success-screen').classList.add('active');
 
-  // ── AFTER PAYMENT — CREATE FIREBASE ACCOUNT ──
-  async function onPaymentSuccess(paystackRef) {
-    const btn = document.getElementById('pay-btn');
+    // Update step indicators
+    document.getElementById('step-ind-2').classList.remove('active');
+    document.getElementById('step-ind-2').classList.add('done');
+    document.getElementById('connector-2').classList.add('done');
+    document.getElementById('step-ind-3').classList.add('active');
 
-    // Wait for Firebase bridge (max 5 seconds)
-    let attempts = 0;
-    while (!window._op && !window._op_error && attempts < 50) {
-      await new Promise(r => setTimeout(r, 100));
-      attempts++;
-    }
+    // Populate success screen
+    document.getElementById('success-name').textContent = formData.name.split(' ')[0];
+    document.getElementById('s-name').textContent       = formData.name;
+    document.getElementById('s-email').textContent      = formData.email;
+    document.getElementById('s-subjects').textContent   = formData.subjects.join(', ');
+    document.getElementById('s-year').textContent       = formData.year;
 
-    if (!window._op) {
-      console.error('Firebase not ready:', window._op_error || 'timeout');
-      showAlert('A connection error occurred. Please refresh and try again.', 'error');
-      btn.classList.remove('btn-loading');
-      btn.disabled = false;
-      return;
-    }
-
-    try {
-      const { auth, db, createUserWithEmailAndPassword, updateProfile, doc, setDoc, serverTimestamp } = window._op;
-
-      // 1. Create Firebase Auth account
-      const credential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-      const user = credential.user;
-
-      // 2. Set display name
-      await updateProfile(user, { displayName: formData.name });
-
-      // 3. Save profile to Firestore (non-blocking)
-      try {
-        await setDoc(doc(db, 'students', user.uid), {
-          uid:          user.uid,
-          name:         formData.name,
-          email:        formData.email,
-          examYear:     formData.year,
-          examDate:     formData.date,
-          subjects:     formData.subjects,
-          paystackRef:  paystackRef,
-          plan:         'annual',
-          accessStart:  serverTimestamp(),
-          accessExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-          sessions:     [],
-          createdAt:    serverTimestamp(),
-        });
-        console.log('Firestore profile saved.');
-      } catch (fsErr) {
-        console.error('Firestore write failed:', fsErr.code, fsErr.message);
-      }
-
-      // 4. Show success screen — student clicks login manually
-      document.getElementById('step-2').classList.remove('active');
-      document.getElementById('success-screen').classList.add('active');
-      window.scrollTo({ top:0, behavior:'smooth' });
-
-    } catch (err) {
-      btn.classList.remove('btn-loading');
-      btn.disabled = false;
-      console.error('Registration error:', err.code, err.message);
-
-      let msg = 'Something went wrong. Please try again.';
-      if (err.code === 'auth/email-already-in-use') msg = 'This email is already registered. Please login instead.';
-      else if (err.code === 'auth/weak-password')   msg = 'Password is too weak. Please use at least 8 characters.';
-      else if (err.code === 'auth/invalid-email')   msg = 'The email address is not valid.';
-      else if (err.code === 'auth/network-request-failed') msg = 'Network error. Please check your internet and try again.';
-
-      showAlert(msg, 'error');
-    }
+    window.scrollTo({ top:0, behavior:'smooth' });
   }
 </script>
 
