@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register — OmniPrep</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/png" href="favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init('REPLACE_WITH_YOUR_EMAILJS_PUBLIC_KEY');
@@ -14,7 +13,9 @@
   <!-- Firebase bridge for registration -->
   <script type="module">
     import { db, collection, addDoc, serverTimestamp } from './js/firebase.js';
+    // Store on window so plain script can access it
     window._fb_reg = { db, collection, addDoc, serverTimestamp };
+    console.log('Firebase bridge ready.');
   </script>
   <style>
     body { background: var(--surface); }
@@ -685,17 +686,10 @@
     btn.disabled    = true;
     btn.textContent = 'Saving your details...';
 
-    try {
-      // Wait for Firebase bridge to be ready (max 5 seconds)
-      let attempts = 0;
-      while (!window._fb_reg && attempts < 50) {
-        await new Promise(r => setTimeout(r, 100));
-        attempts++;
-      }
-
-      if (window._fb_reg) {
+    // Save to Firestore
+    if (window._fb_reg) {
+      try {
         const { db, collection, addDoc, serverTimestamp } = window._fb_reg;
-
         await addDoc(collection(db, 'pending_registrations'), {
           name:      formData.name,
           email:     formData.email,
@@ -706,39 +700,31 @@
           status:    'pending',
           createdAt: serverTimestamp(),
         });
-
         console.log('Registration saved to Firestore.');
-      } else {
-        console.error('Firebase bridge not ready — registration not saved to Firestore.');
+      } catch(e) {
+        console.error('Firestore save error:', e.message);
       }
-
-      // Send email notification via EmailJS
-      try {
-        await emailjs.send(
-          'service_omniprep',
-          'template_omniprep',
-          {
-            student_name:     formData.name,
-            student_email:    formData.email,
-            student_subjects: formData.subjects.join(', '),
-            student_year:     formData.year,
-            student_date:     formData.date,
-            admin_email:      'uthmanibraheem47@gmail.com',
-          }
-        );
-        console.log('Email notification sent.');
-      } catch(emailErr) {
-        console.warn('EmailJS not configured yet:', emailErr);
-      }
-
-    } catch(e) {
-      console.error('Save error:', e);
+    } else {
+      console.warn('Firebase bridge not ready — data not saved to Firestore.');
     }
 
-    // Always show success screen regardless
+    // Send email via EmailJS
+    try {
+      await emailjs.send('service_omniprep', 'template_omniprep', {
+        student_name:     formData.name,
+        student_email:    formData.email,
+        student_subjects: formData.subjects.join(', '),
+        student_year:     formData.year,
+        student_date:     formData.date,
+      });
+      console.log('Email notification sent.');
+    } catch(e) {
+      console.warn('EmailJS not configured yet:', e.message);
+    }
+
+    // Always show success screen
     document.getElementById('step-2').classList.remove('active');
     document.getElementById('success-screen').classList.add('active');
-
     document.getElementById('step-ind-2').classList.remove('active');
     document.getElementById('step-ind-2').classList.add('done');
     document.getElementById('connector-2').classList.add('done');
