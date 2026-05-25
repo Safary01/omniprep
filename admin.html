@@ -364,13 +364,6 @@
     location.reload();
   };
 
-  // Auto-login if session exists
-  if (sessionStorage.getItem('op_admin') === '1') {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-panel').classList.add('active');
-    loadRegistrations();
-  }
-
   // ── LOAD REGISTRATIONS ──
   window.loadRegistrations = async function() {
     try {
@@ -398,6 +391,13 @@
       showToast('Failed to load registrations. Check console.', 'error');
     }
   };
+
+  // Auto-login if session exists — must be after loadRegistrations is defined
+  if (sessionStorage.getItem('op_admin') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('active');
+    loadRegistrations();
+  }
 
   // ── RENDER LIST ──
   function renderList(containerId, items, showActions) {
