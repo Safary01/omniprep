@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register — OmniPrep</title>
   <link rel="stylesheet" href="css/style.css" />
-    <link rel="icon" type="image/png" href="./favicon.png">
+  <link rel="icon" type="image/png" href="./favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // EmailJS public key — replace after setup
+    emailjs.init('REPLACE_WITH_YOUR_EMAILJS_PUBLIC_KEY');
+  </script>
   <style>
     body { background: var(--surface); }
 
@@ -670,36 +675,55 @@
   }
 
   // ── I HAVE PAID BUTTON ──
-  function onPaidClicked() {
+  async function onPaidClicked() {
     const btn = document.getElementById('paid-btn');
     btn.disabled    = true;
-    btn.textContent = 'Details saved...';
+    btn.textContent = 'Saving your details...';
 
-    // Save registration details to localStorage
-    // so the student can reference them later
-    const regData = {
-      name:     formData.name,
-      email:    formData.email,
-      password: formData.password,
-      year:     formData.year,
-      date:     formData.date,
-      subjects: formData.subjects,
-      savedAt:  new Date().toISOString(),
-      status:   'pending',
-    };
-    localStorage.setItem('op_pending_reg', JSON.stringify(regData));
+    try {
+      // 1. Save pending registration to Firestore
+      const { db, collection, addDoc, serverTimestamp } = await import('/js/firebase.js');
 
-    // Show success screen
+      await addDoc(collection(db, 'pending_registrations'), {
+        name:      formData.name,
+        email:     formData.email,
+        password:  formData.password,
+        examYear:  formData.year,
+        examDate:  formData.date,
+        subjects:  formData.subjects,
+        status:    'pending',
+        createdAt: serverTimestamp(),
+      });
+
+      // 2. Send email notification via EmailJS
+      await emailjs.send(
+        'service_omniprep',       // EmailJS service ID — replace after setup
+        'template_omniprep',      // EmailJS template ID — replace after setup
+        {
+          student_name:     formData.name,
+          student_email:    formData.email,
+          student_subjects: formData.subjects.join(', '),
+          student_year:     formData.year,
+          student_date:     formData.date,
+          admin_email:      'uthmanibraheem47@gmail.com',
+        }
+      );
+
+    } catch(e) {
+      console.error('Save error:', e);
+      // Even if save fails, still show success to student
+      // The WhatsApp/email proof is the backup
+    }
+
+    // 3. Show success screen
     document.getElementById('step-2').classList.remove('active');
     document.getElementById('success-screen').classList.add('active');
 
-    // Update step indicators
     document.getElementById('step-ind-2').classList.remove('active');
     document.getElementById('step-ind-2').classList.add('done');
     document.getElementById('connector-2').classList.add('done');
     document.getElementById('step-ind-3').classList.add('active');
 
-    // Populate success screen
     document.getElementById('success-name').textContent = formData.name.split(' ')[0];
     document.getElementById('s-name').textContent       = formData.name;
     document.getElementById('s-email').textContent      = formData.email;
