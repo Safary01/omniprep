@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniPrep Admin</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body { background: var(--surface); }
+
+    /* ── LOGIN SCREEN ── */
+    .admin-login {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+
+    .admin-login-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-10);
+      width: 100%;
+      max-width: 380px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+
+    .admin-badge {
+      display: inline-block;
+      background: var(--ink);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 50px;
+      margin-bottom: var(--space-6);
+    }
+
+    /* ── ADMIN PANEL ── */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    .admin-topbar {
+      background: var(--ink);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .admin-topbar .logo__name { color: var(--white); }
+    .admin-topbar .logo__mark { background: var(--green); }
+
+    .admin-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--space-8);
+    }
+
+    /* Stats bar */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .admin-stat {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-5);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .admin-stat__val {
+      font-family: var(--mono);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .admin-stat__lbl {
+      font-size: 12px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Section header */
+    .admin-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+
+    .admin-section-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    /* Registration cards */
+    .reg-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .reg-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-5) var(--space-6);
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .reg-card.activated {
+      border-color: var(--green-mid);
+      background: var(--green-light);
+      opacity: 0.7;
+    }
+
+    .reg-card__name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .reg-card__email {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--ink-3);
+      margin-bottom: var(--space-2);
+    }
+
+    .reg-card__meta {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .reg-card__time {
+      font-size: 11px;
+      color: var(--ink-4);
+      font-family: var(--mono);
+      margin-top: var(--space-2);
+    }
+
+    .reg-card__actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    /* Empty state */
+    .admin-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--ink-3);
+    }
+
+    .admin-empty__icon  { font-size: 48px; margin-bottom: var(--space-4); }
+    .admin-empty__title { font-size: 16px; font-weight: 700; color: var(--ink-2); }
+    .admin-empty__sub   { font-size: 13px; margin-top: var(--space-2); }
+
+    /* Notification toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--ink);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      display: none;
+      animation: fade-in 0.3s ease both;
+    }
+
+    .toast.show { display: block; }
+    .toast.success { background: var(--green); }
+    .toast.error   { background: var(--red); }
+
+    @media (max-width: 600px) {
+      .admin-content { padding: var(--space-4); }
+      .admin-stats   { grid-template-columns: 1fr; }
+      .reg-card      { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════
+     ADMIN LOGIN
+══════════════════════════ -->
+<div class="admin-login" id="login-screen">
+  <div class="admin-login-card">
+
+    <a href="dashboard.html" class="logo" style="justify-content:center;margin-bottom:var(--space-6)">
+      <div class="logo__mark">OP</div>
+      <div class="logo__name">Omni<span>Prep</span></div>
+    </a>
+
+    <div class="admin-badge">Admin Access</div>
+
+    <h2 class="text-h2 mt-4 mb-2">Admin Login</h2>
+    <p class="text-sm mb-8">This page is for OmniPrep administrators only.</p>
+
+    <div class="form-alert error" id="login-error"></div>
+
+    <div class="auth-form mt-4">
+      <div class="form-group">
+        <label class="form-label" for="admin-pass">Admin Password</label>
+        <input
+          class="form-input"
+          type="password"
+          id="admin-pass"
+          placeholder="Enter admin password"
+          onkeydown="if(event.key==='Enter') adminLogin()"
+        />
+      </div>
+      <button class="btn btn-primary btn-lg btn-block mt-4" onclick="adminLogin()">
+        Login →
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════
+     ADMIN PANEL
+══════════════════════════ -->
+<div class="admin-panel" id="admin-panel">
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <a href="dashboard.html" class="logo logo--sm">
+      <div class="logo__mark">OP</div>
+      <div class="logo__name">Omni<span>Prep</span></div>
+    </a>
+    <div style="display:flex;align-items:center;gap:var(--space-4)">
+      <span style="font-size:12px;color:rgba(255,255,255,0.5);font-family:var(--mono)">Admin Panel</span>
+      <button
+        onclick="adminLogout()"
+        style="font-size:12px;font-weight:600;padding:5px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);cursor:pointer;font-family:var(--font)"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="admin-content">
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="admin-stat">
+        <div class="admin-stat__val" style="color:var(--amber)" id="stat-pending">0</div>
+        <div class="admin-stat__lbl">Pending</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat__val" style="color:var(--green)" id="stat-activated">0</div>
+        <div class="admin-stat__lbl">Activated</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat__val" style="color:var(--blue)" id="stat-total">0</div>
+        <div class="admin-stat__lbl">Total</div>
+      </div>
+    </div>
+
+    <!-- Pending registrations -->
+    <div class="admin-section-header">
+      <div class="admin-section-title">⏳ Pending Registrations</div>
+      <button class="btn btn-secondary btn-sm" onclick="loadRegistrations()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <div class="reg-list" id="pending-list">
+      <div class="admin-empty">
+        <div class="admin-empty__icon">⏳</div>
+        <div class="admin-empty__title">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Activated registrations -->
+    <div class="admin-section-header mt-8">
+      <div class="admin-section-title">✅ Recently Activated</div>
+    </div>
+
+    <div class="reg-list" id="activated-list">
+      <div class="admin-empty">
+        <div class="admin-empty__icon">✅</div>
+        <div class="admin-empty__title">No activations yet</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════
+     SCRIPTS
+══════════════════════════ -->
+<script type="module">
+  import {
+    auth, db,
+    createUserWithEmailAndPassword,
+    updateProfile,
+    collection, getDocs, doc,
+    setDoc, updateDoc,
+    query, orderBy,
+    serverTimestamp,
+    onAuthStateChanged,
+  } from './js/firebase.js';
+
+  // ── ADMIN PASSWORD ──
+  const ADMIN_HASH = 'maSAri123#$%';
+
+  // ── LOGIN ──
+  window.adminLogin = function() {
+    const pass = document.getElementById('admin-pass').value;
+    if (pass !== ADMIN_HASH) {
+      const el = document.getElementById('login-error');
+      el.textContent = 'Incorrect password.';
+      el.className   = 'form-alert error show';
+      return;
+    }
+    sessionStorage.setItem('op_admin', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('active');
+    loadRegistrations();
+  };
+
+  window.adminLogout = function() {
+    sessionStorage.removeItem('op_admin');
+    location.reload();
+  };
+
+  // Auto-login if session exists
+  if (sessionStorage.getItem('op_admin') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('active');
+    loadRegistrations();
+  }
+
+  // ── LOAD REGISTRATIONS ──
+  window.loadRegistrations = async function() {
+    try {
+      const snap = await getDocs(
+        query(collection(db, 'pending_registrations'), orderBy('createdAt', 'desc'))
+      );
+
+      const all       = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const pending   = all.filter(r => r.status === 'pending');
+      const activated = all.filter(r => r.status === 'activated');
+
+      // Update stats
+      document.getElementById('stat-pending').textContent   = pending.length;
+      document.getElementById('stat-activated').textContent = activated.length;
+      document.getElementById('stat-total').textContent     = all.length;
+
+      // Render pending
+      renderList('pending-list', pending, true);
+
+      // Render activated (last 10)
+      renderList('activated-list', activated.slice(0, 10), false);
+
+    } catch(e) {
+      console.error('Load error:', e);
+      showToast('Failed to load registrations. Check console.', 'error');
+    }
+  };
+
+  // ── RENDER LIST ──
+  function renderList(containerId, items, showActions) {
+    const el = document.getElementById(containerId);
+
+    if (items.length === 0) {
+      el.innerHTML = `
+        <div class="admin-empty">
+          <div class="admin-empty__icon">${showActions ? '🎉' : '📭'}</div>
+          <div class="admin-empty__title">${showActions ? 'No pending registrations' : 'No activations yet'}</div>
+          <div class="admin-empty__sub">${showActions ? 'All caught up!' : ''}</div>
+        </div>`;
+      return;
+    }
+
+    el.innerHTML = items.map(r => {
+      const time = r.createdAt?.toDate
+        ? r.createdAt.toDate().toLocaleString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })
+        : 'Unknown time';
+
+      const subjectBadges = (r.subjects || []).map(s =>
+        `<span class="badge badge-gray" style="font-size:10px">${s}</span>`
+      ).join('');
+
+      const actions = showActions ? `
+        <button
+          class="btn btn-primary btn-sm"
+          onclick="activateAccount('${r.id}', '${r.name}', '${r.email}', '${r.password}', '${r.examYear}', '${r.examDate}', ${JSON.stringify(r.subjects).replace(/"/g, '&quot;')})"
+          id="activate-btn-${r.id}"
+        >
+          ✅ Activate
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          onclick="rejectRegistration('${r.id}')"
+        >
+          ✗ Reject
+        </button>` : `<span class="badge badge-green">Activated</span>`;
+
+      return `
+        <div class="reg-card ${r.status === 'activated' ? 'activated' : ''}" id="card-${r.id}">
+          <div>
+            <div class="reg-card__name">${r.name || '—'}</div>
+            <div class="reg-card__email">${r.email || '—'}</div>
+            <div class="reg-card__meta">
+              <span class="badge badge-blue">${r.examYear || '—'}</span>
+              ${subjectBadges}
+            </div>
+            <div class="reg-card__time">Submitted: ${time}</div>
+            ${r.activatedAt ? `<div class="reg-card__time" style="color:var(--green)">Activated: ${r.activatedAt?.toDate ? r.activatedAt.toDate().toLocaleString('en-GB') : '—'}</div>` : ''}
+          </div>
+          <div class="reg-card__actions">
+            ${actions}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── ACTIVATE ACCOUNT ──
+  window.activateAccount = async function(docId, name, email, password, examYear, examDate, subjects) {
+    const btn = document.getElementById(`activate-btn-${docId}`);
+    btn.disabled    = true;
+    btn.textContent = 'Creating...';
+
+    try {
+      // 1. Create Firebase Auth account
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      const user       = credential.user;
+
+      // 2. Set display name
+      await updateProfile(user, { displayName: name });
+
+      // 3. Create Firestore student profile
+      await setDoc(doc(db, 'students', user.uid), {
+        uid:          user.uid,
+        name:         name,
+        email:        email,
+        examYear:     examYear,
+        examDate:     examDate,
+        subjects:     subjects,
+        plan:         'annual',
+        accessStart:  serverTimestamp(),
+        accessExpiry: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+        sessions:     [],
+        createdAt:    serverTimestamp(),
+      });
+
+      // 4. Mark pending registration as activated
+      await updateDoc(doc(db, 'pending_registrations', docId), {
+        status:      'activated',
+        activatedAt: serverTimestamp(),
+        uid:         user.uid,
+      });
+
+      showToast(`✅ ${name} activated successfully!`, 'success');
+      setTimeout(() => loadRegistrations(), 1500);
+
+    } catch(e) {
+      btn.disabled    = false;
+      btn.textContent = '✅ Activate';
+      console.error('Activation error:', e);
+
+      let msg = 'Activation failed. ' + (e.message || '');
+      if (e.code === 'auth/email-already-in-use') {
+        msg = `${email} already has an Auth account. Check if they were already activated.`;
+      }
+      showToast(msg, 'error');
+    }
+  };
+
+  // ── REJECT REGISTRATION ──
+  window.rejectRegistration = async function(docId) {
+    if (!confirm('Are you sure you want to reject this registration?')) return;
+    try {
+      await updateDoc(doc(db, 'pending_registrations', docId), {
+        status: 'rejected',
+      });
+      showToast('Registration rejected.', 'error');
+      setTimeout(() => loadRegistrations(), 1000);
+    } catch(e) {
+      showToast('Failed to reject. ' + e.message, 'error');
+    }
+  };
+
+  // ── TOAST ──
+  window.showToast = function(msg, type = 'success') {
+    const el      = document.getElementById('toast');
+    el.textContent = msg;
+    el.className   = `toast show ${type}`;
+    setTimeout(() => { el.className = 'toast'; }, 4000);
+  };
+</script>
+
+</body>
+</html>
