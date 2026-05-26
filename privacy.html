@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — OmniPrep</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #059669;
+      --green-light: #D1FAE5;
+      --green-dark:  #047857;
+      --ink:         #0F172A;
+      --ink-2:       #334155;
+      --ink-3:       #64748B;
+      --ink-4:       #94A3B8;
+      --surface:     #F8FAFC;
+      --white:       #FFFFFF;
+      --border:      #E2E8F0;
+      --font:        'Plus Jakarta Sans', sans-serif;
+      --mono:        'JetBrains Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--surface);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo__mark {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 12px; font-weight: 600;
+      color: var(--white);
+    }
+
+    .logo__name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .logo__name span { color: var(--green); }
+
+    .navbar__link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-3);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .navbar__link:hover { color: var(--green); }
+
+    /* ── HERO ── */
+    .page-hero {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .page-hero__tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid var(--green-light);
+      background: var(--green-light);
+      border-radius: 50px;
+      padding: 4px 14px;
+      margin-bottom: 16px;
+    }
+
+    .page-hero__title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .page-hero__sub {
+      font-size: 14px;
+      color: var(--ink-3);
+    }
+
+    /* ── LAYOUT ── */
+    .policy-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 40px;
+      max-width: 960px;
+      margin: 48px auto;
+      padding: 0 24px 80px;
+      align-items: start;
+    }
+
+    /* ── TABLE OF CONTENTS ── */
+    .toc {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      position: sticky;
+      top: 80px;
+    }
+
+    .toc__title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-4);
+      margin-bottom: 12px;
+    }
+
+    .toc__list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .toc__link {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-3);
+      text-decoration: none;
+      padding: 5px 8px;
+      border-radius: 6px;
+      transition: all 0.14s;
+      display: block;
+    }
+
+    .toc__link:hover {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
+
+    /* ── POLICY CONTENT ── */
+    .policy-content {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px 48px;
+    }
+
+    .policy-section {
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .policy-section__num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .policy-section__title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .policy-section p {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .policy-section p:last-child { margin-bottom: 0; }
+
+    .policy-section ul {
+      margin: 12px 0 14px 0;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .policy-section ul li {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.7;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .policy-section ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .policy-highlight {
+      background: var(--green-light);
+      border: 1px solid #A7F3D0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+
+    .policy-highlight p {
+      margin-bottom: 0;
+      color: var(--green-dark);
+      font-weight: 500;
+    }
+
+    .policy-warn {
+      background: #FEF3C7;
+      border: 1px solid #FCD34D;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+
+    .policy-warn p {
+      margin-bottom: 0;
+      color: #92400E;
+      font-weight: 500;
+    }
+
+    /* Contact card */
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 16px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .contact-row:last-child { border-bottom: none; }
+    .contact-row__label { color: var(--ink-3); font-weight: 600; min-width: 80px; }
+    .contact-row__val   { color: var(--ink-2); font-family: var(--mono); font-size: 12px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--ink);
+      text-align: center;
+      padding: 32px 24px;
+    }
+
+    .footer p { font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 8px; }
+    .footer a  { color: var(--green); text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .policy-layout { grid-template-columns: 1fr; }
+      .toc           { display: none; }
+      .policy-content { padding: 24px; }
+      .navbar        { padding: 14px 20px; }
+      .page-hero     { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo__mark">OP</div>
+    <div class="logo__name">Omni<span>Prep</span></div>
+  </a>
+  <a href="index.html" class="navbar__link">← Back to home</a>
+</nav>
+
+
+<!-- ── HERO ── -->
+<div class="page-hero">
+  <div class="page-hero__tag">Legal</div>
+  <h1 class="page-hero__title">Privacy Policy</h1>
+  <p class="page-hero__sub">
+    Last updated: 26 May 2026 &nbsp;·&nbsp;
+    Effective: 26 May 2026
+  </p>
+</div>
+
+
+<!-- ── CONTENT ── -->
+<div class="policy-layout">
+
+  <!-- Table of contents -->
+  <aside class="toc">
+    <div class="toc__title">Contents</div>
+    <div class="toc__list">
+      <a href="#overview"     class="toc__link">1. Overview</a>
+      <a href="#collect"      class="toc__link">2. What we collect</a>
+      <a href="#use"          class="toc__link">3. How we use it</a>
+      <a href="#storage"      class="toc__link">4. Data storage</a>
+      <a href="#sharing"      class="toc__link">5. Data sharing</a>
+      <a href="#payment"      class="toc__link">6. Payments</a>
+      <a href="#cookies"      class="toc__link">7. Cookies</a>
+      <a href="#children"     class="toc__link">8. Children</a>
+      <a href="#rights"       class="toc__link">9. Your rights</a>
+      <a href="#security"     class="toc__link">10. Security</a>
+      <a href="#changes"      class="toc__link">11. Changes</a>
+      <a href="#contact"      class="toc__link">12. Contact us</a>
+    </div>
+  </aside>
+
+  <!-- Policy sections -->
+  <main class="policy-content">
+
+    <!-- 1. Overview -->
+    <div class="policy-section" id="overview">
+      <div class="policy-section__num">Section 01</div>
+      <div class="policy-section__title">Overview</div>
+      <p>
+        OmniPrep ("we", "us", or "our") is a CBT training platform for Nigerian
+        UTME/JAMB candidates, operated by Usman Ibrahim, based in Nigeria.
+        This Privacy Policy explains what information we collect from you,
+        how we use it, and what rights you have over it.
+      </p>
+      <p>
+        By registering for or using OmniPrep, you agree to the terms of this
+        Privacy Policy. If you do not agree, please do not use the platform.
+      </p>
+      <div class="policy-highlight">
+        <p>
+          💡 Short version: We collect only what we need to run your account and
+          improve the platform. We do not sell your data. We do not share it
+          with advertisers. You can request deletion at any time.
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. What we collect -->
+    <div class="policy-section" id="collect">
+      <div class="policy-section__num">Section 02</div>
+      <div class="policy-section__title">What information we collect</div>
+      <p>We collect the following information when you register and use OmniPrep:</p>
+
+      <p><strong>Information you provide directly:</strong></p>
+      <ul>
+        <li>Your full name</li>
+        <li>Your email address</li>
+        <li>Your password (stored securely — we never see it in plain text)</li>
+        <li>Your UTME exam year and approximate exam date</li>
+        <li>Your chosen JAMB subjects</li>
+      </ul>
+
+      <p><strong>Information generated by your use of the platform:</strong></p>
+      <ul>
+        <li>Your exam session results — scores, correct answers, wrong answers, time used</li>
+        <li>Your subject accuracy percentages</li>
+        <li>Your score history across multiple sessions</li>
+        <li>Questions you answered incorrectly (for the Correction Vault)</li>
+      </ul>
+
+      <p><strong>Information we do NOT collect:</strong></p>
+      <ul>
+        <li>Your bank card details — all payments are handled by our payment processors</li>
+        <li>Your phone number (unless you voluntarily contact us via WhatsApp)</li>
+        <li>Your location or GPS data</li>
+        <li>Any information from your device beyond what your browser sends normally</li>
+      </ul>
+    </div>
+
+    <!-- 3. How we use it -->
+    <div class="policy-section" id="use">
+      <div class="policy-section__num">Section 03</div>
+      <div class="policy-section__title">How we use your information</div>
+      <p>We use the information we collect for the following purposes only:</p>
+      <ul>
+        <li>To create and manage your OmniPrep account</li>
+        <li>To verify your payment and activate your subscription</li>
+        <li>To display your exam results, score history, and subject performance</li>
+        <li>To personalise the dashboard with your name, subjects, and exam countdown</li>
+        <li>To respond to your support requests or questions</li>
+        <li>To improve the platform based on how students use it</li>
+        <li>To notify you about your account status or subscription expiry</li>
+      </ul>
+      <p>
+        We do not use your information for advertising, profiling, or any
+        purpose beyond running OmniPrep for you.
+      </p>
+    </div>
+
+    <!-- 4. Data storage -->
+    <div class="policy-section" id="storage">
+      <div class="policy-section__num">Section 04</div>
+      <div class="policy-section__title">Where your data is stored</div>
+      <p>
+        Your account information and exam results are stored securely on
+        <strong>Google Firebase</strong>, a cloud platform operated by Google LLC.
+        Firebase servers are located in Europe (europe-west1 region).
+        Firebase complies with GDPR and international data protection standards.
+      </p>
+      <p>
+        Your password is never stored in plain text. Firebase Authentication
+        handles password security using industry-standard hashing. We cannot
+        read your password — only you know it.
+      </p>
+      <p>
+        Your data is retained for as long as your account is active. If you
+        request deletion of your account, all your data is removed from our
+        systems within 30 days.
+      </p>
+    </div>
+
+    <!-- 5. Data sharing -->
+    <div class="policy-section" id="sharing">
+      <div class="policy-section__num">Section 05</div>
+      <div class="policy-section__title">Data sharing and third parties</div>
+      <div class="policy-warn">
+        <p>
+          ⚠️ We do not sell your personal information to anyone, ever.
+          We do not share your data with advertisers or marketing companies.
+        </p>
+      </div>
+      <p>
+        We share your information only with the following third-party services
+        that are necessary to run OmniPrep:
+      </p>
+      <ul>
+        <li>
+          <strong>Google Firebase</strong> — stores your account and exam data.
+          Privacy policy: firebase.google.com/support/privacy
+        </li>
+        <li>
+          <strong>EmailJS</strong> — sends email notifications when you register.
+          Privacy policy: emailjs.com/legal/privacy-policy
+        </li>
+        <li>
+          <strong>GitHub Pages</strong> — hosts the OmniPrep website files.
+          No personal data is stored by GitHub Pages.
+        </li>
+      </ul>
+      <p>
+        Each of these services has their own privacy policies and security standards.
+        We carefully selected services that take data protection seriously.
+      </p>
+    </div>
+
+    <!-- 6. Payments -->
+    <div class="policy-section" id="payment">
+      <div class="policy-section__num">Section 06</div>
+      <div class="policy-section__title">Payments and financial data</div>
+      <p>
+        OmniPrep currently accepts payments by direct bank transfer. When you
+        make a payment, you transfer money directly to our bank account. We do
+        not collect or store your bank card details, account number, or any
+        other financial information.
+      </p>
+      <p>
+        When you send payment proof by WhatsApp or email, we use that proof
+        solely to verify your payment and activate your account. We do not
+        store payment screenshots beyond this verification purpose.
+      </p>
+      <p>
+        Your subscription access is valid for one year from the date your
+        account is activated. We will notify you before your subscription
+        expires so you can renew.
+      </p>
+    </div>
+
+    <!-- 7. Cookies -->
+    <div class="policy-section" id="cookies">
+      <div class="policy-section__num">Section 07</div>
+      <div class="policy-section__title">Cookies and local storage</div>
+      <p>
+        OmniPrep uses browser <strong>local storage</strong> (not traditional cookies)
+        to keep you logged in between visits. This stores a secure authentication
+        token on your device — not your password or personal details.
+      </p>
+      <p>
+        This local storage is used only to maintain your login session. You can
+        clear it at any time by logging out or clearing your browser data.
+        We do not use tracking cookies or advertising cookies of any kind.
+      </p>
+    </div>
+
+    <!-- 8. Children -->
+    <div class="policy-section" id="children">
+      <div class="policy-section__num">Section 08</div>
+      <div class="policy-section__title">Students under 18</div>
+      <p>
+        OmniPrep is designed for JAMB candidates, many of whom are between
+        16 and 18 years old. We take extra care with the data of young users.
+      </p>
+      <p>
+        We collect only what is strictly necessary — name, email, subjects,
+        and exam results. We do not collect sensitive personal data, location,
+        photos, or any information that could identify a student beyond their
+        account details.
+      </p>
+      <p>
+        If you are a parent or guardian and believe your child has registered
+        without your consent, please contact us immediately and we will delete
+        the account within 48 hours.
+      </p>
+    </div>
+
+    <!-- 9. Your rights -->
+    <div class="policy-section" id="rights">
+      <div class="policy-section__num">Section 09</div>
+      <div class="policy-section__title">Your rights over your data</div>
+      <p>You have the following rights regarding your personal data:</p>
+      <ul>
+        <li>
+          <strong>Right to access</strong> — you can request a copy of all
+          data we hold about you at any time.
+        </li>
+        <li>
+          <strong>Right to correction</strong> — if any of your information
+          is incorrect, you can ask us to correct it.
+        </li>
+        <li>
+          <strong>Right to deletion</strong> — you can request that we delete
+          your account and all associated data. We will do this within 30 days.
+        </li>
+        <li>
+          <strong>Right to data portability</strong> — you can request your
+          exam results and account data in a readable format.
+        </li>
+        <li>
+          <strong>Right to withdraw consent</strong> — you can stop using
+          OmniPrep at any time. Your data will be retained until you
+          request deletion.
+        </li>
+      </ul>
+      <p>
+        To exercise any of these rights, contact us using the details in
+        Section 12 below.
+      </p>
+    </div>
+
+    <!-- 10. Security -->
+    <div class="policy-section" id="security">
+      <div class="policy-section__num">Section 10</div>
+      <div class="policy-section__title">Security</div>
+      <p>
+        We take reasonable measures to protect your data from unauthorised
+        access, loss, or misuse. These include:
+      </p>
+      <ul>
+        <li>All data transmitted over HTTPS (encrypted in transit)</li>
+        <li>Passwords stored using Firebase's industry-standard hashing</li>
+        <li>Firestore security rules that restrict each student to their own data only</li>
+        <li>No plain-text storage of passwords or payment details</li>
+      </ul>
+      <p>
+        However, no system is completely secure. If you believe your account
+        has been compromised, contact us immediately and change your password.
+      </p>
+    </div>
+
+    <!-- 11. Changes -->
+    <div class="policy-section" id="changes">
+      <div class="policy-section__num">Section 11</div>
+      <div class="policy-section__title">Changes to this policy</div>
+      <p>
+        We may update this Privacy Policy from time to time as the platform
+        grows. When we make significant changes, we will update the
+        "Last updated" date at the top of this page.
+      </p>
+      <p>
+        We encourage you to review this policy periodically. Continued use
+        of OmniPrep after changes are posted means you accept the updated policy.
+      </p>
+    </div>
+
+    <!-- 12. Contact -->
+    <div class="policy-section" id="contact">
+      <div class="policy-section__num">Section 12</div>
+      <div class="policy-section__title">Contact us</div>
+      <p>
+        If you have any questions about this Privacy Policy, want to exercise
+        your data rights, or need to report a concern, contact us through
+        any of the following:
+      </p>
+      <div class="contact-card">
+        <div class="contact-row">
+          <span class="contact-row__label">Email</span>
+          <span class="contact-row__val">uthmanibraheem47@gmail.com</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row__label">WhatsApp</span>
+          <span class="contact-row__val">+234 912 730 3813</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row__label">Operator</span>
+          <span class="contact-row__val">Usman Ibrahim, Nigeria</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-row__label">Platform</span>
+          <span class="contact-row__val">safary01.github.io/omniprep</span>
+        </div>
+      </div>
+      <p style="margin-top:16px">
+        We aim to respond to all privacy-related requests within
+        <strong>5 working days</strong>.
+      </p>
+    </div>
+
+  </main>
+
+</div>
+
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="logo" style="justify-content:center">
+    <div class="logo__mark">OP</div>
+    <div class="logo__name" style="color:var(--white)">
+      Omni<span style="color:var(--green)">Prep</span>
+    </div>
+  </div>
+  <p style="margin-top:16px">
+    &copy; 2026 OmniPrep · Operated by Usman Ibrahim · Nigeria
+  </p>
+  <p>
+    <a href="index.html">Home</a> &nbsp;·&nbsp;
+    <a href="register.html">Register</a> &nbsp;·&nbsp;
+    <a href="login.html">Login</a>
+  </p>
+</footer>
+
+</body>
+</html>
