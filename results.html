@@ -535,7 +535,7 @@
       const optsHTML = opts.map((opt, oi) => {
         const isCor   = oi === e.correct;
         const isWrong = oi === e.yours && oi !== e.correct;
-        const cls     = isCor ? 'correct-ans' : isWrong ? 'your-wrong' : 'other' 'explain';
+        const cls     = isCor ? 'correct-ans' : isWrong ? 'your-wrong' : 'other';
         return `<div class="vault-option ${cls}"><div class="opt-k">${KEYS[oi]}</div><div>${opt}</div></div>`;
       }).join('');
 
