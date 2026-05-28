@@ -535,12 +535,12 @@
       const optsHTML = opts.map((opt, oi) => {
         const isCor   = oi === e.correct;
         const isWrong = oi === e.yours && oi !== e.correct;
-        const cls     = isCor ? 'correct-ans' : isWrong ? 'your-wrong' : 'other';
+        const cls     = isCor ? 'correct-ans' : isWrong ? 'your-wrong' : 'other' : 'explain';
         return `<div class="vault-option ${cls}"><div class="opt-k">${KEYS[oi]}</div><div>${opt}</div></div>`;
       }).join('');
 
       const yourPill = e.yours !== null && e.yours !== undefined
-        ? `<div class="ans-pill wrong">✗ Your answer: ${KEYS[e.yours]}. ${opts[e.yours] || ''}</div>`
+        ? `<div class="ans-pill wrong">✗ Your answer: ${KEYS[e.yours]}. ${opts[e.yours] || 'explain'}</div>`
         : `<div class="ans-pill skipped">— Skipped</div>`;
 
       const explain = e.explain
