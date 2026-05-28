@@ -545,7 +545,7 @@
 
       const explain = e.explain
         ? `<div class="vault-explain"><div class="explain-label">📖 Explanation</div><div class="explain-text">${e.explain}</div></div>`
-        : `<div class="vault-explain"><div class="explain-label">📖 Correct Answer</div><div class="explain-text">The correct answer is <strong>${KEYS[e.correct]}. ${opts[e.correct] || ''}</strong>. Review this topic in your textbook.</div></div>`;
+        : `<div class="vault-explain"><div class="explain-label">📖 Correct Answer</div><div class="explain-text">The correct answer is <strong>${KEYS[e.correct]}. ${opts[e.correct] || 'explain'}</strong>. Review this topic in your textbook.</div></div>`;
 
       return `
         <div class="vault-item" id="vi-${i}">
