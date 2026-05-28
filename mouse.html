@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Precision Learning Game</title>
+    <style>
+        :root {
+            --block-color: #2e7d32; /* Initial dark green */
+            --danger-color: #d32f2f; /* Red for failure */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+        }
+
+        h1 {
+            color: #1a237e;
+            margin-bottom: 5px;
+        }
+
+        #status-panel {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #37474f;
+        }
+
+        /* Game Board Wrapper */
+        #game-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 4px solid #37474f;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Obstacles (The Blocks) */
+        .obstacle {
+            position: absolute;
+            background-color: var(--block-color);
+            transition: background-color 0.15s ease;
+        }
+
+        .obstacle.hit {
+            background-color: var(--danger-color);
+        }
+
+        /* Zones */
+        .zone {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: white;
+            z-index: 10;
+        }
+
+        #start-zone {
+            background-color: #0288d1;
+            cursor: pointer;
+        }
+
+        #end-zone {
+            background-color: #388e3c;
+        }
+
+        /* UI Controls */
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            background-color: #1565c0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background-color: #0d47a1;
+        }
+
+        button:disabled {
+            background-color: #b0bec5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mouse Control Challenge</h1>
+    <div id="status-panel">Level: <span id="level-num">1</span>/10 | Status: <span id="game-status">Hover over "START" to begin!</span></div>
+
+    <div id="game-container"></div>
+
+    <div id="controls">
+        <button id="reset-btn">Restart Level</button>
+        <button id="skip-btn" style="background-color: #78909c;">Skip Level</button>
+    </div>
+
+    <script>
+        // All coordinates mapped safely inside the 500x500 frame box.
+        // Format: [x, y, width, height]
+        const levels = [
+            // Level 1: Straight horizontal path
+            {
+                start: [10, 210, 60, 80, "START"],
+                end: [430, 210, 60, 80, "GOAL"],
+                obstacles: [
+                    [0, 0, 500, 210],
+                    [0, 290, 500, 210]
+                ]
+            },
+            // Level 2: FIXED Inverted U-turn maze pathing
+            {
+                start: [40, 350, 60, 70, "START"],
+                end: [400, 350, 60, 70, "GOAL"],
+                obstacles: [
+                    [0, 0, 500, 120],         // Shuffled up top boundary wall
+                    [130, 230, 240, 270],     // Center structural bottom island block
+                    [0, 120, 30, 380],        // Left outer boundary cushion
+                    [470, 120, 30, 380]       // Right outer boundary cushion
+                ]
+            },
+            // Level 3: FIXED Simple L-Shape turn
+            {
+                start: [20, 20, 70, 60, "START"],
+                end: [420, 420, 60, 70, "GOAL"],
+                obstacles: [
+                    [120, 0, 380, 390],       // Trimmed block to allow space underneath
+                    [0, 120, 90, 380]         // Trimmed block to leave a continuous track run
+                ]
+            },
+            // Level 4: Z-shaped track
+            {
+                start: [20, 20, 60, 60, "START"],
+                end: [420, 420, 60, 60, "GOAL"],
+                obstacles: [
+                    [120, 0, 380, 120],
+                    [0, 200, 380, 100],
+                    [120, 380, 380, 120]
+                ]
+            },
+            // Level 5: The U-Loop
+            {
+                start: [30, 30, 60, 60, "START"],
+                end: [410, 30, 60, 60, "GOAL"],
+                obstacles: [
+                    [130, 0, 240, 360],
+                    [0, 430, 500, 70],
+                    [0, 0, 30, 500],
+                    [470, 0, 30, 500]
+                ]
+            },
+            // Level 6: Central island detour
+            {
+                start: [220, 20, 60, 60, "START"],
+                end: [220, 420, 60, 60, "GOAL"],
+                obstacles: [
+                    [150, 150, 200, 200], 
+                    [0, 0, 120, 500],
+                    [380, 0, 120, 500]
+                ]
+            },
+            // Level 7: Ascending staircase
+            {
+                start: [10, 430, 60, 60, "START"],
+                end: [430, 10, 60, 60, "GOAL"],
+                obstacles: [
+                    [0, 0, 390, 120],
+                    [0, 120, 270, 120],
+                    [0, 240, 150, 120],
+                    [110, 390, 390, 110],
+                    [230, 270, 270, 120],
+                    [350, 150, 150, 120]
+                ]
+            },
+            // Level 8: Narrow choke points
+            {
+                start: [10, 220, 50, 60, "START"],
+                end: [440, 220, 50, 60, "GOAL"],
+                obstacles: [
+                    [0, 0, 500, 180],
+                    [0, 320, 500, 180],
+                    [120, 180, 50, 100],  
+                    [220, 220, 50, 100],  
+                    [320, 180, 50, 100]   
+                ]
+            },
+            // Level 9: Spiral introductory ring
+            {
+                start: [20, 20, 50, 50, "START"],
+                end: [225, 225, 50, 50, "GOAL"],
+                obstacles: [
+                    [100, 100, 300, 40],
+                    [360, 140, 40, 260],
+                    [100, 360, 260, 40],
+                    [100, 180, 40, 180],
+                    [180, 180, 120, 40]
+                ]
+            },
+            // Level 10: The Ultimate Wave
+            {
+                start: [10, 20, 50, 60, "START"],
+                end: [440, 420, 50, 60, "GOAL"],
+                obstacles: [
+                    [0, 100, 380, 50],
+                    [120, 220, 380, 50],
+                    [0, 340, 380, 50]
+                ]
+            }
+        ];
+
+        let currentLevel = 0;
+        let isPlaying = false;
+
+        const container = document.getElementById('game-container');
+        const levelNumDisplay = document.getElementById('level-num');
+        const statusDisplay = document.getElementById('game-status');
+        const resetBtn = document.getElementById('reset-btn');
+        const skipBtn = document.getElementById('skip-btn');
+
+        function loadLevel(levelIndex) {
+            if(levelIndex >= levels.length) {
+                statusDisplay.textContent = "🎉 Amazing Job! You completed all levels!";
+                isPlaying = false;
+                return;
+            }
+
+            container.innerHTML = "";
+            isPlaying = false;
+            
+            levelNumDisplay.textContent = levelIndex + 1;
+            statusDisplay.textContent = "Hover over 'START' to activate tracking!";
+            statusDisplay.style.color = "#37474f";
+
+            const data = levels[levelIndex];
+
+            // 1. Build Start Zone
+            const startZone = document.createElement('div');
+            startZone.id = "start-zone";
+            startZone.className = "zone";
+            assignCoordinates(startZone, data.start);
+            startZone.textContent = data.start[4];
+            
+            startZone.addEventListener('mouseenter', () => {
+                if (!isPlaying) {
+                    isPlaying = true;
+                    statusDisplay.textContent = "Game Active! Navigate carefully...";
+                    statusDisplay.style.color = "#0288d1";
+                    resetObstacleColors();
+                }
+            });
+            container.appendChild(startZone);
+
+            // 2. Build Goal Zone
+            const endZone = document.createElement('div');
+            endZone.id = "end-zone";
+            endZone.className = "zone";
+            assignCoordinates(endZone, data.end);
+            endZone.textContent = data.end[4];
+            
+            endZone.addEventListener('mouseenter', () => {
+                if (isPlaying) {
+                    isPlaying = false;
+                    statusDisplay.textContent = "🎯 Level Cleared! Loading next level...";
+                    statusDisplay.style.color = "#388e3c";
+                    setTimeout(() => {
+                        currentLevel++;
+                        loadLevel(currentLevel);
+                    }, 1200);
+                }
+            });
+            container.appendChild(endZone);
+
+            // 3. Render Level Blocks
+            data.obstacles.forEach(coords => {
+                const obs = document.createElement('div');
+                obs.className = "obstacle";
+                assignCoordinates(obs, coords);
+                
+                obs.addEventListener('mouseenter', () => {
+                    if (isPlaying) {
+                        handleFailure();
+                    }
+                });
+                container.appendChild(obs);
+            });
+        }
+
+        function assignCoordinates(element, rect) {
+            element.style.left = rect[0] + 'px';
+            element.style.top = rect[1] + 'px';
+            element.style.width = rect[2] + 'px';
+            element.style.height = rect[3] + 'px';
+        }
+
+        function handleFailure() {
+            isPlaying = false;
+            statusDisplay.textContent = "❌ Out! You touched the block. Try again!";
+            statusDisplay.style.color = "#d32f2f";
+            
+            const obstacles = document.querySelectorAll('.obstacle');
+            obstacles.forEach(obs => obs.classList.add('hit'));
+        }
+
+        function resetObstacleColors() {
+            const obstacles = document.querySelectorAll('.obstacle');
+            obstacles.forEach(obs => obs.classList.remove('hit'));
+        }
+
+        container.addEventListener('mouseleave', () => {
+            if (isPlaying) {
+                isPlaying = false;
+                statusDisplay.textContent = "⚠️ Left the map area! Restart from START.";
+                statusDisplay.style.color = "#e65100";
+            }
+        });
+
+        resetBtn.addEventListener('click', () => loadLevel(currentLevel));
+        skipBtn.addEventListener('click', () => {
+            currentLevel = (currentLevel + 1) % levels.length;
+            loadLevel(currentLevel);
+        });
+
+        loadLevel(currentLevel);
+    </script>
+</body>
+</html>
