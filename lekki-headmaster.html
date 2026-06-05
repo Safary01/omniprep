@@ -256,18 +256,23 @@
 </head>
 <body>
 
-<div class="page">
+<div style="padding:10px;">
+    <a href="dashboard.html">🏠 Dashboard</a>
+</div>
 
-  <header>
-    <div class="header-eyebrow">Read Online</div>
-    <h1>The <em>Lekki</em> Headmaster</h1>
-    <div class="header-rule"></div>
-  </header>
+<iframe
+    id="pdfFrame"
+    width="100%"
+    height="900px"
+    style="border:none;">
+</iframe>
 
-  <div class="tab-bar">
-    <a href="summary-lekki-headmaster.pdf" class="tab-btn active"><span><i class="tab-icon">📖</i>The Lekki Headmaster</span></a>
-    <a href="dashboard.html" style="text-decoration: none"; class="tab-btn active"><span><i class="tab-icon">📖</i>Back To Dashboard</span></a>
+<script>
+const params = new URLSearchParams(window.location.search);
+const pdf = params.get("pdf");
 
+document.getElementById("pdfFrame").src = pdf;
+</script>
 
 </body>
 </html>
