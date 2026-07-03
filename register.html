@@ -236,6 +236,7 @@
             <option value="">Select year</option>
             <option value="2025">2025</option>
             <option value="2026">2026</option>
+            <option value="2027">2027</option>
           </select>
           <span class="form-error" id="err-year"></span>
         </div>
@@ -301,7 +302,7 @@
       <div>
         <div class="form-header__title">Make your payment</div>
         <div class="form-header__sub">
-          Transfer ₦500 to the account below, then send us proof.
+          Transfer ₦1999 to the account below, then send us proof.
           Your account will be created within 24 hours.
         </div>
       </div>
@@ -309,7 +310,7 @@
       <!-- Order summary -->
       <div class="payment-summary">
         <div class="payment-summary__row">
-          <span>OmniPrep Annual Access</span><span>₦500.00</span>
+          <span>OmniPrep Annual Access</span><span>₦1999.00</span>
         </div>
         <div class="payment-summary__row">
           <span>Your email</span>
@@ -323,7 +324,7 @@
           <span>Access duration</span><span>1 year</span>
         </div>
         <div class="payment-summary__row total">
-          <span>Total</span><span>₦500</span>
+          <span>Total</span><span>₦1999</span>
         </div>
       </div>
 
@@ -336,22 +337,22 @@
         <div style="display:flex;flex-direction:column;gap:var(--space-3)">
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
             <span style="font-size:12px;color:var(--ink-3)">Bank</span>
-            <span style="font-size:13px;font-weight:700;color:var(--ink)">Taj Bank</span>
+            <span style="font-size:13px;font-weight:700;color:var(--ink)">Moniepoint MFB</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
             <span style="font-size:12px;color:var(--ink-3)">Account Number</span>
             <div style="display:flex;align-items:center;gap:var(--space-2)">
-              <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark);letter-spacing:0.05em">0013911640</span>
+              <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark);letter-spacing:0.05em">6170413940</span>
               <button onclick="copyText('0013911640', this)" style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--green);background:var(--green-light);color:var(--green-dark);cursor:pointer;font-family:var(--font)">Copy</button>
             </div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
             <span style="font-size:12px;color:var(--ink-3)">Account Name</span>
-            <span style="font-size:13px;font-weight:700;color:var(--ink)">Usman Ibrahim</span>
+            <span style="font-size:13px;font-weight:700;color:var(--ink)">Afraah Multi Ventures Services Ltd.</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
             <span style="font-size:12px;color:var(--ink-3)">Amount</span>
-            <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark)">₦500.00</span>
+            <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark)">₦1999.00</span>
           </div>
         </div>
 
@@ -419,6 +420,7 @@
             <span style="font-size:22px">📧</span>
             <div>
               <div style="font-size:13px;font-weight:700;color:var(--ink)">omniprepnigeria@gmail.com</div>
+              <div style="font-size:13px;font-weight:700;color:var(--ink)">info@afraahtechhub.com.ng</div>
               <div style="font-size:11px;color:var(--ink-3)">Send payment proof by email</div>
             </div>
           </a>
@@ -452,7 +454,7 @@
         Thank you, <strong id="success-name"></strong>.
       </p>
       <p class="text-body mb-6">
-        Once we confirm your ₦500 payment, we will create your account and
+        Once we confirm your ₦1999 payment, we will create your account and
         notify you within <strong>24 hours</strong>. You will then be able to
         log in at the link below.
       </p>
@@ -520,7 +522,7 @@
     </div>
 
     <div class="summary-price-box">
-      <div class="summary-price-box__amount">₦500</div>
+      <div class="summary-price-box__amount">₦1999</div>
       <div class="summary-price-box__period">per year · renews annually</div>
       <div class="summary-price-box__note">
         Less than a data card. More valuable than any textbook.
@@ -645,17 +647,17 @@
 
     // Update WhatsApp link with pre-filled message
     const msg = encodeURIComponent(
-      `Hello, I just paid ₦500 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.`
+      `Hello, I just paid ₦1999 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.`
     );
     document.querySelector('a[href*="wa.me"]').href = `https://wa.me/2349127303813?text=${msg}`;
 
     // Update email link
     const subject = encodeURIComponent('OmniPrep Payment Proof');
     const body    = encodeURIComponent(
-      `Hello,\n\nI have paid ₦500 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.\n\nThank you.`
+      `Hello,\n\nI have paid ₦1999 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.\n\nThank you.`
     );
     document.getElementById('email-proof-link').href =
-      `mailto:uthmanibraheem47@gmail.com?subject=${subject}&body=${body}`;
+      `mailto:info@afraahtechhub.com.ng?subject=${subject}&body=${body}`;
 
     // Show step 2
     document.getElementById('step-1').classList.remove('active');
