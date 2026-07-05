@@ -597,7 +597,12 @@
             <button
               class="ask-ai-btn"
               id="ai-btn-${i}"
-              onclick="askAI(${i}, ${JSON.stringify(questionText)}, ${JSON.stringify(optsList)}, ${JSON.stringify(correctAns)}, ${JSON.stringify(yourAns)}, ${JSON.stringify(e.subject)})"
+              onclick="askAI(${i})"
+              data-question="${questionText.replace(/"/g,'&quot;')}"
+              data-options="${optsList.replace(/"/g,'&quot;')}"
+              data-correct="${correctAns.replace(/"/g,'&quot;')}"
+              data-yours="${yourAns.replace(/"/g,'&quot;')}"
+              data-subject="${e.subject}"
             >
               ✨ Ask Gemini AI
             </button>
@@ -617,10 +622,16 @@
   // ── GEMINI AI EXPLANATION ──
   const GEMINI_API_KEY = 'AQ.Ab8RN6K0OwXHcfcoJuPF2XI0sf-Oe9GlmBdClC1_z_TKnEz2OQ';
 
-  window.askAI = async function(i, question, options, correctAns, yourAns, subject) {
+  window.askAI = async function(i) {
     const btn      = document.getElementById(`ai-btn-${i}`);
     const respBox  = document.getElementById(`ai-resp-${i}`);
     const respText = document.getElementById(`ai-text-${i}`);
+
+    const question   = btn.dataset.question;
+    const options    = btn.dataset.options;
+    const correctAns = btn.dataset.correct;
+    const yourAns    = btn.dataset.yours;
+    const subject    = btn.dataset.subject;
 
     btn.disabled    = true;
     btn.textContent = '⏳ Thinking...';
@@ -662,11 +673,13 @@ Write in simple English suitable for a secondary school student. Do not use mark
         respText.textContent = text;
         btn.textContent      = '✨ Asked Gemini';
       } else {
+        console.error('Gemini response:', data);
         respText.textContent = 'Gemini could not generate a response. Please try again.';
         btn.disabled         = false;
         btn.textContent      = '✨ Ask Gemini AI';
       }
     } catch(err) {
+      console.error('Gemini error:', err);
       respText.textContent = 'Network error. Check your connection and try again.';
       btn.disabled         = false;
       btn.textContent      = '✨ Ask Gemini AI';
