@@ -996,7 +996,7 @@
       .map(q => ({
         num: q.num, subject: q.subject,
         type: q.userAns === null ? 'skipped' : 'wrong',
-        q: q.q, opts: q.opts, correct: q.ans, yours: q.userAns, explain: '',
+        q: q.q, opts: q.opts, correct: q.ans, yours: q.userAns, explain: q.explain || '',
       }));
 
     const sessionId = await saveSession(student.uid, {
