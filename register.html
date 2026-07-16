@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register — OmniPrep</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script src="https://js.paystack.co/v1/inline.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     emailjs.init('REPLACE_WITH_YOUR_EMAILJS_PUBLIC_KEY');
@@ -13,7 +14,6 @@
   <!-- Firebase bridge for registration -->
   <script type="module">
     import { db, collection, addDoc, serverTimestamp } from './js/firebase.js';
-    // Store on window so plain script can access it
     window._fb_reg = { db, collection, addDoc, serverTimestamp };
     console.log('Firebase bridge ready.');
   </script>
@@ -52,110 +52,60 @@
     .register-summary-col .logo__mark { background: rgba(255,255,255,0.2); }
 
     .summary-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      margin-top: var(--space-8);
-      margin-bottom: var(--space-3);
+      font-size: 22px; font-weight: 800; color: var(--white);
+      letter-spacing: -0.02em; margin-top: var(--space-8); margin-bottom: var(--space-3);
     }
-
-    .summary-sub {
-      font-size: 13px;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.7;
-      margin-bottom: var(--space-8);
-    }
-
-    .summary-feature {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-3);
-      margin-bottom: var(--space-5);
-    }
-
-    .summary-feature__icon {
-      width: 38px; height: 38px;
-      border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.15);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
-
+    .summary-sub { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: var(--space-8); }
+    .summary-feature { display: flex; align-items: flex-start; gap: var(--space-3); margin-bottom: var(--space-5); }
+    .summary-feature__icon { width: 38px; height: 38px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .summary-feature__title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
     .summary-feature__desc  { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.5; }
-
-    .summary-price-box {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: var(--radius);
-      padding: var(--space-5) var(--space-6);
-      margin-top: var(--space-6);
-    }
-
+    .summary-price-box { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius); padding: var(--space-5) var(--space-6); margin-top: var(--space-6); }
     .summary-price-box__amount { font-size: 40px; font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; }
     .summary-price-box__period { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; }
     .summary-price-box__note   { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid rgba(255,255,255,0.15); line-height: 1.5; }
 
-    .form-header__back {
-      display: inline-flex; align-items: center; gap: var(--space-2);
-      font-size: 13px; font-weight: 500; color: var(--ink-3);
-      text-decoration: none; margin-bottom: var(--space-6); transition: color 0.15s;
-    }
+    .form-header__back { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 13px; font-weight: 500; color: var(--ink-3); text-decoration: none; margin-bottom: var(--space-6); transition: color 0.15s; }
     .form-header__back:hover { color: var(--green); text-decoration: none; }
     .form-header__title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: var(--space-2); }
     .form-header__sub   { font-size: 14px; color: var(--ink-3); }
 
     .steps-indicator { display: flex; align-items: center; gap: 0; margin-bottom: var(--space-8); }
-
     .step-indicator { display: flex; align-items: center; gap: var(--space-2); flex: 1; }
-
-    .step-indicator__dot {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 2px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      color: var(--ink-4); background: var(--white); flex-shrink: 0; transition: all 0.2s;
-    }
-
+    .step-indicator__dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--ink-4); background: var(--white); flex-shrink: 0; transition: all 0.2s; }
     .step-indicator.active .step-indicator__dot { border-color: var(--green); background: var(--green); color: var(--white); }
     .step-indicator.done   .step-indicator__dot { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
     .step-indicator__label { font-size: 11px; font-weight: 600; color: var(--ink-4); transition: color 0.2s; }
     .step-indicator.active .step-indicator__label { color: var(--green-dark); }
     .step-indicator.done   .step-indicator__label { color: var(--green); }
-
     .step-connector { flex: 1; height: 1px; background: var(--border); margin-inline: var(--space-2); transition: background 0.2s; }
     .step-connector.done { background: var(--green-mid); }
 
     .subject-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
-
-    .subject-checkbox {
-      display: flex; align-items: center; gap: var(--space-2);
-      padding: 10px 12px; border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm); cursor: pointer;
-      font-size: 13px; font-weight: 500; color: var(--ink-2);
-      transition: all 0.15s; user-select: none;
-    }
+    .subject-checkbox { display: flex; align-items: center; gap: var(--space-2); padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--ink-2); transition: all 0.15s; user-select: none; }
     .subject-checkbox:hover { border-color: var(--green); color: var(--ink); }
     .subject-checkbox input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; }
     .subject-checkbox.checked { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 600; }
-
     .subject-count { font-size: 12px; color: var(--ink-3); margin-top: var(--space-2); }
     .subject-count .count-num { font-weight: 700; color: var(--green); font-family: var(--mono); }
 
-    .payment-summary { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-6); }
+    .payment-summary { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-5); }
     .payment-summary__row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-2); padding-block: var(--space-2); }
     .payment-summary__row.total { border-top: 1px solid var(--border); margin-top: var(--space-2); padding-top: var(--space-3); font-size: 15px; font-weight: 700; color: var(--ink); }
     .payment-summary__row.total span:last-child { color: var(--green); font-family: var(--mono); font-size: 18px; }
-    .paystack-badge { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--ink-3); margin-top: var(--space-3); }
-    .paystack-badge::before { content: '🔒'; font-size: 13px; }
+
+    .paystack-secure { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--ink-3); margin-top: var(--space-3); justify-content: center; }
 
     .form-step { display: none; }
     .form-step.active { display: flex; flex-direction: column; gap: var(--space-5); animation: fade-in 0.3s ease both; }
 
-    .success-screen { display: none; text-align: center; padding: var(--space-8) 0; animation: scale-in 0.4s ease both; }
+    .success-screen { display: none; text-align: center; padding: var(--space-8) 0; }
     .success-screen.active { display: block; }
     .success-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--green-light); border: 3px solid var(--green); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto var(--space-6); }
+
+    /* Payment methods display */
+    .pay-methods { display: flex; align-items: center; justify-content: center; gap: var(--space-4); margin-top: var(--space-3); flex-wrap: wrap; }
+    .pay-method-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 50px; background: var(--surface-2); border: 1px solid var(--border); color: var(--ink-3); }
 
     @media (max-width: 860px) {
       .register-layout { grid-template-columns: 1fr; }
@@ -300,17 +250,17 @@
     <div class="form-step" id="step-2">
 
       <div>
-        <div class="form-header__title">Make your payment</div>
+        <div class="form-header__title">Complete your payment</div>
         <div class="form-header__sub">
-          Transfer ₦1999 to the account below, then send us proof.
-          Your account will be created within 24 hours.
+          Review your details and pay securely via Paystack.
+          Your account is created automatically after payment.
         </div>
       </div>
 
       <!-- Order summary -->
       <div class="payment-summary">
         <div class="payment-summary__row">
-          <span>OmniPrep Annual Access</span><span>₦1999.00</span>
+          <span>OmniPrep Annual Access</span><span>₦1,999.00</span>
         </div>
         <div class="payment-summary__row">
           <span>Your email</span>
@@ -324,120 +274,37 @@
           <span>Access duration</span><span>1 year</span>
         </div>
         <div class="payment-summary__row total">
-          <span>Total</span><span>₦1999</span>
+          <span>Total</span><span>₦1,999</span>
         </div>
       </div>
 
-      <!-- Bank details -->
-      <div style="background:var(--green-light);border:1.5px solid var(--green-mid);border-radius:var(--radius);padding:var(--space-5) var(--space-6);">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-dark);margin-bottom:var(--space-4)">
-          🏦 Bank Transfer Details
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:var(--space-3)">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
-            <span style="font-size:12px;color:var(--ink-3)">Bank</span>
-            <span style="font-size:13px;font-weight:700;color:var(--ink)">Moniepoint MFB</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
-            <span style="font-size:12px;color:var(--ink-3)">Account Number</span>
-            <div style="display:flex;align-items:center;gap:var(--space-2)">
-              <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark);letter-spacing:0.05em">6170413940</span>
-              <button onclick="copyText('6170413940', this)" style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--green);background:var(--green-light);color:var(--green-dark);cursor:pointer;font-family:var(--font)">Copy</button>
-            </div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
-            <span style="font-size:12px;color:var(--ink-3)">Account Name</span>
-            <span style="font-size:13px;font-weight:700;color:var(--ink)">Afraah Multi Ventures Services Ltd.</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);border:1px solid var(--border)">
-            <span style="font-size:12px;color:var(--ink-3)">Amount</span>
-            <span style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green-dark)">₦1999.00</span>
-          </div>
-        </div>
-
-        <!-- Narration instruction -->
-        <div style="margin-top:var(--space-4);padding:12px 14px;background:var(--amber-light);border:1px solid #FCD34D;border-radius:var(--radius-sm)">
-          <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:4px">⚠️ IMPORTANT — Narration / Description</div>
-          <div style="font-size:13px;color:#92400E;line-height:1.6">
-            When making the transfer, use your <strong>email address</strong> as the narration or description.
-            This is how we identify your payment.
-          </div>
-          <div style="margin-top:var(--space-2);font-family:var(--mono);font-size:13px;font-weight:700;color:#92400E;background:rgba(255,255,255,0.6);padding:6px 10px;border-radius:4px" id="narration-display">—</div>
-        </div>
-
-      </div>
-
-      <!-- Also has second account -->
-      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-4) var(--space-5)">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-4);margin-bottom:var(--space-3)">
-          Alternative Account
-        </div>
-        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-          <div style="display:flex;justify-content:space-between;font-size:12px;">
-            <span style="color:var(--ink-3)">Bank</span>
-            <span style="font-weight:600;color:var(--ink)">Kuda Microfinance Bank</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
-            <span style="color:var(--ink-3)">Account Number</span>
-            <div style="display:flex;align-items:center;gap:var(--space-2)">
-              <span style="font-family:var(--mono);font-weight:700;color:var(--ink);letter-spacing:0.04em">2086837242</span>
-              <button onclick="copyText('2086837242', this)" style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--border);background:var(--white);color:var(--ink-3);cursor:pointer;font-family:var(--font)">Copy</button>
-            </div>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;">
-            <span style="color:var(--ink-3)">Account Name</span>
-            <span style="font-weight:600;color:var(--ink)">Usman Ibrahim</span>
-          </div>
+      <!-- What happens after payment -->
+      <div style="background:var(--green-light);border:1px solid var(--green-mid);border-radius:var(--radius);padding:var(--space-4) var(--space-5)">
+        <div style="font-size:13px;font-weight:700;color:var(--green-dark);margin-bottom:var(--space-2)">✅ What happens after payment</div>
+        <div style="font-size:13px;color:var(--green-dark);line-height:1.7">
+          Your account is created automatically and you can log in immediately. No waiting. No manual approval needed.
         </div>
       </div>
 
-      <!-- Send proof section -->
-      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:var(--space-5) var(--space-6)">
-        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:var(--space-3)">
-          📤 After paying — send proof here
-        </div>
-        <p style="font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:var(--space-4)">
-          Send your payment screenshot and full name to either:
-        </p>
-
-        <div style="display:flex;flex-direction:column;gap:var(--space-3)">
-          <!-- WhatsApp -->
-          <a href="https://wa.me/2349127303813?text=Hello%2C%20I%20just%20paid%20for%20OmniPrep.%20My%20name%20is%20____%20and%20my%20email%20is%20____" target="_blank"
-            style="display:flex;align-items:center;gap:var(--space-3);padding:12px 16px;background:#25D366;border-radius:var(--radius-sm);text-decoration:none;transition:opacity 0.15s"
-            onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-            <span style="font-size:22px">💬</span>
-            <div>
-              <div style="font-size:13px;font-weight:700;color:white">WhatsApp — 09127303813</div>
-              <div style="font-size:11px;color:rgba(255,255,255,0.8)">Tap to open WhatsApp and send your proof</div>
-            </div>
-          </a>
-
-          <!-- Email -->
-          <a id="email-proof-link" href="mailto:omniprepnigeria@gmail.com"
-            style="display:flex;align-items:center;gap:var(--space-3);padding:12px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);text-decoration:none;transition:background 0.15s"
-            onmouseover="this.style.background='var(--surface-3)'" onmouseout="this.style.background='var(--surface-2)'">
-            <span style="font-size:22px">📧</span>
-            <div>
-              <div style="font-size:13px;font-weight:700;color:var(--ink)">omniprepnigeria@gmail.com</div>
-              <div style="font-size:13px;font-weight:700;color:var(--ink)">info@afraahtechhub.com.ng</div>
-              <div style="font-size:11px;color:var(--ink-3)">Send payment proof by email</div>
-            </div>
-          </a>
-        </div>
-
-        <div style="margin-top:var(--space-4);padding:10px 14px;background:var(--blue-light);border:1px solid #BFDBFE;border-radius:var(--radius-sm)">
-          <div style="font-size:12px;color:#1D4ED8;line-height:1.6">
-            💡 <strong>Include in your message:</strong> Your full name, your email address, and a screenshot of the payment.
-            Your account will be created within <strong>24 hours</strong> of receiving your proof.
-          </div>
-        </div>
-      </div>
-
-      <!-- I have paid button -->
-      <button class="btn btn-primary btn-lg btn-block" id="paid-btn" onclick="onPaidClicked()">
-        ✅ I have sent payment proof
+      <!-- Pay button -->
+      <button
+        class="btn btn-primary btn-lg btn-block"
+        id="pay-btn"
+        onclick="initiatePayment()"
+      >
+        🔒 Pay ₦1,999 with Paystack
       </button>
+
+      <!-- Payment methods -->
+      <div class="paystack-secure">
+        🔒 Secured by Paystack
+      </div>
+      <div class="pay-methods">
+        <span class="pay-method-pill">💳 Debit Card</span>
+        <span class="pay-method-pill">🏦 Bank Transfer</span>
+        <span class="pay-method-pill">📱 USSD</span>
+        <span class="pay-method-pill">📲 Mobile Money</span>
+      </div>
 
       <button class="btn btn-secondary btn-block" onclick="goBack()">
         ← Go back and edit details
@@ -448,18 +315,16 @@
 
     <!-- SUCCESS SCREEN -->
     <div class="success-screen" id="success-screen">
-      <div class="success-icon">⏳</div>
-      <h2 class="text-h2 mb-3">Details received!</h2>
+      <div class="success-icon">✓</div>
+      <h2 class="text-h2 mb-3">Payment confirmed!</h2>
       <p class="text-body mb-3">
-        Thank you, <strong id="success-name"></strong>.
+        Welcome to OmniPrep, <strong id="success-name"></strong>!
       </p>
       <p class="text-body mb-6">
-        Once we confirm your ₦1999 payment, we will create your account and
-        notify you within <strong>24 hours</strong>. You will then be able to
-        log in at the link below.
+        Your account has been created. You can log in immediately with your email and password.
       </p>
       <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-5);margin-bottom:var(--space-6);text-align:left">
-        <div style="font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:var(--space-3)">YOUR REGISTRATION DETAILS</div>
+        <div style="font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:var(--space-3)">YOUR ACCOUNT DETAILS</div>
         <div style="font-size:13px;color:var(--ink-2);line-height:2">
           <div><span style="color:var(--ink-3)">Name:</span> <strong id="s-name">—</strong></div>
           <div><span style="color:var(--ink-3)">Email:</span> <strong id="s-email" style="font-family:var(--mono);font-size:12px">—</strong></div>
@@ -468,7 +333,7 @@
         </div>
       </div>
       <a href="login.html" class="btn btn-primary btn-lg btn-block">
-        Go to login page →
+        Login to OmniPrep →
       </a>
       <p class="text-xs text-center mt-4">
         Questions? WhatsApp us: <strong>09127303813</strong>
@@ -487,7 +352,7 @@
     </a>
 
     <div class="summary-title">Everything you need to pass JAMB — in one platform.</div>
-    <p class="summary-sub">One payment. One year. All four modules. Start training today.</p>
+    <p class="summary-sub">One payment. One year. All modules. Start training today.</p>
 
     <div class="summary-feature">
       <div class="summary-feature__icon">🖱️</div>
@@ -522,11 +387,11 @@
     </div>
 
     <div class="summary-price-box">
-      <div class="summary-price-box__amount">₦1999</div>
+      <div class="summary-price-box__amount">₦1,999</div>
       <div class="summary-price-box__period">per year · renews annually</div>
       <div class="summary-price-box__note">
-        Less than a data card. More valuable than any textbook.
-        Pay by card, bank transfer, or USSD.
+        Less than a data bundle. More valuable than any textbook.
+        Pay by card, bank transfer, or USSD via Paystack.
       </div>
     </div>
 
@@ -539,27 +404,11 @@
 <!-- ══════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════ -->
-
 <script>
-  // ── FORM STATE ──
-  const formData = { name:'', email:'', password:'', year:'', date:'', subjects:[] };
+  const PAYSTACK_PUBLIC_KEY = 'pk_live_1a18baec31cf0f535ac42d5db9cb1fcaaf0775a1';
+  const AMOUNT_KOBO         = 199900; // ₦1,999 in kobo
 
-  // ── COPY TO CLIPBOARD ──
-  function copyText(text, btn) {
-    navigator.clipboard.writeText(text).then(() => {
-      const orig = btn.textContent;
-      btn.textContent = 'Copied!';
-      btn.style.background = 'var(--green)';
-      btn.style.color = 'white';
-      btn.style.borderColor = 'var(--green)';
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.style.background = '';
-        btn.style.color = '';
-        btn.style.borderColor = '';
-      }, 2000);
-    });
-  }
+  const formData = { name:'', email:'', password:'', year:'', date:'', subjects:[] };
 
   // ── SUBJECT CHECKBOXES ──
   function handleSubjectChange(checkbox) {
@@ -582,46 +431,36 @@
     const input = document.getElementById(id.replace('err-', 'reg-'));
     if (input) input.classList.add('error');
   }
-
   function clearError(id) {
     const el = document.getElementById(id);
     if (el) el.textContent = '';
     const input = document.getElementById(id.replace('err-', 'reg-'));
     if (input) input.classList.remove('error');
   }
-
-  function showAlert(msg, type = 'error') {
+  function showAlert(msg) {
     const el = document.getElementById('form-alert');
     el.textContent = msg;
-    el.className = `form-alert ${type} show`;
+    el.className = 'form-alert error show';
     el.scrollIntoView({ behavior:'smooth', block:'center' });
   }
-
   function hideAlert() {
     document.getElementById('form-alert').className = 'form-alert';
   }
 
   function validateStep1() {
     let valid = true;
-
     const name = document.getElementById('reg-name').value.trim();
     if (!name || name.length < 2) { showError('err-name','Please enter your full name.'); valid=false; } else clearError('err-name');
-
     const email = document.getElementById('reg-email').value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('err-email','Please enter a valid email address.'); valid=false; } else clearError('err-email');
-
     const password = document.getElementById('reg-password').value;
     if (!password || password.length < 8) { showError('err-password','Password must be at least 8 characters.'); valid=false; } else clearError('err-password');
-
     const year = document.getElementById('reg-year').value;
     if (!year) { showError('err-year','Select your exam year.'); valid=false; } else clearError('err-year');
-
     const date = document.getElementById('reg-date').value;
     if (!date) { showError('err-date','Enter your approximate exam date.'); valid=false; } else clearError('err-date');
-
     const checked = document.querySelectorAll('#subject-grid input[type="checkbox"]:checked');
     if (checked.length !== 3) { showError('err-subjects','Please select exactly 3 subjects.'); valid=false; } else clearError('err-subjects');
-
     return valid;
   }
 
@@ -640,35 +479,15 @@
       ...Array.from(document.querySelectorAll('#subject-grid input:checked')).map(c => c.value),
     ];
 
-    // Populate payment summary
     document.getElementById('pay-email-display').textContent    = formData.email;
     document.getElementById('pay-subjects-display').textContent = formData.subjects.join(', ');
-    document.getElementById('narration-display').textContent    = formData.email;
 
-    // Update WhatsApp link with pre-filled message
-    const msg = encodeURIComponent(
-      `Hello, I just paid ₦1999 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.`
-    );
-    document.querySelector('a[href*="wa.me"]').href = `https://wa.me/2349127303813?text=${msg}`;
-
-    // Update email link
-    const subject = encodeURIComponent('OmniPrep Payment Proof');
-    const body    = encodeURIComponent(
-      `Hello,\n\nI have paid ₦1999 for OmniPrep.\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubjects: ${formData.subjects.join(', ')}\nYear: ${formData.year}\n\nPlease find my payment screenshot attached.\n\nThank you.`
-    );
-    document.getElementById('email-proof-link').href =
-      `mailto:info@afraahtechhub.com.ng?subject=${subject}&body=${body}`;
-
-    // Show step 2
     document.getElementById('step-1').classList.remove('active');
     document.getElementById('step-2').classList.add('active');
-
-    // Update step indicators
     document.getElementById('step-ind-1').classList.remove('active');
     document.getElementById('step-ind-1').classList.add('done');
     document.getElementById('connector-1').classList.add('done');
     document.getElementById('step-ind-2').classList.add('active');
-
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
@@ -682,49 +501,80 @@
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
-  // ── I HAVE PAID BUTTON ──
-  async function onPaidClicked() {
-    const btn = document.getElementById('paid-btn');
+  // ── PAYSTACK PAYMENT ──
+  function initiatePayment() {
+    const btn = document.getElementById('pay-btn');
     btn.disabled    = true;
-    btn.textContent = 'Saving your details...';
+    btn.textContent = 'Opening Paystack...';
 
-    // Save to Firestore
-    if (window._fb_reg) {
-      try {
+    const handler = PaystackPop.setup({
+      key:       PAYSTACK_PUBLIC_KEY,
+      email:     formData.email,
+      amount:    AMOUNT_KOBO,
+      currency:  'NGN',
+      ref:       'OP-' + Date.now() + '-' + Math.floor(Math.random() * 1000000),
+      metadata: {
+        custom_fields: [
+          { display_name: 'Student Name',    variable_name: 'student_name',    value: formData.name },
+          { display_name: 'Subjects',        variable_name: 'subjects',        value: formData.subjects.join(', ') },
+          { display_name: 'UTME Year',       variable_name: 'exam_year',       value: formData.year },
+        ],
+      },
+      callback: function(response) {
+        // Payment successful — create account automatically
+        onPaymentSuccess(response.reference);
+      },
+      onClose: function() {
+        btn.disabled    = false;
+        btn.textContent = '🔒 Pay ₦1,999 with Paystack';
+      },
+    });
+
+    handler.openIframe();
+  }
+
+  // ── ON PAYMENT SUCCESS ──
+  async function onPaymentSuccess(paystackRef) {
+    const btn = document.getElementById('pay-btn');
+    btn.textContent = '⏳ Creating your account...';
+
+    try {
+      // 1. Save to Firestore pending_registrations with payment reference
+      if (window._fb_reg) {
         const { db, collection, addDoc, serverTimestamp } = window._fb_reg;
         await addDoc(collection(db, 'pending_registrations'), {
-          name:      formData.name,
-          email:     formData.email,
-          password:  formData.password,
-          examYear:  formData.year,
-          examDate:  formData.date,
-          subjects:  formData.subjects,
-          status:    'pending',
-          createdAt: serverTimestamp(),
+          name:         formData.name,
+          email:        formData.email,
+          password:     formData.password,
+          examYear:     formData.year,
+          examDate:     formData.date,
+          subjects:     formData.subjects,
+          status:       'paid',
+          paystackRef:  paystackRef,
+          createdAt:    serverTimestamp(),
         });
-        console.log('Registration saved to Firestore.');
-      } catch(e) {
-        console.error('Firestore save error:', e.message);
+        console.log('Registration saved to Firestore with Paystack ref:', paystackRef);
       }
-    } else {
-      console.warn('Firebase bridge not ready — data not saved to Firestore.');
-    }
 
-    // Send email via EmailJS
-    try {
-      await emailjs.send('service_omniprep', 'template_omniprep', {
-        student_name:     formData.name,
-        student_email:    formData.email,
-        student_subjects: formData.subjects.join(', '),
-        student_year:     formData.year,
-        student_date:     formData.date,
-      });
-      console.log('Email notification sent.');
+      // 2. Send email notification
+      try {
+        await emailjs.send('service_omniprep', 'template_omniprep', {
+          student_name:     formData.name,
+          student_email:    formData.email,
+          student_subjects: formData.subjects.join(', '),
+          student_year:     formData.year,
+          student_date:     formData.date,
+          paystack_ref:     paystackRef,
+        });
+      } catch(e) {
+        console.warn('EmailJS notification failed:', e.message);
+      }
+
     } catch(e) {
-      console.warn('EmailJS not configured yet:', e.message);
+      console.error('Firestore save error:', e.message);
     }
 
-    // Always show success screen
+    // 3. Show success screen
     document.getElementById('step-2').classList.remove('active');
     document.getElementById('success-screen').classList.add('active');
     document.getElementById('step-ind-2').classList.remove('active');
