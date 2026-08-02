@@ -1,0 +1,25 @@
+# OmniPrep — omniprep.com.ng
+# Robots.txt
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /register.html
+Allow: /login.html
+Allow: /desktop.html
+Allow: /privacy.html
+
+# Block private/admin pages from indexing
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /simulator.html
+Disallow: /results.html
+Disallow: /typing.html
+Disallow: /mouscerciser.html
+Disallow: /mouse.html
+Disallow: /lekki-headmaster.html
+Disallow: /js/
+Disallow: /css/
+
+# Sitemap location
+Sitemap: https://omniprep.com.ng/sitemap.xml
