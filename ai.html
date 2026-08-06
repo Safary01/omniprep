@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Tutor — OmniPrep</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+
+    /* ── LAYOUT ── */
+    .ai-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    .ai-sidebar {
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .ai-sidebar-header {
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+
+    .ai-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; margin-bottom: 16px;
+    }
+
+    .ai-logo__mark {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 700; color: white;
+    }
+
+    .ai-logo__name {
+      font-size: 14px; font-weight: 800; color: white; letter-spacing: -0.01em;
+    }
+
+    .ai-logo__name span { color: var(--green); }
+
+    .new-chat-btn {
+      width: 100%;
+      padding: 9px 14px;
+      background: rgba(5,150,105,0.2);
+      border: 1px solid rgba(5,150,105,0.35);
+      border-radius: 8px;
+      color: #6EE7B7;
+      font-family: var(--font);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.15s;
+    }
+
+    .new-chat-btn:hover { background: rgba(5,150,105,0.3); }
+
+    /* Topic suggestions */
+    .ai-sidebar-section {
+      padding: 14px 18px 8px;
+      font-size: 10px; font-weight: 700;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      flex-shrink: 0;
+    }
+
+    .topic-list {
+      flex: 1; overflow-y: auto; padding: 0 10px 10px;
+    }
+
+    .topic-list::-webkit-scrollbar { width: 4px; }
+    .topic-list::-webkit-scrollbar-track { background: transparent; }
+    .topic-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    .topic-btn {
+      width: 100%; text-align: left;
+      padding: 9px 10px;
+      background: none; border: none;
+      border-radius: 7px;
+      color: rgba(255,255,255,0.6);
+      font-family: var(--font); font-size: 12px;
+      cursor: pointer; transition: all 0.12s;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .topic-btn:hover { background: rgba(255,255,255,0.07); color: white; }
+    .topic-btn__icon { font-size: 14px; flex-shrink: 0; }
+
+    /* Sidebar footer */
+    .ai-sidebar-footer {
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+
+    .ai-user-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .ai-user-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+
+    .ai-user-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); }
+    .ai-user-sub  { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 1px; }
+
+    .back-link {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: rgba(255,255,255,0.35);
+      text-decoration: none; margin-top: 10px;
+      transition: color 0.15s;
+    }
+
+    .back-link:hover { color: rgba(255,255,255,0.7); text-decoration: none; }
+
+    /* ── MAIN CHAT AREA ── */
+    .ai-main {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    /* Chat header */
+    .ai-chat-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .ai-chat-title {
+      font-size: 14px; font-weight: 700; color: var(--ink);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .ai-status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .ai-model-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 50px;
+      background: linear-gradient(135deg, #EEF2FF, #F5F3FF);
+      color: #6D28D9;
+      border: 1px solid #C7D2FE;
+    }
+
+    /* Messages area */
+    .ai-messages {
+      flex: 1; overflow-y: auto;
+      padding: 24px;
+      display: flex; flex-direction: column;
+      gap: 20px;
+    }
+
+    .ai-messages::-webkit-scrollbar { width: 5px; }
+    .ai-messages::-webkit-scrollbar-track { background: transparent; }
+    .ai-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Welcome screen */
+    .ai-welcome {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px 24px;
+    }
+
+    .ai-welcome__icon {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(109,40,217,0.25);
+    }
+
+    .ai-welcome__title {
+      font-size: 24px; font-weight: 800;
+      letter-spacing: -0.02em; color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .ai-welcome__sub {
+      font-size: 14px; color: var(--ink-3);
+      max-width: 440px; line-height: 1.65;
+      margin-bottom: 32px;
+    }
+
+    .suggestion-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 580px; width: 100%;
+    }
+
+    .suggestion-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: left; cursor: pointer;
+      transition: all 0.15s; font-family: var(--font);
+    }
+
+    .suggestion-card:hover {
+      border-color: #7C3AED;
+      background: #F5F3FF;
+      transform: translateY(-1px);
+    }
+
+    .suggestion-card__icon  { font-size: 18px; margin-bottom: 6px; display: block; }
+    .suggestion-card__title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .suggestion-card__desc  { font-size: 11px; color: var(--ink-3); line-height: 1.5; }
+
+    /* Message bubbles */
+    .msg { display: flex; gap: 12px; animation: msg-in 0.25s ease both; }
+    .msg.user { flex-direction: row-reverse; }
+
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .msg-avatar.ai   { background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; }
+    .msg-avatar.user { background: var(--green); color: white; }
+
+    .msg-bubble {
+      max-width: 72%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 14px; line-height: 1.7;
+    }
+
+    .msg.ai   .msg-bubble { background: var(--white); border: 1px solid var(--border); color: var(--ink-2); border-bottom-left-radius: 4px; }
+    .msg.user .msg-bubble { background: var(--green); color: white; border-bottom-right-radius: 4px; }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: none;
+      align-items: center; gap: 12px;
+    }
+
+    .typing-indicator.show { display: flex; }
+
+    .typing-dots {
+      display: flex; gap: 4px;
+      background: var(--white); border: 1px solid var(--border);
+      padding: 12px 16px; border-radius: 14px; border-bottom-left-radius: 4px;
+    }
+
+    .typing-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--ink-4);
+      animation: typing-bounce 1.2s infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30%            { transform: translateY(-6px); background: #7C3AED; }
+    }
+
+    /* Input area */
+    .ai-input-area {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      flex-shrink: 0;
+    }
+
+    .ai-input-wrap {
+      display: flex; align-items: flex-end; gap: 10px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 14px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .ai-input-wrap:focus-within {
+      border-color: #7C3AED;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+    }
+
+    .ai-textarea {
+      flex: 1; border: none; outline: none;
+      background: transparent;
+      font-family: var(--font); font-size: 14px;
+      color: var(--ink); resize: none;
+      min-height: 24px; max-height: 140px;
+      line-height: 1.5;
+    }
+
+    .ai-textarea::placeholder { color: var(--ink-4); }
+
+    .ai-send-btn {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 16px;
+      transition: all 0.15s; flex-shrink: 0;
+    }
+
+    .ai-send-btn:hover    { transform: scale(1.05); opacity: 0.9; }
+    .ai-send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .ai-input-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px; padding: 0 2px;
+    }
+
+    .ai-input-hint { font-size: 11px; color: var(--ink-4); }
+    .ai-char-count { font-size: 11px; color: var(--ink-4); font-family: var(--mono); }
+
+    /* Subject filter chips */
+    .subject-chips {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      padding: 12px 24px 0;
+      flex-shrink: 0;
+    }
+
+    .subject-chip {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 12px; border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: var(--white); color: var(--ink-3);
+      cursor: pointer; font-family: var(--font);
+      transition: all 0.12s;
+    }
+
+    .subject-chip:hover  { border-color: #7C3AED; color: #7C3AED; }
+    .subject-chip.active { background: #7C3AED; border-color: #7C3AED; color: white; }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .ai-layout { grid-template-columns: 1fr; }
+      .ai-sidebar { display: none; }
+      .suggestion-grid { grid-template-columns: 1fr; }
+      .msg-bubble { max-width: 88%; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="ai-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <div class="ai-sidebar">
+
+    <div class="ai-sidebar-header">
+      <a href="dashboard.html" class="ai-logo">
+        <div class="ai-logo__mark">OP</div>
+        <div class="ai-logo__name">Omni<span>Prep</span> AI</div>
+      </a>
+      <button class="new-chat-btn" onclick="newChat()">
+        ✏️ New conversation
+      </button>
+    </div>
+
+    <div class="ai-sidebar-section">Quick Topics</div>
+
+    <div class="topic-list">
+      <button class="topic-btn" onclick="sendTopic('Explain photosynthesis step by step')">
+        <span class="topic-btn__icon">🌿</span> Photosynthesis
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Explain Newton\'s three laws of motion with examples')">
+        <span class="topic-btn__icon">⚡</span> Newton's Laws
+      </button>
+      <button class="topic-btn" onclick="sendTopic('What is the difference between mitosis and meiosis?')">
+        <span class="topic-btn__icon">🔬</span> Mitosis vs Meiosis
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Explain supply and demand with a Nigerian market example')">
+        <span class="topic-btn__icon">📊</span> Supply & Demand
+      </button>
+      <button class="topic-btn" onclick="sendTopic('How does the Nigerian federal system of government work?')">
+        <span class="topic-btn__icon">🏛️</span> Nigerian Government
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Explain quadratic equations and how to solve them')">
+        <span class="topic-btn__icon">📐</span> Quadratic Equations
+      </button>
+      <button class="topic-btn" onclick="sendTopic('What are the main figures of speech in English literature?')">
+        <span class="topic-btn__icon">📝</span> Figures of Speech
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Explain ionic and covalent bonding in chemistry')">
+        <span class="topic-btn__icon">⚗️</span> Chemical Bonding
+      </button>
+      <button class="topic-btn" onclick="sendTopic('What is radioactivity and what are the types of radiation?')">
+        <span class="topic-btn__icon">☢️</span> Radioactivity
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Explain the water cycle and its stages')">
+        <span class="topic-btn__icon">🌍</span> Water Cycle
+      </button>
+      <button class="topic-btn" onclick="sendTopic('How does osmosis work in living cells?')">
+        <span class="topic-btn__icon">💧</span> Osmosis
+      </button>
+      <button class="topic-btn" onclick="sendTopic('What are the causes and effects of colonialism in Nigeria?')">
+        <span class="topic-btn__icon">📜</span> Colonialism
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Explain logarithms and their rules')">
+        <span class="topic-btn__icon">🔢</span> Logarithms
+      </button>
+      <button class="topic-btn" onclick="sendTopic('What is electrolysis and how does it work?')">
+        <span class="topic-btn__icon">🔋</span> Electrolysis
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Give me 5 JAMB-style past questions on English comprehension with answers')">
+        <span class="topic-btn__icon">📋</span> English Practice
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Give me 5 JAMB-style mathematics questions with full solutions')">
+        <span class="topic-btn__icon">🧮</span> Maths Practice
+      </button>
+      <button class="topic-btn" onclick="sendTopic('Give me tips on how to score above 300 in JAMB')">
+        <span class="topic-btn__icon">🎯</span> JAMB Tips
+      </button>
+      <button class="topic-btn" onclick="sendTopic('What is the best way to prepare for UTME in 30 days?')">
+        <span class="topic-btn__icon">📅</span> 30-Day Plan
+      </button>
+    </div>
+
+    <div class="ai-sidebar-footer">
+      <div class="ai-user-row">
+        <div class="ai-user-avatar" id="sidebar-avatar">?</div>
+        <div>
+          <div class="ai-user-name" id="sidebar-name">Loading...</div>
+          <div class="ai-user-sub">OmniPrep Student</div>
+        </div>
+      </div>
+      <a href="dashboard.html" class="back-link">← Back to dashboard</a>
+    </div>
+
+  </div>
+  <!-- /sidebar -->
+
+
+  <!-- ── MAIN ── -->
+  <div class="ai-main">
+
+    <!-- Header -->
+    <div class="ai-chat-header">
+      <div class="ai-chat-title">
+        <div class="ai-status-dot"></div>
+        OmniPrep AI Tutor
+      </div>
+      <div class="ai-model-badge">✨ Groq · GPT-OSS 20B</div>
+    </div>
+
+    <!-- Subject chips -->
+    <div class="subject-chips">
+      <button class="subject-chip active" onclick="setSubject('all', this)">All subjects</button>
+      <button class="subject-chip" onclick="setSubject('English Language', this)">English</button>
+      <button class="subject-chip" onclick="setSubject('Mathematics', this)">Maths</button>
+      <button class="subject-chip" onclick="setSubject('Physics', this)">Physics</button>
+      <button class="subject-chip" onclick="setSubject('Chemistry', this)">Chemistry</button>
+      <button class="subject-chip" onclick="setSubject('Biology', this)">Biology</button>
+      <button class="subject-chip" onclick="setSubject('Economics', this)">Economics</button>
+      <button class="subject-chip" onclick="setSubject('Government', this)">Government</button>
+      <button class="subject-chip" onclick="setSubject('Literature', this)">Literature</button>
+      <button class="subject-chip" onclick="setSubject('Geography', this)">Geography</button>
+    </div>
+
+    <!-- Messages -->
+    <div class="ai-messages" id="ai-messages">
+
+      <!-- Welcome -->
+      <div class="ai-welcome" id="ai-welcome">
+        <div class="ai-welcome__icon">🎓</div>
+        <div class="ai-welcome__title">OmniPrep AI Tutor</div>
+        <div class="ai-welcome__sub">
+          Ask me anything about your JAMB subjects. I can explain concepts,
+          solve problems, generate practice questions, and help you understand
+          every topic in your syllabus.
+        </div>
+        <div class="suggestion-grid">
+          <button class="suggestion-card" onclick="sendTopic('Explain the concept of osmosis and give an example from everyday life')">
+            <span class="suggestion-card__icon">🔬</span>
+            <div class="suggestion-card__title">Explain a concept</div>
+            <div class="suggestion-card__desc">Ask me to explain any topic in simple terms</div>
+          </button>
+          <button class="suggestion-card" onclick="sendTopic('Give me 5 JAMB-style practice questions on quadratic equations with full solutions')">
+            <span class="suggestion-card__icon">📋</span>
+            <div class="suggestion-card__title">Practice questions</div>
+            <div class="suggestion-card__desc">Get JAMB-style questions with answers</div>
+          </button>
+          <button class="suggestion-card" onclick="sendTopic('What are the most important topics to study in Physics for JAMB 2026?')">
+            <span class="suggestion-card__icon">🎯</span>
+            <div class="suggestion-card__title">JAMB focus areas</div>
+            <div class="suggestion-card__desc">Find out what topics come up most often</div>
+          </button>
+          <button class="suggestion-card" onclick="sendTopic('I got this question wrong in my mock exam: What is the powerhouse of the cell? Explain why the answer is mitochondria')">
+            <span class="suggestion-card__icon">❌</span>
+            <div class="suggestion-card__title">Explain a wrong answer</div>
+            <div class="suggestion-card__desc">Paste a question you got wrong and I will explain it</div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- /messages -->
+
+    <!-- Typing indicator -->
+    <div class="typing-indicator" id="typing-indicator" style="padding:0 24px 12px">
+      <div class="msg-avatar ai">✨</div>
+      <div class="typing-dots">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="ai-input-area">
+      <div class="ai-input-wrap">
+        <textarea
+          class="ai-textarea"
+          id="ai-input"
+          placeholder="Ask anything about your JAMB subjects..."
+          rows="1"
+          maxlength="2000"
+          onkeydown="handleKey(event)"
+          oninput="handleInput(this)"
+        ></textarea>
+        <button class="ai-send-btn" id="ai-send-btn" onclick="sendMessage()" title="Send message">
+          ↑
+        </button>
+      </div>
+      <div class="ai-input-footer">
+        <div class="ai-input-hint">Press Enter to send · Shift+Enter for new line</div>
+        <div class="ai-char-count"><span id="char-count">0</span>/2000</div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /main -->
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script type="module">
+  import { renderShell, initPage } from './js/auth.js';
+
+  (async () => {
+    // No shell needed — custom layout
+    const student = await initPage('ai');
+    if (!student) return;
+
+    // Set user info in sidebar
+    const name   = student.name || 'Student';
+    const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    document.getElementById('sidebar-avatar').textContent = initials;
+    document.getElementById('sidebar-name').textContent   = name.split(' ')[0];
+  })();
+</script>
+
+<script>
+  const GROQ_API_KEY = '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';
+  const GROQ_MODEL   = 'openai/gpt-oss-20b';
+
+  let conversationHistory = [];
+  let currentSubject      = 'all';
+  let isTyping            = false;
+
+  const SYSTEM_PROMPT = `You are OmniPrep AI, a dedicated JAMB UTME tutor for Nigerian secondary school students preparing for the Unified Tertiary Matriculation Examination (UTME).
+
+Your role:
+- Explain concepts clearly in simple English suitable for SS3 students
+- Focus on JAMB/UTME syllabus topics: English Language, Mathematics, Physics, Chemistry, Biology, Economics, Government, Literature in English, and Geography
+- When generating practice questions, make them JAMB-style multiple choice with 4 options (A, B, C, D) and provide full explanations
+- Reference Nigerian examples and context where possible
+- Be encouraging and patient
+- Keep responses focused and concise — students need clear answers, not essays
+- When explaining calculations, show step-by-step working
+- Do not use markdown formatting like asterisks or hashes — write in plain readable text
+
+If a student asks about a non-educational topic, politely redirect them back to their JAMB preparation.`;
+
+  // ── AUTO-RESIZE TEXTAREA ──
+  function handleInput(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+    document.getElementById('char-count').textContent = el.value.length;
+  }
+
+  // ── ENTER KEY ──
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  // ── SUBJECT FILTER ──
+  function setSubject(subj, el) {
+    currentSubject = subj;
+    document.querySelectorAll('.subject-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── SEND TOPIC FROM SIDEBAR / SUGGESTIONS ──
+  function sendTopic(text) {
+    const input = document.getElementById('ai-input');
+    input.value = text;
+    handleInput(input);
+    sendMessage();
+  }
+
+  // ── SEND MESSAGE ──
+  async function sendMessage() {
+    const input = document.getElementById('ai-input');
+    const text  = input.value.trim();
+    if (!text || isTyping) return;
+
+    // Hide welcome screen
+    const welcome = document.getElementById('ai-welcome');
+    if (welcome) welcome.style.display = 'none';
+
+    // Add subject context if filter is active
+    let userMessage = text;
+    if (currentSubject !== 'all') {
+      userMessage = `[${currentSubject}] ${text}`;
+    }
+
+    // Add user message to UI
+    appendMessage('user', text);
+
+    // Add to history
+    conversationHistory.push({ role: 'user', content: userMessage });
+
+    // Clear input
+    input.value = '';
+    input.style.height = 'auto';
+    document.getElementById('char-count').textContent = '0';
+
+    // Show typing indicator
+    isTyping = true;
+    document.getElementById('ai-send-btn').disabled  = true;
+    document.getElementById('typing-indicator').classList.add('show');
+    scrollToBottom();
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model:       GROQ_MODEL,
+          messages:    [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...conversationHistory,
+          ],
+          temperature:  0.7,
+          max_tokens:   1024,
+        }),
+      });
+
+      const data  = await response.json();
+      const reply = data?.choices?.[0]?.message?.content;
+
+      if (reply) {
+        conversationHistory.push({ role: 'assistant', content: reply });
+        document.getElementById('typing-indicator').classList.remove('show');
+        appendMessage('ai', reply.trim());
+      } else {
+        console.error('Groq error:', data);
+        document.getElementById('typing-indicator').classList.remove('show');
+        appendMessage('ai', 'I could not generate a response. Please try again.');
+      }
+
+    } catch(err) {
+      console.error('Network error:', err);
+      document.getElementById('typing-indicator').classList.remove('show');
+      appendMessage('ai', 'Network error. Check your internet connection and try again.');
+    }
+
+    isTyping = false;
+    document.getElementById('ai-send-btn').disabled = false;
+    input.focus();
+  }
+
+  // ── APPEND MESSAGE ──
+  function appendMessage(role, text) {
+    const messages = document.getElementById('ai-messages');
+    const div      = document.createElement('div');
+    div.className  = `msg ${role}`;
+
+    const avatarText = role === 'ai' ? '✨' : (document.getElementById('sidebar-avatar').textContent || 'U');
+
+    div.innerHTML = `
+      <div class="msg-avatar ${role}">${avatarText}</div>
+      <div class="msg-bubble">${formatMessage(text)}</div>
+    `;
+
+    messages.appendChild(div);
+    scrollToBottom();
+  }
+
+  // ── FORMAT MESSAGE ──
+  function formatMessage(text) {
+    // Convert line breaks to <br>
+    // Preserve numbered lists
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>')
+      .replace(/^/, '<p>')
+      .replace(/$/, '</p>');
+  }
+
+  // ── SCROLL TO BOTTOM ──
+  function scrollToBottom() {
+    const messages = document.getElementById('ai-messages');
+    setTimeout(() => {
+      messages.scrollTop = messages.scrollHeight;
+    }, 50);
+  }
+
+  // ── NEW CHAT ──
+  function newChat() {
+    conversationHistory = [];
+    const messages = document.getElementById('ai-messages');
+
+    // Remove all message divs
+    Array.from(messages.children).forEach(child => {
+      if (child.classList.contains('msg')) child.remove();
+    });
+
+    // Show welcome screen again
+    const welcome = document.getElementById('ai-welcome');
+    if (welcome) welcome.style.display = 'flex';
+
+    document.getElementById('ai-input').focus();
+  }
+
+  // Expose functions globally
+  window.sendTopic  = sendTopic;
+  window.sendMessage = sendMessage;
+  window.handleKey  = handleKey;
+  window.handleInput = handleInput;
+  window.setSubject = setSubject;
+  window.newChat    = newChat;
+</script>
+
+</body>
+</html>
