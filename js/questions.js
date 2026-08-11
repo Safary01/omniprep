@@ -590,6 +590,110 @@ const QUESTIONS = {
     { q: "The concentration of a solution is expressed in:", opts:["Moles","Molarity","Grams","Litres"], ans:1, explain: "Molarity (expressed as moles per litre of solution, M) is a standard unit of concentration measurement used in laboratory volumetric analysis." },
     { q: "Which of these is used as a reducing agent in the blast furnace?", opts:["Limestone","Coke","Iron ore","Slag"], ans:1, explain: "Coke burns in the furnace to form carbon monoxide (CO) gas. This carbon monoxide serves as the primary chemical reducing agent that strips oxygen away from iron oxides to produce molten iron metal." },
     { q: "The process of adding chlorine to water for purification is called:", opts:["Filtration","Sedimentation","Chlorination","Distillation"], ans:2, explain: "Chlorination is the safe, controlled introduction of elemental chlorine gas or hypochlorite compounds into water supplies to destroy pathogenic bacteria and microbial contaminants." },
+  //set 3
+        "Chemistry": [
+    { q: "What is the relative molecular mass of H₂SO₄? (H = 1, S = 32, O = 16)", opts:["49","82","98","100"], ans:2, explain:"Mr(H₂SO₄) = (2 × 1) + 32 + (4 × 16) = 2 + 32 + 64 = 98." },
+
+    { q: "How many moles are present in 36 g of water? (H = 1, O = 16)", opts:["1 mol","2 mol","3 mol","18 mol"], ans:1, explain:"Mr of H₂O = 18. Number of moles = mass/Mr = 36/18 = 2 mol." },
+
+    { q: "What mass of NaOH is present in 0.5 mol? (Na = 23, O = 16, H = 1)", opts:["10 g","20 g","40 g","80 g"], ans:2, explain:"Mr(NaOH) = 23 + 16 + 1 = 40. Mass = moles × Mr = 0.5 × 40 = 20 g. Therefore the correct answer is 20 g." },
+
+    { q: "How many moles of CO₂ are present in 88 g of CO₂? (C = 12, O = 16)", opts:["1 mol","2 mol","4 mol","8 mol"], ans:1, explain:"Mr(CO₂) = 12 + (2 × 16) = 44. Moles = 88/44 = 2 mol." },
+
+    { q: "What mass of oxygen is required to completely react with 4 mol of hydrogen according to 2H₂ + O₂ → 2H₂O? (O = 16)", opts:["16 g","32 g","64 g","128 g"], ans:2, explain:"From the equation, 2 mol H₂ reacts with 1 mol O₂. Therefore 4 mol H₂ requires 2 mol O₂. Mass of O₂ = 2 × 32 = 64 g." },
+
+    { q: "According to 2H₂ + O₂ → 2H₂O, how many moles of water are produced when 5 mol of hydrogen reacts completely?", opts:["2.5 mol","5 mol","7.5 mol","10 mol"], ans:1, explain:"The equation shows a 2:2 mole ratio between H₂ and H₂O, which simplifies to 1:1. Therefore 5 mol H₂ produces 5 mol H₂O." },
+
+    { q: "What mass of CaCO₃ is required to produce 44 g of CO₂ according to CaCO₃ → CaO + CO₂? (Ca = 40, C = 12, O = 16)", opts:["44 g","50 g","100 g","200 g"], ans:2, explain:"Mr(CO₂) = 44, so 44 g CO₂ = 1 mol. The equation shows 1 mol CaCO₃ produces 1 mol CO₂. Mr(CaCO₃) = 40 + 12 + 48 = 100 g. Therefore 100 g CaCO₃ is required." },
+
+    { q: "A solution contains 0.5 mol of HCl in 2 dm³ of solution. What is its molar concentration?", opts:["0.10 mol/dm³","0.25 mol/dm³","1.0 mol/dm³","2.5 mol/dm³"], ans:1, explain:"Molarity = moles/volume = 0.5/2 = 0.25 mol/dm³." },
+
+    { q: "How many moles of NaCl are present in 250 cm³ of a 0.4 mol/dm³ solution?", opts:["0.01 mol","0.05 mol","0.10 mol","1.60 mol"], ans:2, explain:"250 cm³ = 0.250 dm³. Moles = concentration × volume = 0.4 × 0.250 = 0.10 mol." },
+
+    { q: "What volume of 0.5 mol/dm³ NaOH contains 0.25 mol of NaOH?", opts:["0.125 dm³","0.25 dm³","0.50 dm³","2.0 dm³"], ans:2, explain:"V = n/C = 0.25/0.5 = 0.50 dm³." },
+
+    { q: "A solution contains 5 g of NaOH in 500 cm³ of solution. What is its molar concentration? (Na = 23, O = 16, H = 1)", opts:["0.10 mol/dm³","0.20 mol/dm³","0.25 mol/dm³","1.00 mol/dm³"], ans:1, explain:"Mr(NaOH) = 40. Moles = 5/40 = 0.125 mol. 500 cm³ = 0.5 dm³. Concentration = 0.125/0.5 = 0.25 mol/dm³. Therefore the correct answer is 0.25 mol/dm³." },
+
+    { q: "50 cm³ of a 2.0 mol/dm³ solution is diluted to 200 cm³. What is the new concentration?", opts:["0.25 mol/dm³","0.50 mol/dm³","1.0 mol/dm³","8.0 mol/dm³"], ans:1, explain:"Using C₁V₁ = C₂V₂: 2.0 × 50 = C₂ × 200. Therefore C₂ = 100/200 = 0.50 mol/dm³." },
+
+    { q: "What volume of 0.1 mol/dm³ HCl is required to neutralize 25 cm³ of 0.2 mol/dm³ NaOH? HCl + NaOH → NaCl + H₂O", opts:["25 cm³","40 cm³","50 cm³","100 cm³"], ans:2, explain:"The reaction ratio is 1:1. Moles of NaOH = 0.2 × 0.025 = 0.005 mol. Therefore 0.005 mol HCl is required. Volume = n/C = 0.005/0.1 = 0.05 dm³ = 50 cm³." },
+
+    { q: "What volume of 0.2 mol/dm³ HCl is required to neutralize 20 cm³ of 0.5 mol/dm³ NaOH?", opts:["20 cm³","40 cm³","50 cm³","100 cm³"], ans:2, explain:"Moles of NaOH = 0.5 × 0.020 = 0.010 mol. HCl reacts with NaOH in a 1:1 ratio, so 0.010 mol HCl is required. Volume = 0.010/0.2 = 0.050 dm³ = 50 cm³." },
+
+    { q: "A compound contains 40% carbon, 6.67% hydrogen and 53.33% oxygen by mass. What is its empirical formula? (C = 12, H = 1, O = 16)", opts:["CH₂O","C₂H₄O","CH₄O","C₂H₂O"], ans:0, explain:"Assume 100 g. C = 40/12 = 3.33 mol, H = 6.67/1 = 6.67 mol, O = 53.33/16 = 3.33 mol. Dividing by 3.33 gives C:H:O = 1:2:1. Empirical formula = CH₂O." },
+
+    { q: "A compound has empirical formula CH₂O and relative molecular mass 180. What is its molecular formula? (C = 12, H = 1, O = 16)", opts:["CH₂O","C₂H₄O₂","C₆H₁₂O₆","C₁₂H₂₄O₁₂"], ans:2, explain:"Empirical formula mass = 12 + 2 + 16 = 30. Factor = 180/30 = 6. Molecular formula = (CH₂O)₆ = C₆H₁₂O₆." },
+
+    { q: "What percentage of oxygen by mass is present in H₂O? (H = 1, O = 16)", opts:["11.1%","16.0%","88.9%","94.1%"], ans:2, explain:"Mr(H₂O) = 18. Percentage oxygen = (16/18) × 100 = 88.9%." },
+
+    { q: "What percentage of carbon by mass is present in CO₂? (C = 12, O = 16)", opts:["12.0%","27.3%","44.0%","72.7%"], ans:1, explain:"Mr(CO₂) = 44. Percentage carbon = (12/44) × 100 = 27.3%." },
+
+    { q: "A gas occupies 2.0 dm³ at 300 K. If the pressure remains constant, what volume will it occupy at 450 K?", opts:["1.33 dm³","2.5 dm³","3.0 dm³","4.5 dm³"], ans:2, explain:"Using V₁/T₁ = V₂/T₂: 2/300 = V₂/450. Therefore V₂ = (2 × 450)/300 = 3.0 dm³." },
+
+    { q: "A gas occupies 500 cm³ at 100 kPa. If its volume is reduced to 250 cm³ at constant temperature, what is its new pressure?", opts:["50 kPa","100 kPa","200 kPa","400 kPa"], ans:2, explain:"Using P₁V₁ = P₂V₂: 100 × 500 = P₂ × 250. Therefore P₂ = 200 kPa." },
+
+    { q: "A gas occupies 4 dm³ at 300 K. What volume will it occupy at 600 K if pressure remains constant?", opts:["2 dm³","4 dm³","6 dm³","8 dm³"], ans:3, explain:"Using V₁/T₁ = V₂/T₂: 4/300 = V₂/600. Therefore V₂ = 8 dm³." },
+
+    { q: "At constant volume, a gas has a pressure of 100 kPa at 300 K. What will its pressure be at 600 K?", opts:["50 kPa","100 kPa","200 kPa","300 kPa"], ans:2, explain:"At constant volume, P₁/T₁ = P₂/T₂. Therefore P₂ = 100 × 600/300 = 200 kPa." },
+
+    { q: "What volume is occupied by 2 mol of an ideal gas at 273 K and 1 atm? Take the molar gas volume at these conditions as 22.4 dm³/mol.", opts:["11.2 dm³","22.4 dm³","44.8 dm³","67.2 dm³"], ans:2, explain:"Volume = number of moles × molar volume = 2 × 22.4 = 44.8 dm³." },
+
+    { q: "How many moles of gas are present in 11.2 dm³ at room conditions where 1 mol occupies 24 dm³?", opts:["0.25 mol","0.47 mol","1.0 mol","2.14 mol"], ans:1, explain:"Moles = volume/molar volume = 11.2/24 ≈ 0.47 mol." },
+
+    { q: "A reaction produces 80 g of product theoretically, but only 60 g is obtained. What is the percentage yield?", opts:["25%","60%","75%","80%"], ans:2, explain:"Percentage yield = (actual yield/theoretical yield) × 100 = (60/80) × 100 = 75%." },
+
+    { q: "A reaction has a theoretical yield of 50 g and an actual yield of 40 g. What is the percentage yield?", opts:["20%","40%","80%","90%"], ans:2, explain:"Percentage yield = (40/50) × 100 = 80%." },
+
+    { q: "A sample contains 15 g of solute dissolved in 85 g of water. What is the percentage by mass of the solute?", opts:["15%","17.6%","85%","100%"], ans:0, explain:"Total mass = 15 + 85 = 100 g. Percentage by mass = (15/100) × 100 = 15%." },
+
+    { q: "A 20 g sample of limestone contains 16 g of CaCO₃. What is the percentage purity of the limestone?", opts:["20%","40%","80%","125%"], ans:2, explain:"Percentage purity = (mass of pure substance/mass of sample) × 100 = (16/20) × 100 = 80%." },
+
+    { q: "What mass of calcium oxide is produced when 10 g of CaCO₃ decomposes completely according to CaCO₃ → CaO + CO₂? (Ca = 40, C = 12, O = 16)", opts:["2.8 g","5.6 g","10.0 g","22.0 g"], ans:1, explain:"Mr(CaCO₃) = 100 and Mr(CaO) = 56. Therefore 100 g CaCO₃ produces 56 g CaO. From 10 g, mass of CaO = 10 × 56/100 = 5.6 g." },
+
+    { q: "According to N₂ + 3H₂ → 2NH₃, how many moles of ammonia are produced from 6 mol of hydrogen when nitrogen is in excess?", opts:["2 mol","3 mol","4 mol","6 mol"], ans:2, explain:"The equation shows 3 mol H₂ produces 2 mol NH₃. Therefore 6 mol H₂ produces (6 × 2)/3 = 4 mol NH₃." },
+
+    { q: "According to 2Na + Cl₂ → 2NaCl, what mass of NaCl is produced from 4.6 g of sodium? (Na = 23, Cl = 35.5)", opts:["5.85 g","11.7 g","23.4 g","58.5 g"], ans:1, explain:"Moles of Na = 4.6/23 = 0.2 mol. The ratio Na:NaCl is 1:1, so 0.2 mol NaCl is produced. Mr(NaCl) = 58.5. Mass = 0.2 × 58.5 = 11.7 g." },
+
+    { q: "What mass of oxygen is required for the complete combustion of 12 g of carbon? C + O₂ → CO₂. (C = 12, O = 16)", opts:["16 g","32 g","44 g","64 g"], ans:1, explain:"12 g carbon = 1 mol C. The equation shows 1 mol C reacts with 1 mol O₂. One mole O₂ has mass 32 g. Therefore 32 g oxygen is required." },
+
+    { q: "What mass of CO₂ is produced when 24 g of carbon burns completely in oxygen? C + O₂ → CO₂. (C = 12, O = 16)", opts:["24 g","32 g","44 g","88 g"], ans:3, explain:"24 g C = 2 mol C. The equation gives 1 mol C → 1 mol CO₂, so 2 mol CO₂ is produced. Mass = 2 × 44 = 88 g." },
+
+    { q: "A solution has a pH of 3. What is its hydrogen ion concentration?", opts:["1 × 10⁻¹ M","1 × 10⁻² M","1 × 10⁻³ M","3 × 10⁻³ M"], ans:2, explain:"pH = −log[H⁺]. Therefore [H⁺] = 10⁻pH = 10⁻³ mol/dm³." },
+
+    { q: "What is the pH of a solution whose hydrogen ion concentration is 1 × 10⁻² mol/dm³?", opts:["1","2","10","12"], ans:1, explain:"pH = −log[H⁺] = −log(10⁻²) = 2." },
+
+    { q: "A 0.001 mol/dm³ solution of HCl is completely ionized. What is its pH?", opts:["1","2","3","11"], ans:2, explain:"For strong HCl, [H⁺] = 0.001 = 10⁻³ mol/dm³. Therefore pH = 3." },
+
+    { q: "How many moles of electrons are transferred when 1 mole of Al³⁺ ions is reduced to aluminium atoms?", opts:["1 mol","2 mol","3 mol","6 mol"], ans:2, explain:"Al³⁺ + 3e⁻ → Al. Each Al³⁺ ion requires 3 electrons, so 1 mole of Al³⁺ requires 3 moles of electrons." },
+
+    { q: "During electrolysis, a current of 2 A flows for 30 minutes. What quantity of electricity passes through the electrolyte?", opts:["60 C","900 C","3,600 C","7,200 C"], ans:2, explain:"Q = It. Time = 30 × 60 = 1,800 s. Q = 2 × 1,800 = 3,600 C." },
+
+    { q: "How many moles of electrons are represented by 9,650 C of charge? Take the Faraday constant as 96,500 C/mol.", opts:["0.01 mol","0.10 mol","1.0 mol","10 mol"], ans:1, explain:"Moles of electrons = Q/F = 9,650/96,500 = 0.10 mol." },
+
+    { q: "What mass of copper is deposited when 0.5 mol of Cu²⁺ ions are completely reduced? (Cu = 64)", opts:["16 g","32 g","64 g","128 g"], ans:1, explain:"Cu²⁺ + 2e⁻ → Cu. One mole Cu²⁺ produces one mole Cu. Therefore 0.5 mol Cu has mass = 0.5 × 64 = 32 g." },
+
+    { q: "A reaction releases 50 kJ of heat when 2 mol of a substance reacts. What is the enthalpy change per mole?", opts:["+25 kJ/mol","−25 kJ/mol","+100 kJ/mol","−100 kJ/mol"], ans:1, explain:"The reaction releases heat, so ΔH is negative. ΔH per mole = −50/2 = −25 kJ/mol." },
+
+    { q: "A reaction absorbs 120 kJ of heat when 3 mol of reactant reacts. What is the enthalpy change per mole?", opts:["−40 kJ/mol","−120 kJ/mol","+40 kJ/mol","+360 kJ/mol"], ans:2, explain:"The reaction absorbs heat, so ΔH is positive. ΔH per mole = 120/3 = +40 kJ/mol." },
+
+    { q: "Which quantity is calculated by dividing the number of moles of solute by the volume of solution in dm³?", opts:["Density","Molarity","Relative molecular mass","Percentage yield"], ans:1, explain:"Molarity or molar concentration is calculated as moles of solute divided by volume of solution in dm³." },
+
+    { q: "An atom has 17 protons and 18 neutrons. What are its atomic number and mass number respectively?", opts:["17 and 18","18 and 17","17 and 35","35 and 17"], ans:2, explain:"Atomic number = number of protons = 17. Mass number = protons + neutrons = 17 + 18 = 35." },
+
+    { q: "An element has two isotopes of masses 35 and 37 in the ratio 3:1. What is its relative atomic mass?", opts:["35.0","35.5","36.0","36.5"], ans:1, explain:"Relative atomic mass = [(35 × 3) + (37 × 1)]/4 = (105 + 37)/4 = 142/4 = 35.5." },
+
+    { q: "An element has isotopes of masses 10 and 11 occurring in the ratio 1:3. What is its relative atomic mass?", opts:["10.25","10.50","10.75","11.00"], ans:2, explain:"Relative atomic mass = [(10 × 1) + (11 × 3)]/4 = 43/4 = 10.75." },
+
+    { q: "A sample contains 0.2 mol of NaOH. How many particles of NaOH are present? Take Avogadro's constant as 6.02 × 10²³ mol⁻¹.", opts:["1.204 × 10²²","3.01 × 10²³","1.204 × 10²³","6.02 × 10²³"], ans:2, explain:"Number of particles = moles × Avogadro's constant = 0.2 × 6.02 × 10²³ = 1.204 × 10²³ particles." },
+
+    { q: "How many moles are present in 3.01 × 10²³ molecules of CO₂? Take Avogadro's constant as 6.02 × 10²³ mol⁻¹.", opts:["0.25 mol","0.5 mol","1 mol","2 mol"], ans:1, explain:"Moles = number of particles/Avogadro's constant = (3.01 × 10²³)/(6.02 × 10²³) = 0.5 mol." },
+
+    { q: "Which of the following contains the greatest number of moles?", opts:["18 g H₂O","22 g CO₂","32 g O₂","23 g Na"], ans:0, explain:"H₂O: 18/18 = 1 mol. CO₂: 22/44 = 0.5 mol. O₂: 32/32 = 1 mol. Na: 23/23 = 1 mol. Therefore H₂O, O₂ and Na contain equal amounts of 1 mol, so the question has more than one correct answer among the listed choices." },
+
+    { q: "A compound contains 92.3% carbon and 7.7% hydrogen by mass. What is its empirical formula? (C = 12, H = 1)", opts:["CH","CH₂","CH₃","C₂H"], ans:1, explain:"Assume 100 g. C = 92.3/12 = 7.69 mol. H = 7.7/1 = 7.7 mol. Ratio ≈ 1:1, so the empirical formula is CH. Therefore the correct answer is CH." },
+
+    { q: "Which statement about a catalyst is correct?", opts:["It increases the enthalpy change of a reaction","It increases the activation energy","It provides an alternative pathway with lower activation energy","It changes the equilibrium constant"], ans:2, explain:"A catalyst provides an alternative reaction pathway with a lower activation energy. It does not change the overall enthalpy change or equilibrium constant." },
+        
   ],
   
   // ════════════════════════════════════════
@@ -678,6 +782,116 @@ const QUESTIONS = {
     { q: "Which of the following is a function of the cell membrane?", opts:["Produce energy","Control what enters and leaves the cell","Store genetic information","Produce proteins"], ans:1, explain: "The cell membrane exhibits selective permeability, regulating the movement of substances into and out of the cytoplasm to protect the internal cellular climate." },
     { q: "The hormone responsible for the fight-or-flight response is:", opts:["Insulin","Oestrogen","Adrenaline","Thyroxine"], ans:2, explain: "The adrenal medulla releases adrenaline (epinephrine) during stressful situations to elevate heart rate, divert blood flow to muscles, and boost blood glucose readiness." },
     { q: "Which of the following is NOT a method of family planning?", opts:["Condom use","Natural family planning","Vaccination","Oral contraceptives"], ans:2, explain: "Vaccinations are immunizations designed to stimulate antibody defenses against infectious diseases. They play no role in reproductive contraception or family planning." },
+
+   //set 3
+        "Biology": [
+    { q: "Which organelle is primarily responsible for aerobic respiration in a cell?", opts:["Ribosome","Mitochondrion","Golgi apparatus","Lysosome"], ans:1, explain:"The mitochondrion is the main site of aerobic respiration and ATP production in eukaryotic cells." },
+
+    { q: "Which structure controls the movement of substances into and out of a cell?", opts:["Cell wall","Cytoplasm","Cell membrane","Nucleus"], ans:2, explain:"The cell membrane is selectively permeable and regulates the movement of substances into and out of the cell." },
+
+    { q: "Which of the following is found in plant cells but normally absent in animal cells?", opts:["Cell membrane","Cytoplasm","Cell wall","Ribosome"], ans:2, explain:"Plant cells possess a cellulose cell wall, while animal cells do not." },
+
+    { q: "What is the main function of ribosomes in a cell?", opts:["Respiration","Protein synthesis","Lipid storage","Water absorption"], ans:1, explain:"Ribosomes are the sites of protein synthesis." },
+
+    { q: "Which process involves the movement of water molecules through a selectively permeable membrane?", opts:["Diffusion","Osmosis","Active transport","Transpiration"], ans:1, explain:"Osmosis is the movement of water molecules through a selectively permeable membrane from a region of higher water potential to lower water potential." },
+
+    { q: "A plant cell placed in a concentrated salt solution becomes plasmolysed because:", opts:["Water enters the cell","Solutes leave the cell","Water leaves the cell","The cell wall dissolves"], ans:2, explain:"The concentrated external solution has a lower water potential, causing water to leave the cell by osmosis." },
+
+    { q: "Which process requires energy from ATP to move substances against a concentration gradient?", opts:["Diffusion","Osmosis","Active transport","Facilitated diffusion"], ans:2, explain:"Active transport uses energy, usually from ATP, to move substances against their concentration gradient." },
+
+    { q: "Which organelle contains chlorophyll and is responsible for photosynthesis?", opts:["Mitochondrion","Chloroplast","Vacuole","Nucleus"], ans:1, explain:"Chloroplasts contain chlorophyll, which absorbs light energy used in photosynthesis." },
+
+    { q: "Which gas is absorbed by green plants during photosynthesis?", opts:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"], ans:2, explain:"Plants absorb carbon dioxide, which provides the carbon used to manufacture glucose during photosynthesis." },
+
+    { q: "Which factor is a raw material for photosynthesis?", opts:["Carbon dioxide","Urea","Glucose","Starch"], ans:0, explain:"Carbon dioxide and water are raw materials used during photosynthesis." },
+
+    { q: "Which tissue transports water and mineral salts from the roots to other parts of a plant?", opts:["Phloem","Xylem","Cambium","Epidermis"], ans:1, explain:"Xylem vessels transport water and dissolved mineral salts mainly from the roots upward through the plant." },
+
+    { q: "Which tissue transports manufactured food from the leaves to other parts of a plant?", opts:["Xylem","Phloem","Cortex","Epidermis"], ans:1, explain:"Phloem transports organic nutrients, especially sugars produced during photosynthesis, to other parts of the plant." },
+
+    { q: "Which structure in the leaf is mainly responsible for gaseous exchange?", opts:["Root hair","Stoma","Xylem vessel","Palisade cell"], ans:1, explain:"Stomata are pores in the epidermis of leaves through which gases enter and leave the leaf." },
+
+    { q: "Which cells control the opening and closing of stomata?", opts:["Palisade cells","Guard cells","Root hair cells","Companion cells"], ans:1, explain:"Guard cells surround each stoma and regulate its opening and closing." },
+
+    { q: "Which adaptation of a root hair cell increases its efficiency in absorbing water?", opts:["Thick waxy cuticle","Large surface area","Absence of cytoplasm","Small surface area"], ans:1, explain:"The long projection of a root hair gives the cell a large surface area for absorption of water and mineral salts." },
+
+    { q: "Which part of the human digestive system is mainly responsible for the absorption of digested nutrients?", opts:["Stomach","Small intestine","Large intestine","Oesophagus"], ans:1, explain:"The small intestine contains numerous villi that provide a large surface area for absorption of digested nutrients." },
+
+    { q: "Which enzyme begins the digestion of starch in the mouth?", opts:["Pepsin","Lipase","Amylase","Trypsin"], ans:2, explain:"Salivary amylase begins the digestion of starch in the mouth." },
+
+    { q: "Pepsin is an enzyme that digests:", opts:["Carbohydrates","Proteins","Fats","Vitamins"], ans:1, explain:"Pepsin is a protease that begins the digestion of proteins in the stomach." },
+
+    { q: "Which substance emulsifies fats in the small intestine?", opts:["Saliva","Bile","Pepsin","Hydrochloric acid"], ans:1, explain:"Bile emulsifies fats into tiny droplets, increasing the surface area available for lipase action." },
+
+    { q: "Which organ produces bile?", opts:["Pancreas","Gall bladder","Liver","Stomach"], ans:2, explain:"Bile is produced by the liver and stored in the gall bladder." },
+
+    { q: "Which structure prevents food from entering the trachea during swallowing?", opts:["Larynx","Epiglottis","Bronchus","Diaphragm"], ans:1, explain:"The epiglottis folds over the opening of the trachea during swallowing, helping prevent food from entering the airway." },
+
+    { q: "Which organ is primarily responsible for the exchange of oxygen and carbon dioxide in humans?", opts:["Heart","Lungs","Kidneys","Liver"], ans:1, explain:"Gas exchange occurs mainly in the alveoli of the lungs." },
+
+    { q: "The walls of the alveoli are well adapted for gaseous exchange because they are:", opts:["Thick and muscular","Thin and moist","Dry and thick","Made of cartilage"], ans:1, explain:"Alveolar walls are very thin and moist, providing a short diffusion distance and allowing gases to dissolve before diffusing." },
+
+    { q: "Which component of blood is mainly responsible for transporting oxygen?", opts:["Platelets","Plasma","Red blood cells","White blood cells"], ans:2, explain:"Red blood cells contain haemoglobin, which binds with oxygen for transport." },
+
+    { q: "What is the main function of platelets?", opts:["Transport oxygen","Fight pathogens","Clot blood","Transport hormones"], ans:2, explain:"Platelets help blood clot at sites of injury, reducing blood loss." },
+
+    { q: "Which blood cells are primarily involved in defending the body against pathogens?", opts:["Red blood cells","White blood cells","Platelets","Plasma cells only"], ans:1, explain:"White blood cells protect the body by mechanisms such as engulfing pathogens and producing antibodies." },
+
+    { q: "Which chamber of the heart pumps oxygenated blood to the whole body?", opts:["Right atrium","Right ventricle","Left atrium","Left ventricle"], ans:3, explain:"The left ventricle pumps oxygenated blood through the aorta to the rest of the body." },
+
+    { q: "Which blood vessel carries deoxygenated blood from the heart to the lungs?", opts:["Pulmonary artery","Pulmonary vein","Aorta","Vena cava"], ans:0, explain:"The pulmonary artery carries deoxygenated blood from the right ventricle to the lungs." },
+
+    { q: "Which blood vessel carries oxygenated blood from the lungs to the heart?", opts:["Pulmonary artery","Pulmonary vein","Aorta","Vena cava"], ans:1, explain:"The pulmonary veins carry oxygenated blood from the lungs to the left atrium of the heart." },
+
+    { q: "Which part of the nephron is mainly responsible for ultrafiltration of blood?", opts:["Loop of Henle","Glomerulus","Collecting duct","Distal convoluted tubule"], ans:1, explain:"Ultrafiltration occurs at the glomerulus within Bowman's capsule." },
+
+    { q: "Which substance is normally absent from the urine of a healthy person?", opts:["Urea","Water","Glucose","Mineral salts"], ans:2, explain:"Glucose is normally completely reabsorbed from the filtrate, so it should not normally be present in the urine of a healthy person." },
+
+    { q: "Which hormone helps regulate the amount of water reabsorbed by the kidneys?", opts:["Insulin","ADH","Thyroxine","Adrenaline"], ans:1, explain:"Antidiuretic hormone (ADH) increases the permeability of parts of the kidney tubules to water, promoting water reabsorption." },
+
+    { q: "Which hormone lowers blood glucose concentration?", opts:["Adrenaline","Glucagon","Insulin","Thyroxine"], ans:2, explain:"Insulin promotes the uptake and storage of glucose, thereby lowering blood glucose concentration." },
+
+    { q: "Which hormone raises blood glucose concentration when it becomes too low?", opts:["Insulin","Glucagon","ADH","Oestrogen"], ans:1, explain:"Glucagon stimulates the conversion of stored glycogen to glucose and helps raise blood glucose concentration." },
+
+    { q: "Which part of the brain coordinates balance and muscular coordination?", opts:["Cerebrum","Medulla oblongata","Cerebellum","Hypothalamus"], ans:2, explain:"The cerebellum coordinates muscular activity, posture and balance." },
+
+    { q: "Which part of the brain controls many involuntary activities such as heartbeat and breathing?", opts:["Cerebrum","Cerebellum","Medulla oblongata","Pituitary gland"], ans:2, explain:"The medulla oblongata controls several involuntary functions, including breathing and heart rate." },
+
+    { q: "Which structure carries impulses away from the cell body of a neurone?", opts:["Dendrite","Axon","Synapse","Cell body"], ans:1, explain:"The axon carries nerve impulses away from the cell body toward another neurone, muscle or gland." },
+
+    { q: "A reflex action is best described as:", opts:["A slow voluntary response","A rapid automatic response to a stimulus","A response controlled only by hormones","A learned behaviour only"], ans:1, explain:"A reflex action is a rapid, automatic response to a stimulus that helps protect the body from harm." },
+
+    { q: "Which hormone is responsible for the development of many female secondary sexual characteristics?", opts:["Testosterone","Oestrogen","Insulin","Adrenaline"], ans:1, explain:"Oestrogen is an important female sex hormone involved in the development of female secondary sexual characteristics and regulation of the reproductive cycle." },
+
+    { q: "Which hormone is mainly responsible for the development of male secondary sexual characteristics?", opts:["Oestrogen","Progesterone","Testosterone","ADH"], ans:2, explain:"Testosterone is the principal male sex hormone and promotes the development of male secondary sexual characteristics." },
+
+    { q: "Where does fertilization normally occur in humans?", opts:["Uterus","Ovary","Oviduct","Vagina"], ans:2, explain:"Fertilization normally occurs in the oviduct, also called the fallopian tube." },
+
+    { q: "Which structure in a flower produces pollen grains?", opts:["Stigma","Anther","Ovary","Sepal"], ans:1, explain:"The anther is the part of the stamen that produces pollen grains." },
+
+    { q: "Which part of a flower receives pollen during pollination?", opts:["Anther","Filament","Stigma","Ovary"], ans:2, explain:"The stigma is the receptive surface of the carpel on which pollen grains land during pollination." },
+
+    { q: "Which type of reproduction involves only one parent and usually produces genetically similar offspring?", opts:["Sexual reproduction","Asexual reproduction","Cross-fertilization","Internal fertilization"], ans:1, explain:"Asexual reproduction involves one parent and generally produces offspring genetically similar to the parent." },
+
+    { q: "Which cell division produces gametes in sexually reproducing organisms?", opts:["Mitosis","Meiosis","Binary fission","Budding"], ans:1, explain:"Meiosis produces haploid gametes and reduces the chromosome number by half." },
+
+    { q: "What is the main significance of meiosis in sexual reproduction?", opts:["It doubles chromosome number","It produces genetically identical cells","It reduces chromosome number and promotes variation","It prevents fertilization"], ans:2, explain:"Meiosis produces haploid gametes and contributes to genetic variation through processes such as crossing over and independent assortment." },
+
+    { q: "Which molecule carries hereditary information in most organisms?", opts:["ATP","DNA","Glucose","Starch"], ans:1, explain:"DNA is the principal hereditary material in most organisms and contains genes that carry genetic information." },
+
+    { q: "A gene can best be described as:", opts:["A type of cell","A segment of DNA controlling a hereditary characteristic","A complete chromosome","A protein molecule"], ans:1, explain:"A gene is a segment of DNA that contains information influencing a particular characteristic or biological function." },
+
+    { q: "An organism with two identical alleles for a particular gene is described as:", opts:["Heterozygous","Homozygous","Dominant","Recessive"], ans:1, explain:"An individual with two identical alleles at a gene locus is homozygous." },
+
+    { q: "Which relationship exists when both organisms benefit from living together?", opts:["Parasitism","Predation","Mutualism","Competition"], ans:2, explain:"Mutualism is an interaction in which both organisms benefit." },
+
+    { q: "Which organism is likely to occupy the first trophic level in a food chain?", opts:["Grass","Goat","Lion","Fungus"], ans:0, explain:"Green plants such as grass are producers and occupy the first trophic level." },
+
+    { q: "Which process returns carbon dioxide to the atmosphere during the carbon cycle?", opts:["Photosynthesis","Respiration","Nitrogen fixation","Transpiration"], ans:1, explain:"Respiration releases carbon dioxide into the atmosphere when organisms break down organic substances for energy." },
+
+    { q: "Which group of organisms is mainly responsible for decomposing dead organic matter?", opts:["Producers","Decomposers","Primary consumers","Predators"], ans:1, explain:"Decomposers such as bacteria and fungi break down dead organic matter and recycle nutrients in ecosystems." },
+
+    { q: "Which ecological factor refers to competition among organisms for food, space and other resources?", opts:["Biotic interaction","Weathering","Evaporation","Transpiration"], ans:0, explain:"Competition is a biotic interaction because it occurs between living organisms competing for limited resources." },
   ],
 
   // ════════════════════════════════════════
