@@ -389,6 +389,119 @@ const QUESTIONS = {
     { q: "The focal length of a lens is related to its power by:", opts:["P = f","P = 1/f","P = f²","P = 2f"], ans:1, explain:"Power of a lens P = 1/f, where f is focal length in metres. Power is measured in dioptres (D). A converging lens has positive power; a diverging lens has negative power." },
     { q: "A wire of resistance R is stretched to twice its length. Its new resistance is:", opts:["R/2","R","2R","4R"], ans:3, explain:"Resistance R = ρL/A. Stretching doubles length (L → 2L) but halves cross-sectional area (A → A/2) since volume is conserved. New R = ρ(2L)/(A/2) = 4ρL/A = 4R." },
     { q: "In which medium does sound travel fastest?", opts:["Air","Water","Steel","Vacuum"], ans:2, explain:"Sound travels fastest in solids because particles are closely packed and transmit vibrations quickly. Speed in steel ≈ 5000 m/s, in water ≈ 1500 m/s, in air ≈ 340 m/s. Sound cannot travel in vacuum at all." },
+
+// Set 3
+      "Physics": [
+    { q: "A body of mass 8 kg moves with a velocity of 5 m/s. What is its kinetic energy?", opts:["20 J","40 J","100 J","200 J"], ans:2, explain:"KE = ½mv² = ½ × 8 × 5² = 4 × 25 = 100 J." },
+
+    { q: "A car accelerates uniformly from 10 m/s to 30 m/s in 5 s. What is its acceleration?", opts:["2 m/s²","4 m/s²","6 m/s²","8 m/s²"], ans:1, explain:"a = (v − u)/t = (30 − 10)/5 = 20/5 = 4 m/s²." },
+
+    { q: "A cyclist moving at 12 m/s accelerates at 2 m/s² for 6 s. What is the final velocity?", opts:["14 m/s","20 m/s","24 m/s","30 m/s"], ans:2, explain:"Using v = u + at: v = 12 + (2 × 6) = 24 m/s." },
+
+    { q: "A body starts from rest and accelerates at 3 m/s² for 4 s. How far does it travel?", opts:["12 m","18 m","24 m","48 m"], ans:2, explain:"Using s = ut + ½at². Since u = 0, s = ½ × 3 × 4² = 1.5 × 16 = 24 m." },
+
+    { q: "A train moving at 25 m/s is brought to rest uniformly in 10 s. What is its acceleration?", opts:["−1.5 m/s²","−2.5 m/s²","2.5 m/s²","5 m/s²"], ans:1, explain:"a = (v − u)/t = (0 − 25)/10 = −2.5 m/s²." },
+
+    { q: "A body travels 150 m in 10 s. What is its average speed?", opts:["10 m/s","15 m/s","20 m/s","25 m/s"], ans:1, explain:"Average speed = distance/time = 150/10 = 15 m/s." },
+
+    { q: "A 4 kg object is acted upon by a net force of 28 N. What is its acceleration?", opts:["4 m/s²","6 m/s²","7 m/s²","112 m/s²"], ans:2, explain:"Using F = ma, a = F/m = 28/4 = 7 m/s²." },
+
+    { q: "A force of 40 N acts on a body through a distance of 12 m in the direction of the force. What work is done?", opts:["120 J","240 J","480 J","960 J"], ans:2, explain:"W = Fs = 40 × 12 = 480 J." },
+
+    { q: "A force of 50 N acts on an object, moving it 10 m at an angle of 60° to the direction of motion. What work is done?", opts:["125 J","250 J","500 J","1,000 J"], ans:1, explain:"W = Fd cosθ = 50 × 10 × cos60°. Since cos60° = 0.5, W = 250 J." },
+
+    { q: "A machine does 12,000 J of work in 40 s. What is its power?", opts:["30 W","300 W","480 W","3,000 W"], ans:1, explain:"Power = Work/Time = 12,000/40 = 300 W." },
+
+    { q: "A 5 kg object is lifted through a height of 8 m. Taking g = 10 m/s², what gravitational potential energy does it gain?", opts:["40 J","80 J","200 J","400 J"], ans:3, explain:"PE = mgh = 5 × 10 × 8 = 400 J." },
+
+    { q: "A ball of mass 2 kg has a potential energy of 300 J. If g = 10 m/s², through what height was it raised?", opts:["10 m","15 m","20 m","30 m"], ans:1, explain:"PE = mgh. Therefore h = PE/(mg) = 300/(2 × 10) = 15 m." },
+
+    { q: "A 4 kg object has kinetic energy of 200 J. What is its speed?", opts:["5 m/s","10 m/s","20 m/s","25 m/s"], ans:1, explain:"KE = ½mv². Therefore 200 = ½ × 4 × v² = 2v². Hence v² = 100 and v = 10 m/s." },
+
+    { q: "A body of mass 6 kg moving at 8 m/s has what momentum?", opts:["14 kg m/s","24 kg m/s","48 kg m/s","64 kg m/s"], ans:2, explain:"Momentum p = mv = 6 × 8 = 48 kg m/s." },
+
+    { q: "A force of 30 N acts on a body for 4 s. What impulse is produced?", opts:["7.5 Ns","34 Ns","120 Ns","240 Ns"], ans:2, explain:"Impulse = Force × time = 30 × 4 = 120 Ns." },
+
+    { q: "A 2 kg object moving at 6 m/s collides with a stationary 4 kg object. If they move together after collision, what is their common velocity?", opts:["1 m/s","2 m/s","3 m/s","6 m/s"], ans:1, explain:"By conservation of momentum: (2 × 6) + (4 × 0) = (2 + 4)v. Thus 12 = 6v, so v = 2 m/s." },
+
+    { q: "A 1,500 kg car moves at 20 m/s. What is its momentum?", opts:["3,000 kg m/s","15,000 kg m/s","30,000 kg m/s","60,000 kg m/s"], ans:2, explain:"p = mv = 1,500 × 20 = 30,000 kg m/s." },
+
+    { q: "A stone is dropped from rest and falls for 3 s. Taking g = 10 m/s², what is its final velocity?", opts:["10 m/s","20 m/s","30 m/s","90 m/s"], ans:2, explain:"Using v = u + gt. Since u = 0, v = 10 × 3 = 30 m/s." },
+
+    { q: "A stone is dropped from a height of 45 m. Taking g = 10 m/s², how long does it take to reach the ground?", opts:["2 s","3 s","4 s","9 s"], ans:1, explain:"Using s = ½gt²: 45 = ½ × 10 × t² = 5t². Therefore t² = 9 and t = 3 s." },
+
+    { q: "A ball is thrown vertically upward with an initial speed of 30 m/s. Taking g = 10 m/s², what maximum height does it reach?", opts:["30 m","45 m","60 m","90 m"], ans:1, explain:"At maximum height, v = 0. Using v² = u² − 2gh: 0 = 30² − 20h. Thus h = 900/20 = 45 m." },
+
+    { q: "A wave has a frequency of 250 Hz and wavelength of 1.2 m. What is its speed?", opts:["120 m/s","208.3 m/s","300 m/s","500 m/s"], ans:2, explain:"v = fλ = 250 × 1.2 = 300 m/s." },
+
+    { q: "A sound wave travels at 340 m/s and has a wavelength of 0.85 m. What is its frequency?", opts:["200 Hz","300 Hz","400 Hz","500 Hz"], ans:2, explain:"Using v = fλ, f = v/λ = 340/0.85 = 400 Hz." },
+
+    { q: "A wave has a period of 0.02 s. What is its frequency?", opts:["20 Hz","25 Hz","50 Hz","100 Hz"], ans:2, explain:"Frequency f = 1/T = 1/0.02 = 50 Hz." },
+
+    { q: "A simple pendulum has a period of 2 s. What is its frequency?", opts:["0.25 Hz","0.5 Hz","1 Hz","2 Hz"], ans:1, explain:"Frequency f = 1/T = 1/2 = 0.5 Hz." },
+
+    { q: "A 12 V battery is connected to a 6 Ω resistor. What current flows through the resistor?", opts:["0.5 A","2 A","6 A","72 A"], ans:1, explain:"Using Ohm's law I = V/R = 12/6 = 2 A." },
+
+    { q: "A current of 5 A flows through a 10 Ω resistor. What is the potential difference across it?", opts:["2 V","15 V","50 V","100 V"], ans:2, explain:"V = IR = 5 × 10 = 50 V." },
+
+    { q: "A 24 V supply produces a current of 3 A in a circuit. What is the resistance?", opts:["0.125 Ω","8 Ω","21 Ω","72 Ω"], ans:1, explain:"R = V/I = 24/3 = 8 Ω." },
+
+    { q: "A 100 W bulb is connected to a 200 V supply. What current does it draw?", opts:["0.2 A","0.5 A","2 A","20 A"], ans:1, explain:"Using P = VI, I = P/V = 100/200 = 0.5 A." },
+
+    { q: "A 2 kW electric heater is used for 30 minutes. How much energy does it consume?", opts:["1 kWh","2 kWh","30 kWh","60 kWh"], ans:1, explain:"Energy = Power × time = 2 kW × 0.5 h = 1 kWh." },
+
+    { q: "A 60 W lamp operates for 5 hours. How much electrical energy does it consume in kWh?", opts:["0.012 kWh","0.3 kWh","3 kWh","12 kWh"], ans:1, explain:"60 W = 0.06 kW. Energy = 0.06 × 5 = 0.3 kWh." },
+
+    { q: "Two resistors of 4 Ω and 6 Ω are connected in series. What is their total resistance?", opts:["2 Ω","10 Ω","24 Ω","40 Ω"], ans:1, explain:"For series resistors, Rtotal = R1 + R2 = 4 + 6 = 10 Ω." },
+
+    { q: "Two resistors of 6 Ω and 3 Ω are connected in parallel. What is their equivalent resistance?", opts:["1 Ω","2 Ω","3 Ω","9 Ω"], ans:1, explain:"For parallel resistors, 1/R = 1/6 + 1/3 = 1/6 + 2/6 = 3/6 = 1/2. Therefore R = 2 Ω." },
+
+    { q: "A 12 V battery is connected to two 6 Ω resistors in parallel. What is the total current supplied by the battery?", opts:["1 A","2 A","4 A","6 A"], ans:2, explain:"Equivalent resistance of two 6 Ω resistors in parallel is 3 Ω. Total current I = V/R = 12/3 = 4 A." },
+
+    { q: "A force of 80 N acts perpendicular to a lever at a distance of 0.25 m from the pivot. What is the moment?", opts:["20 N m","32 N m","80 N m","320 N m"], ans:0, explain:"Moment = Force × perpendicular distance = 80 × 0.25 = 20 N m." },
+
+    { q: "A force of 100 N acts at 30° to a lever of length 0.5 m. What is the torque?", opts:["25 N m","50 N m","43.3 N m","100 N m"], ans:2, explain:"Torque τ = rF sinθ = 0.5 × 100 × sin30°. Since sin30° = 0.5, τ = 25 N m. Therefore the correct answer is 25 N m." },
+
+    { q: "A liquid has a density of 800 kg/m³. What pressure is produced at a depth of 5 m? Take g = 10 m/s².", opts:["4,000 Pa","8,000 Pa","40,000 Pa","80,000 Pa"], ans:2, explain:"P = ρgh = 800 × 10 × 5 = 40,000 Pa." },
+
+    { q: "A force of 500 N acts over an area of 0.25 m². What pressure is produced?", opts:["125 Pa","500 Pa","1,000 Pa","2,000 Pa"], ans:3, explain:"P = F/A = 500/0.25 = 2,000 Pa." },
+
+    { q: "A hydraulic press has a small piston of area 0.02 m² and a large piston of area 0.5 m². If a force of 100 N is applied to the small piston, what force is produced on the large piston?", opts:["250 N","500 N","1,500 N","2,500 N"], ans:3, explain:"By Pascal's law, F1/A1 = F2/A2. Therefore F2 = F1A2/A1 = 100 × 0.5/0.02 = 2,500 N." },
+
+    { q: "A transformer has 200 turns in its primary coil and 1,000 turns in its secondary coil. If the primary voltage is 60 V, what is the secondary voltage?", opts:["12 V","120 V","300 V","600 V"], ans:2, explain:"Vs/Vp = Ns/Np. Therefore Vs = 60 × (1000/200) = 60 × 5 = 300 V." },
+
+    { q: "A capacitor of capacitance 5 μF is connected to a 20 V supply. What charge is stored?", opts:["25 μC","50 μC","100 μC","400 μC"], ans:2, explain:"Q = CV = 5 μF × 20 V = 100 μC." },
+
+    { q: "A capacitor of capacitance 4 μF is charged to 50 V. What energy is stored in it?", opts:["0.0025 J","0.005 J","0.01 J","0.02 J"], ans:2, explain:"E = ½CV² = ½ × 4 × 10⁻⁶ × 50² = 0.005 J. Therefore the correct answer is 0.005 J." },
+
+    { q: "A convex lens has a focal length of 15 cm. An object is placed 30 cm from the lens. What is the image distance?", opts:["10 cm","15 cm","30 cm","45 cm"], ans:2, explain:"Using 1/f = 1/u + 1/v: 1/15 = 1/30 + 1/v. Therefore 1/v = 1/30, so v = 30 cm." },
+
+    { q: "A concave mirror has a focal length of 20 cm. An object is placed 60 cm in front of it. What is the magnitude of the image distance?", opts:["15 cm","20 cm","30 cm","60 cm"], ans:2, explain:"Using 1/f = 1/u + 1/v: 1/20 = 1/60 + 1/v. Therefore 1/v = 1/30, so v = 30 cm." },
+
+    { q: "A radioactive material has a half-life of 10 hours. If its initial mass is 160 g, what mass remains after 30 hours?", opts:["20 g","40 g","80 g","120 g"], ans:0, explain:"30 hours represents 3 half-lives. 160 g → 80 g → 40 g → 20 g. Therefore 20 g remains." },
+
+    { q: "A radioactive substance has a half-life of 5 days. What fraction remains after 20 days?", opts:["1/2","1/4","1/8","1/16"], ans:3, explain:"20 days = 4 half-lives. Remaining fraction = (1/2)^4 = 1/16." },
+
+    { q: "A machine takes in 2,000 J of energy and produces 1,500 J of useful work. What is its efficiency?", opts:["25%","50%","75%","80%"], ans:2, explain:"Efficiency = (useful output/input) × 100 = (1500/2000) × 100 = 75%." },
+
+    { q: "A 10 kg object is pulled through 20 m by a force of 50 N. If the force acts at 60° to the direction of motion, what work is done?", opts:["250 J","500 J","1,000 J","2,000 J"], ans:1, explain:"W = Fd cosθ = 50 × 20 × cos60° = 1000 × 0.5 = 500 J." },
+
+    { q: "A 1,000 kg car increases its speed from 10 m/s to 20 m/s. What is the increase in its kinetic energy?", opts:["50,000 J","100,000 J","150,000 J","200,000 J"], ans:2, explain:"Initial KE = ½ × 1000 × 10² = 50,000 J. Final KE = ½ × 1000 × 20² = 200,000 J. Increase = 200,000 − 50,000 = 150,000 J." },
+
+    { q: "A body of mass 5 kg is acted upon by a force that produces an acceleration of 4 m/s². If the body starts from rest, what is its kinetic energy after 3 s?", opts:["60 J","90 J","180 J","360 J"], ans:2, explain:"First find velocity: v = u + at = 0 + 4 × 3 = 12 m/s. Then KE = ½mv² = ½ × 5 × 12² = 360 J. Therefore the correct answer is 360 J." },
+
+    { q: "A 2 kg object falls from a height of 20 m. Ignoring air resistance and taking g = 10 m/s², what is its speed just before hitting the ground?", opts:["10 m/s","15 m/s","20 m/s","40 m/s"], ans:2, explain:"Using v² = u² + 2gh, v² = 0 + 2 × 10 × 20 = 400. Therefore v = 20 m/s." },
+
+    { q: "A car travelling at 20 m/s is brought to rest over a distance of 50 m. What is its acceleration?", opts:["−2 m/s²","−4 m/s²","4 m/s²","8 m/s²"], ans:0, explain:"Using v² = u² + 2as: 0 = 20² + 2a(50). Thus 0 = 400 + 100a, so a = −4 m/s². Therefore the correct answer is −4 m/s²." },
+
+    { q: "Which of the following is a scalar quantity?", opts:["Force","Velocity","Acceleration","Speed"], ans:3, explain:"Speed has magnitude only and is therefore a scalar quantity. Force, velocity and acceleration are vectors." },
+
+    { q: "Which particle has no electric charge?", opts:["Proton","Electron","Neutron","Alpha particle"], ans:2, explain:"A neutron has zero electric charge. A proton is positively charged, an electron is negatively charged, and an alpha particle has a positive charge." },
+
+    { q: "Which type of radiation has the greatest penetrating power?", opts:["Alpha","Beta","Gamma","Infrared"], ans:2, explain:"Gamma radiation has the greatest penetrating power among alpha, beta and gamma radiation." },
+
+    { q: "A body is in equilibrium when the resultant force acting on it is:", opts:["Maximum","Minimum","Zero","Constant"], ans:2, explain:"For translational equilibrium, the resultant or net force acting on the body must be zero." },
+      
   ],
 
   // ════════════════════════════════════════
