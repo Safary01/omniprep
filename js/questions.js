@@ -245,46 +245,108 @@ const QUESTIONS = {
   // PHYSICS — 40 Questions
   // ════════════════════════════════════════
   "Physics": [
-    { q: "A 5 kg body moves at 4 m/s. Its kinetic energy is:", opts:["10 J","20 J","40 J","80 J"], ans:2, explain:"KE = ½mv² = ½ × 5 × 4² = ½ × 5 × 16 = 40 J. Always use KE = ½mv², not mv²." },
-    { q: "Which is a vector quantity?", opts:["Speed","Mass","Temperature","Velocity"], ans:3, explain:"Velocity is a vector because it has both magnitude and direction. Speed is scalar (magnitude only). Mass and temperature have no direction, so they are scalars." },
-    { q: "SI unit of electric resistance:", opts:["Ampere","Volt","Ohm","Farad"], ans:2, explain:"Resistance is measured in Ohms (Ω), named after Georg Ohm. Ampere measures current, Volt measures potential difference, and Farad measures capacitance." },
-    { q: "A wave has frequency 50 Hz and wavelength 2 m. Its speed is:", opts:["25 m/s","50 m/s","100 m/s","200 m/s"], ans:2, explain:"Wave speed v = frequency × wavelength = 50 × 2 = 100 m/s. This formula applies to all waves including sound and light." },
-    { q: "An object in equilibrium has net force:", opts:["Maximum","Minimum","Zero","Constant"], ans:2, explain:"For an object to be in equilibrium, the net (resultant) force acting on it must be zero. This means all forces are balanced. Newton's first law states an object remains at rest or uniform motion when net force is zero." },
-    { q: "Image formed by a plane mirror:", opts:["Real and inverted","Virtual and erect","Real and erect","Virtual and inverted"], ans:1, explain:"A plane mirror forms a virtual (cannot be projected on a screen), erect (upright), laterally inverted image. The image is the same size as the object and as far behind the mirror as the object is in front." },
-    { q: "Ohm's law: current is proportional to:", opts:["Resistance","Power","Voltage","Charge"], ans:2, explain:"Ohm's law states V = IR, meaning current (I) is directly proportional to voltage (V) and inversely proportional to resistance (R). At constant resistance, doubling voltage doubles current." },
-    { q: "Half-life 20 years. Fraction remaining after 60 years:", opts:["1/4","1/6","1/8","1/16"], ans:2, explain:"60 years = 3 half-lives. After each half-life, half remains: after 1st = 1/2, after 2nd = 1/4, after 3rd = 1/8. The fraction remaining = (1/2)³ = 1/8." },
-    { q: "A pool appears shallower due to:", opts:["Reflection","Diffraction","Refraction","Dispersion"], ans:2, explain:"Refraction causes light to bend when passing from water (denser) to air (less dense). This bending makes the pool appear shallower than it actually is. The apparent depth is less than the real depth." },
-    { q: "Work done is zero when angle between force and displacement is:", opts:["0°","45°","90°","180°"], ans:2, explain:"Work = Fd cos θ. When θ = 90°, cos 90° = 0, so Work = 0. A force perpendicular to displacement does no work. Example: a porter carrying a load on their head while walking horizontally." },
-    { q: "The unit of power is:", opts:["Joule","Newton","Watt","Pascal"], ans:2, explain:"Power is the rate of doing work. Power = Work/Time. Its SI unit is the Watt (W), named after James Watt. 1 Watt = 1 Joule per second. Joule is energy, Newton is force, Pascal is pressure." },
-    { q: "Which type of wave requires a medium to travel?", opts:["Electromagnetic","Light","Sound","Radio"], ans:2, explain:"Sound is a mechanical wave that requires a medium (solid, liquid, or gas) to travel. Electromagnetic waves (including light and radio waves) can travel through a vacuum. Sound cannot travel in space." },
-    { q: "The acceleration due to gravity on Earth is approximately:", opts:["9.8 m/s","9.8 m/s²","10 m/s","10 m/s³"], ans:1, explain:"g = 9.8 m/s² is the correct value with correct units. Acceleration is measured in m/s² (metres per second squared). The value 10 m/s² is sometimes used as an approximation in calculations." },
-    { q: "Which of these is a scalar quantity?", opts:["Force","Displacement","Velocity","Speed"], ans:3, explain:"Speed is scalar — it has magnitude only (e.g. 60 km/h). Velocity is speed with direction (vector). Force and displacement both have magnitude and direction, making them vectors." },
-    { q: "The phenomenon of light bending around obstacles is:", opts:["Reflection","Refraction","Diffraction","Dispersion"], ans:2, explain:"Diffraction is the bending of waves around obstacles or through openings. It occurs with all waves including light, sound, and water waves. Refraction is bending due to change in medium." },
-    { q: "A body thrown horizontally undergoes:", opts:["Uniform motion only","Free fall only","Both horizontal uniform motion and vertical free fall","Circular motion"], ans:2, explain:"Projectile motion combines two independent motions: uniform horizontal motion (constant velocity, no air resistance) and vertical free fall (acceleration due to gravity downward)." },
-    { q: "The SI unit of electric charge is:", opts:["Volt","Ampere","Coulomb","Farad"], ans:2, explain:"Electric charge is measured in Coulombs (C). Volt measures potential difference, Ampere measures current (charge per second), and Farad measures capacitance." },
-    { q: "Which of these is NOT a renewable energy source?", opts:["Solar","Wind","Coal","Hydro"], ans:2, explain:"Coal is a fossil fuel formed over millions of years. Once used, it cannot be replenished within a human lifetime. Solar, wind, and hydroelectric power are renewable because they are naturally and continuously replenished." },
-    { q: "The principle of conservation of energy states that energy:", opts:["Can be created","Can be destroyed","Can neither be created nor destroyed","Changes form only in mechanical systems"], ans:2, explain:"Energy cannot be created or destroyed; it can only be converted from one form to another. This is one of the most fundamental laws of physics. The total energy of an isolated system remains constant." },
-    { q: "What happens to resistance when temperature increases in a conductor?", opts:["Decreases","Increases","Remains constant","First increases then decreases"], ans:1, explain:"In metallic conductors, increasing temperature causes atoms to vibrate more, increasing collisions with free electrons and thus increasing resistance. In semiconductors, the opposite occurs." },
-    { q: "The focal length of a concave mirror is:", opts:["Negative","Positive","Zero","Depends on the object"], ans:0, explain:"In the New Cartesian sign convention, distances measured opposite to the direction of incident light are negative. For a concave mirror, the focus is in front of the mirror (same side as incident light), so focal length is negative." },
-    { q: "Which particle has no charge?", opts:["Proton","Electron","Neutron","Alpha particle"], ans:2, explain:"The neutron has no electric charge (neutral). Protons have positive charge (+1), electrons have negative charge (−1), and alpha particles consist of 2 protons and 2 neutrons with charge +2." },
-    { q: "The transformer works on the principle of:", opts:["Self-induction","Mutual induction","Electromagnetic induction","Magnetic flux"], ans:1, explain:"A transformer uses mutual induction — a changing current in the primary coil creates a changing magnetic field that induces a voltage in the secondary coil. The coils share the same iron core." },
-    { q: "A body of mass 2 kg is lifted to a height of 5 m. Its potential energy is: (g = 10 m/s²)", opts:["10 J","50 J","100 J","25 J"], ans:2, explain:"Gravitational PE = mgh = 2 × 10 × 5 = 100 J. Always use PE = mgh where m is mass in kg, g is 10 m/s², and h is height in metres." },
-    { q: "Which colour of light has the highest frequency?", opts:["Red","Yellow","Violet","Green"], ans:2, explain:"In the visible spectrum, violet light has the highest frequency and shortest wavelength. Red has the lowest frequency and longest wavelength. Remember: ROY G BIV (red to violet = increasing frequency)." },
-    { q: "Ultrasonic waves have frequency:", opts:["Below 20 Hz","Between 20 Hz and 20 kHz","Above 20 kHz","Exactly 20 kHz"], ans:2, explain:"The human hearing range is 20 Hz to 20,000 Hz (20 kHz). Infrasonic waves are below 20 Hz. Ultrasonic waves are above 20 kHz. Ultrasound is used in medical scanning and sonar." },
-    { q: "The law of floatation states that a floating body displaces:", opts:["Its own volume of fluid","Its own weight of fluid","More fluid than its weight","Less fluid than its weight"], ans:1, explain:"The law of floatation states that a floating body displaces fluid equal in weight to its own weight. This is why a ship floats — it displaces water equal to its weight even though the ship is heavier than water." },
-    { q: "In a simple pendulum, the period depends on:", opts:["Mass of the bob","Length of the string","Amplitude of swing","All of the above"], ans:1, explain:"The period T = 2π√(L/g). Period depends only on the length L of the string and g. It is independent of the mass of the bob and the amplitude (for small oscillations)." },
-    { q: "The speed of light in a vacuum is approximately:", opts:["3 × 10⁶ m/s","3 × 10⁸ m/s","3 × 10¹⁰ m/s","3 × 10⁴ m/s"], ans:1, explain:"The speed of light in vacuum c ≈ 3 × 10⁸ m/s (300,000,000 m/s or 300,000 km/s). This is a fundamental constant of physics. Nothing can travel faster than light in a vacuum." },
-    { q: "Which of the following is an insulator?", opts:["Copper","Aluminium","Rubber","Iron"], ans:2, explain:"Rubber is an electrical insulator because it has no free electrons to carry charge. Copper, aluminium, and iron are metals with free electrons, making them good electrical conductors." },
-    { q: "The turning effect of a force is called:", opts:["Tension","Momentum","Torque","Impulse"], ans:2, explain:"Torque (or moment of force) is the turning effect of a force about a pivot. Torque = Force × perpendicular distance from pivot. Momentum is mass × velocity. Impulse is force × time." },
-    { q: "In a step-up transformer, the secondary coil has:", opts:["Fewer turns than the primary","More turns than the primary","Equal turns to the primary","No turns"], ans:1, explain:"A step-up transformer increases voltage. Vs/Vp = Ns/Np. For voltage to increase, the secondary coil must have more turns than the primary. A step-down transformer has fewer secondary turns." },
-    { q: "Which radiation is most penetrating?", opts:["Alpha","Beta","Gamma","X-ray"], ans:2, explain:"Gamma radiation is the most penetrating — it requires several centimetres of lead or metres of concrete to absorb. Beta penetrates a few mm of aluminium. Alpha is the least penetrating (stopped by paper or skin)." },
-    { q: "The pressure at the bottom of a liquid column depends on:", opts:["The cross-section of the container","The density of the liquid and the height","Only the height of the liquid","Only the density of the liquid"], ans:1, explain:"Liquid pressure P = ρgh, where ρ is density and h is height. Pressure depends on both density and height but NOT on the cross-sectional area or shape of the container." },
-    { q: "In photoelectric effect, increasing light intensity increases:", opts:["Energy of photoelectrons","Frequency of light","Number of photoelectrons emitted","Stopping potential"], ans:2, explain:"Intensity determines the number of photons. More photons = more electrons ejected. The energy of each photoelectron depends on frequency, not intensity. This was explained by Einstein using quantum theory." },
-    { q: "A convex lens is also called:", opts:["Diverging lens","Converging lens","Concave lens","Plano-concave lens"], ans:1, explain:"A convex lens is thicker in the middle and causes parallel rays to converge to a focal point — hence it is called a converging lens. A concave lens causes rays to diverge and is called a diverging lens." },
-    { q: "The SI unit of frequency is:", opts:["Decibel","Hertz","Watt","Pascal"], ans:1, explain:"Frequency is measured in Hertz (Hz), named after Heinrich Hertz. 1 Hz = 1 cycle per second. Decibel measures sound intensity, Watt measures power, Pascal measures pressure." },
-    { q: "Newton's third law states that:", opts:["F = ma","Every action has an equal and opposite reaction","An object remains at rest unless acted upon","Energy is conserved"], ans:1, explain:"Newton's third law: for every action there is an equal and opposite reaction. F = ma is Newton's second law. An object at rest staying at rest is Newton's first law." },
-    { q: "Which instrument measures atmospheric pressure?", opts:["Thermometer","Barometer","Hygrometer","Manometer"], ans:1, explain:"A barometer measures atmospheric pressure. A thermometer measures temperature. A hygrometer measures humidity. A manometer measures gas pressure in a container." },
-    { q: "The energy stored in a capacitor is given by:", opts:["QV","½QV","½CV²","CV"], ans:2, explain:"Energy stored in a capacitor E = ½CV² = ½QV = Q²/2C. The most commonly used form is ½CV². The factor ½ arises because the voltage builds up gradually as charge accumulates." },
+    { q: "A 5 kg body moves at 4 m/s. Its kinetic energy is:", opts:["10 J","20 J","40 J","80 J"], ans:2, explain:"KE = ½mv² = ½ × 5 × 4² = ½ × 5 × 16 = 40 J." },
+
+    { q: "A car starts from rest and accelerates uniformly at 4 m/s² for 5 s. What distance does it travel?", opts:["20 m","40 m","50 m","100 m"], ans:2, explain:"Using s = ut + ½at². Since u = 0, s = ½ × 4 × 5² = 2 × 25 = 50 m." },
+
+    { q: "A force of 20 N acts on a body of mass 5 kg. What acceleration is produced?", opts:["2 m/s²","4 m/s²","10 m/s²","100 m/s²"], ans:1, explain:"Using F = ma, a = F/m = 20/5 = 4 m/s²." },
+
+    { q: "A wave has a frequency of 50 Hz and wavelength of 2 m. What is its speed?", opts:["25 m/s","50 m/s","100 m/s","200 m/s"], ans:2, explain:"Wave speed v = fλ = 50 × 2 = 100 m/s." },
+
+    { q: "A body of mass 2 kg is lifted through a vertical height of 5 m. If g = 10 m/s², what is the gain in potential energy?", opts:["10 J","25 J","50 J","100 J"], ans:3, explain:"PE = mgh = 2 × 10 × 5 = 100 J." },
+
+    { q: "A machine does 6,000 J of work in 30 s. What is its power?", opts:["20 W","100 W","200 W","1,800 W"], ans:2, explain:"Power = Work/Time = 6000/30 = 200 W." },
+
+    { q: "A car moving at 20 m/s comes to rest uniformly in 5 s. What is its acceleration?", opts:["−2 m/s²","−4 m/s²","4 m/s²","5 m/s²"], ans:1, explain:"Using v = u + at: 0 = 20 + 5a. Therefore a = −20/5 = −4 m/s²." },
+
+    { q: "A 10 kg object is moving at 6 m/s. What is its momentum?", opts:["16 kg m/s","30 kg m/s","60 kg m/s","360 kg m/s"], ans:2, explain:"Momentum p = mv = 10 × 6 = 60 kg m/s." },
+
+    { q: "A force of 50 N moves an object through 8 m in the direction of the force. How much work is done?", opts:["6.25 J","58 J","400 J","800 J"], ans:2, explain:"Work done W = Fs = 50 × 8 = 400 J." },
+
+    { q: "A 2 kg ball moving at 10 m/s has what kinetic energy?", opts:["20 J","50 J","100 J","200 J"], ans:2, explain:"KE = ½mv² = ½ × 2 × 10² = 100 J." },
+
+    { q: "A current of 3 A flows through a resistor of 4 Ω. What is the potential difference across the resistor?", opts:["0.75 V","7 V","12 V","24 V"], ans:2, explain:"Using Ohm's law V = IR = 3 × 4 = 12 V." },
+
+    { q: "A resistor connected to a 12 V supply carries a current of 3 A. What is its resistance?", opts:["0.25 Ω","4 Ω","9 Ω","36 Ω"], ans:1, explain:"Using R = V/I = 12/3 = 4 Ω." },
+
+    { q: "A 60 W electric bulb operates on a 240 V supply. What current does it draw?", opts:["0.25 A","2.5 A","4 A","14.4 A"], ans:0, explain:"Using P = VI, I = P/V = 60/240 = 0.25 A." },
+
+    { q: "An electric heater has a resistance of 20 Ω and is connected to a 200 V supply. What current flows through it?", opts:["0.1 A","5 A","10 A","20 A"], ans:2, explain:"Using I = V/R = 200/20 = 10 A." },
+
+    { q: "A 1,000 W electric heater is used for 5 minutes. How much electrical energy does it consume?", opts:["5,000 J","50,000 J","300,000 J","5,000,000 J"], ans:2, explain:"Energy = Power × time. 5 minutes = 300 s. E = 1000 × 300 = 300,000 J." },
+
+    { q: "A body starts from rest and reaches a velocity of 30 m/s in 10 s. What is its acceleration?", opts:["0.3 m/s²","3 m/s²","20 m/s²","300 m/s²"], ans:1, explain:"a = (v − u)/t = (30 − 0)/10 = 3 m/s²." },
+
+    { q: "A body moving at 10 m/s accelerates at 2 m/s² for 5 s. What is its final velocity?", opts:["12 m/s","15 m/s","20 m/s","25 m/s"], ans:2, explain:"Using v = u + at = 10 + (2 × 5) = 20 m/s." },
+
+    { q: "A car travels at a constant speed of 20 m/s for 15 s. What distance does it cover?", opts:["35 m","150 m","300 m","600 m"], ans:2, explain:"Distance = speed × time = 20 × 15 = 300 m." },
+
+    { q: "A force of 100 N acts at right angles to a spanner 0.5 m from its pivot. What is the moment of the force?", opts:["50 N m","100 N m","200 N m","500 N m"], ans:0, explain:"Moment = Force × perpendicular distance = 100 × 0.5 = 50 N m." },
+
+    { q: "A liquid has density 1,000 kg/m³. Calculate the pressure due to the liquid at a depth of 2 m. Take g = 10 m/s².", opts:["2,000 Pa","5,000 Pa","20,000 Pa","200,000 Pa"], ans:2, explain:"Pressure P = ρgh = 1000 × 10 × 2 = 20,000 Pa." },
+
+    { q: "A half-life is 20 years. What fraction of a radioactive sample remains after 60 years?", opts:["1/4","1/6","1/8","1/16"], ans:2, explain:"60 years represents 3 half-lives. Remaining fraction = (½)³ = 1/8." },
+
+    { q: "A wave travels at 340 m/s and has a frequency of 170 Hz. What is its wavelength?", opts:["0.5 m","2 m","170 m","510 m"], ans:1, explain:"Using v = fλ, λ = v/f = 340/170 = 2 m." },
+
+    { q: "A simple pendulum has a length of 1 m. Taking g = 10 m/s² and π = 3.14, what is its period approximately?", opts:["0.63 s","1.98 s","3.14 s","6.28 s"], ans:1, explain:"T = 2π√(L/g) = 2 × 3.14 × √(1/10) ≈ 6.28 × 0.316 ≈ 1.98 s." },
+
+    { q: "A transformer has 1,000 turns in its primary coil and 5,000 turns in its secondary coil. If the primary voltage is 240 V, what is the secondary voltage?", opts:["48 V","240 V","1,200 V","5,000 V"], ans:2, explain:"Using Vs/Vp = Ns/Np. Vs = 240 × (5000/1000) = 240 × 5 = 1,200 V." },
+
+    { q: "A convex lens has a focal length of 20 cm. An object is placed 60 cm from the lens. Using 1/f = 1/u + 1/v, what is the image distance?", opts:["15 cm","20 cm","30 cm","80 cm"], ans:2, explain:"1/20 = 1/60 + 1/v. Therefore 1/v = 1/20 − 1/60 = 2/60 = 1/30. Hence v = 30 cm." },
+
+    { q: "A capacitor of capacitance 4 μF is connected to a 10 V supply. What charge is stored on it?", opts:["0.4 μC","4 μC","40 μC","400 μC"], ans:2, explain:"Q = CV = 4 μF × 10 V = 40 μC." },
+
+    { q: "A capacitor of capacitance 2 μF is charged to 100 V. What energy is stored in it?", opts:["0.001 J","0.01 J","0.02 J","20 J"], ans:2, explain:"E = ½CV² = ½ × 2 × 10⁻⁶ × 100² = 0.01 J." },
+
+    { q: "A 4 kg object is moving at 5 m/s. What constant force is required to stop it in 2 s?", opts:["5 N","10 N","20 N","40 N"], ans:1, explain:"First find acceleration: a = (0 − 5)/2 = −2.5 m/s². Force F = ma = 4 × 2.5 = 10 N. The force acts opposite to the motion." },
+
+    { q: "A projectile is fired horizontally from a height of 20 m. Taking g = 10 m/s², how long does it take to reach the ground?", opts:["1 s","2 s","4 s","10 s"], ans:1, explain:"For vertical motion, h = ½gt². Therefore 20 = ½ × 10 × t² = 5t². Thus t² = 4 and t = 2 s." },
+
+    { q: "A 2 kg body moving at 10 m/s collides with a stationary 3 kg body. If they stick together, what is their common velocity?", opts:["2 m/s","4 m/s","6 m/s","10 m/s"], ans:1, explain:"By conservation of momentum: (2 × 10) + (3 × 0) = (2 + 3)v. Therefore 20 = 5v and v = 4 m/s." },
+
+    { q: "A metal block has a mass of 500 g and occupies a volume of 200 cm³. What is its density?", opts:["0.4 g/cm³","2.5 g/cm³","25 g/cm³","100 g/cm³"], ans:1, explain:"Density = mass/volume = 500/200 = 2.5 g/cm³." },
+
+    { q: "A force of 200 N acts on an area of 0.5 m². What pressure is produced?", opts:["100 Pa","200 Pa","400 Pa","1,000 Pa"], ans:2, explain:"Pressure P = F/A = 200/0.5 = 400 Pa." },
+
+    { q: "A 5 kg object is initially at rest. A constant force of 10 N acts on it for 4 s. What is its final velocity?", opts:["2 m/s","4 m/s","8 m/s","10 m/s"], ans:2, explain:"First find acceleration: a = F/m = 10/5 = 2 m/s². Then v = u + at = 0 + 2 × 4 = 8 m/s." },
+
+    { q: "A 100 W lamp is connected to a 200 V supply. How much charge passes through the lamp in 60 s?", opts:["0.5 C","30 C","60 C","120 C"], ans:1, explain:"First find current: I = P/V = 100/200 = 0.5 A. Then Q = It = 0.5 × 60 = 30 C." },
+
+    { q: "A radioactive substance has an initial mass of 80 g and a half-life of 5 days. What mass remains after 15 days?", opts:["5 g","10 g","20 g","40 g"], ans:1, explain:"15 days = 3 half-lives. 80 g → 40 g → 20 g → 10 g. Therefore 10 g remains." },
+
+    { q: "An object is placed 30 cm in front of a concave mirror of focal length 10 cm. Using 1/f = 1/u + 1/v, what is the magnitude of the image distance?", opts:["5 cm","10 cm","15 cm","30 cm"], ans:2, explain:"1/10 = 1/30 + 1/v. Therefore 1/v = 1/10 − 1/30 = 2/30 = 1/15. Hence v = 15 cm." },
+
+    { q: "A 12 V battery supplies a current of 2 A to a circuit for 5 minutes. How much electrical energy is supplied?", opts:["120 J","720 J","3,600 J","7,200 J"], ans:3, explain:"Power P = VI = 12 × 2 = 24 W. Time = 5 × 60 = 300 s. Energy E = Pt = 24 × 300 = 7,200 J." },
+
+    { q: "A body is projected vertically upward with a speed of 20 m/s. Taking g = 10 m/s², what maximum height does it reach?", opts:["10 m","20 m","30 m","40 m"], ans:1, explain:"At maximum height, v = 0. Using v² = u² − 2gh: 0 = 20² − 2 × 10 × h. Therefore 400 = 20h and h = 20 m." },
+
+    { q: "A 2 kg object is raised through a height of 10 m in 4 s. Taking g = 10 m/s², what is the average power developed?", opts:["25 W","50 W","100 W","200 W"], ans:2, explain:"Work done = mgh = 2 × 10 × 10 = 200 J. Power = Work/Time = 200/4 = 50 W. Therefore the correct answer is 50 W." },
+
+    { q: "A 6 Ω resistor and a 3 Ω resistor are connected in series to a 18 V battery. What current flows through the circuit?", opts:["1 A","2 A","3 A","6 A"], ans:1, explain:"For series resistors, total resistance R = 6 + 3 = 9 Ω. Using I = V/R = 18/9 = 2 A." },
+
+    { q: "Two resistors of 6 Ω and 3 Ω are connected in parallel across a 12 V supply. What is the total current supplied by the battery?", opts:["2 A","4 A","6 A","8 A"], ans:3, explain:"Current through 6 Ω resistor = 12/6 = 2 A. Current through 3 Ω resistor = 12/3 = 4 A. Total current = 2 + 4 = 6 A. Therefore the correct answer is 6 A." },
+
+    { q: "A machine receives 500 J of energy and produces 400 J of useful output. What is its efficiency?", opts:["20%","40%","80%","125%"], ans:2, explain:"Efficiency = (useful output/input) × 100 = (400/500) × 100 = 80%." },
+
+    { q: "Which of the following is a vector quantity?", opts:["Speed","Mass","Temperature","Velocity"], ans:3, explain:"Velocity is a vector quantity because it has both magnitude and direction. Speed, mass and temperature are scalar quantities." },
+
+    { q: "Which type of wave requires a material medium for propagation?", opts:["Radio wave","Light wave","Sound wave","X-ray"], ans:2, explain:"Sound is a mechanical wave and requires a material medium such as a solid, liquid or gas to propagate. Electromagnetic waves can travel through a vacuum." },
+
+    { q: "Which instrument is used to measure atmospheric pressure?", opts:["Thermometer","Barometer","Hygrometer","Ammeter"], ans:1, explain:"A barometer is used to measure atmospheric pressure. A thermometer measures temperature, a hygrometer measures humidity, and an ammeter measures electric current." },
+
+    { q: "The SI unit of electric charge is:", opts:["Volt","Ampere","Coulomb","Ohm"], ans:2, explain:"Electric charge is measured in coulombs (C). Current is measured in amperes, potential difference in volts, and resistance in ohms." },
+
+    { q: "Which colour of visible light has the highest frequency?", opts:["Red","Yellow","Green","Violet"], ans:3, explain:"Violet light has the highest frequency and shortest wavelength in the visible spectrum. Red has the lowest frequency." },
+
+    { q: "In a step-up transformer, the secondary coil has:", opts:["Fewer turns than the primary","More turns than the primary","The same number of turns as the primary","No turns"], ans:1, explain:"For a step-up transformer, Ns/Np = Vs/Vp. Since the secondary voltage is greater, the secondary coil must have more turns than the primary." },
+
+    { q: "Which radiation is the most penetrating?", opts:["Alpha","Beta","Gamma","Visible light"], ans:2, explain:"Gamma radiation has the greatest penetrating power among alpha, beta and gamma radiation." },
+
+    { q: "The phenomenon in which light bends when it passes from one medium to another is called:", opts:["Reflection","Refraction","Diffraction","Interference"], ans:1, explain:"Refraction is the bending or change in direction of light when it passes from one medium to another because its speed changes." },
+
+    { q: "The energy stored in a capacitor of capacitance C charged to voltage V is:", opts:["CV","QV","½CV²","2CV²"], ans:2, explain:"The energy stored in a capacitor is E = ½CV². Equivalent forms include E = ½QV and E = Q²/2C." }
+]
 
     // ── SET 2 ──
     { q: "The momentum of a 2 kg object moving at 5 m/s is:", opts:["2.5 kg·m/s","7 kg·m/s","10 kg·m/s","3 kg·m/s"], ans:2, explain:"Momentum p = mv = 2 × 5 = 10 kg·m/s. Momentum is a vector quantity with SI unit kg·m/s." },
