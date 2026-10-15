@@ -345,8 +345,7 @@ const QUESTIONS = {
 
     { q: "The phenomenon in which light bends when it passes from one medium to another is called:", opts:["Reflection","Refraction","Diffraction","Interference"], ans:1, explain:"Refraction is the bending or change in direction of light when it passes from one medium to another because its speed changes." },
 
-    { q: "The energy stored in a capacitor of capacitance C charged to voltage V is:", opts:["CV","QV","½CV²","2CV²"], ans:2, explain:"The energy stored in a capacitor is E = ½CV². Equivalent forms include E = ½QV and E = Q²/2C." }
-]
+    { q: "The energy stored in a capacitor of capacitance C charged to voltage V is:", opts:["CV","QV","½CV²","2CV²"], ans:2, explain:"The energy stored in a capacitor is E = ½CV². Equivalent forms include E = ½QV and E = Q²/2C." },
 
     // ── SET 2 ──
     { q: "The momentum of a 2 kg object moving at 5 m/s is:", opts:["2.5 kg·m/s","7 kg·m/s","10 kg·m/s","3 kg·m/s"], ans:2, explain:"Momentum p = mv = 2 × 5 = 10 kg·m/s. Momentum is a vector quantity with SI unit kg·m/s." },
@@ -390,8 +389,7 @@ const QUESTIONS = {
     { q: "A wire of resistance R is stretched to twice its length. Its new resistance is:", opts:["R/2","R","2R","4R"], ans:3, explain:"Resistance R = ρL/A. Stretching doubles length (L → 2L) but halves cross-sectional area (A → A/2) since volume is conserved. New R = ρ(2L)/(A/2) = 4ρL/A = 4R." },
     { q: "In which medium does sound travel fastest?", opts:["Air","Water","Steel","Vacuum"], ans:2, explain:"Sound travels fastest in solids because particles are closely packed and transmit vibrations quickly. Speed in steel ≈ 5000 m/s, in water ≈ 1500 m/s, in air ≈ 340 m/s. Sound cannot travel in vacuum at all." },
 
-// Set 3
-      "Physics": [
+// Set 3 
     { q: "A body of mass 8 kg moves with a velocity of 5 m/s. What is its kinetic energy?", opts:["20 J","40 J","100 J","200 J"], ans:2, explain:"KE = ½mv² = ½ × 8 × 5² = 4 × 25 = 100 J." },
 
     { q: "A car accelerates uniformly from 10 m/s to 30 m/s in 5 s. What is its acceleration?", opts:["2 m/s²","4 m/s²","6 m/s²","8 m/s²"], ans:1, explain:"a = (v − u)/t = (30 − 10)/5 = 20/5 = 4 m/s²." },
@@ -591,7 +589,7 @@ const QUESTIONS = {
     { q: "Which of these is used as a reducing agent in the blast furnace?", opts:["Limestone","Coke","Iron ore","Slag"], ans:1, explain: "Coke burns in the furnace to form carbon monoxide (CO) gas. This carbon monoxide serves as the primary chemical reducing agent that strips oxygen away from iron oxides to produce molten iron metal." },
     { q: "The process of adding chlorine to water for purification is called:", opts:["Filtration","Sedimentation","Chlorination","Distillation"], ans:2, explain: "Chlorination is the safe, controlled introduction of elemental chlorine gas or hypochlorite compounds into water supplies to destroy pathogenic bacteria and microbial contaminants." },
   //set 3
-        "Chemistry": [
+        
     { q: "What is the relative molecular mass of H₂SO₄? (H = 1, S = 32, O = 16)", opts:["49","82","98","100"], ans:2, explain:"Mr(H₂SO₄) = (2 × 1) + 32 + (4 × 16) = 2 + 32 + 64 = 98." },
 
     { q: "How many moles are present in 36 g of water? (H = 1, O = 16)", opts:["1 mol","2 mol","3 mol","18 mol"], ans:1, explain:"Mr of H₂O = 18. Number of moles = mass/Mr = 36/18 = 2 mol." },
@@ -784,7 +782,7 @@ const QUESTIONS = {
     { q: "Which of the following is NOT a method of family planning?", opts:["Condom use","Natural family planning","Vaccination","Oral contraceptives"], ans:2, explain: "Vaccinations are immunizations designed to stimulate antibody defenses against infectious diseases. They play no role in reproductive contraception or family planning." },
 
    //set 3
-        "Biology": [
+        
     { q: "Which organelle is primarily responsible for aerobic respiration in a cell?", opts:["Ribosome","Mitochondrion","Golgi apparatus","Lysosome"], ans:1, explain:"The mitochondrion is the main site of aerobic respiration and ATP production in eukaryotic cells." },
 
     { q: "Which structure controls the movement of substances into and out of a cell?", opts:["Cell wall","Cytoplasm","Cell membrane","Nucleus"], ans:2, explain:"The cell membrane is selectively permeable and regulates the movement of substances into and out of the cell." },
