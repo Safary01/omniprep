@@ -309,5 +309,4 @@ export {
   initPage,
   renderShell,
   getInitials,
-  updateCountdown,
 };
