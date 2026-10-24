@@ -303,27 +303,18 @@ function renderShell() {
     </aside>
 
     <!-- TOPBAR -->
-    <div class="topbar" id="topbar">
-      <div class="topbar__left">
-        <button class="topbar__hamburger" id="hamburger" aria-label="Open menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="6"  x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
-        <a href="dashboard.html" class="logo logo--sm" style="text-decoration:none">
-          <div class="logo__mark">OP</div>
-          <div class="logo__name">Omni<span>Prep</span></div>
-        </a>
-      </div>
-      <div class="topbar__right">
-        <div class="topbar__countdown" id="topbar-countdown" style="display:none">
-          <div class="pulse"></div>
-          <span id="countdown-text"></span>
-        </div>
-        <button class="topbar__avatar" id="topbar-avatar" data-action="logout" title="Logout">?</button>
-      </div>
+        <div class="topbar" id="topbar">
+      <button class="topbar__hamburger" id="hamburger" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6"  x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div style="display:none" id="topbar-countdown"><span id="countdown-text"></span></div>
+      <div style="display:none" id="topbar-avatar"></div>
+      <div style="display:none" id="topbar-title"></div>
+      <div style="display:none" id="topbar-sub"></div>
     </div>
     <!-- hidden elements kept for JS compatibility -->
     <div style="display:none" id="topbar-title"></div>
