@@ -654,6 +654,8 @@ ul, ol {
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .topbar__left  { display: flex; align-items: center; gap: var(--space-3); }
@@ -863,7 +865,7 @@ ul, ol {
    14. PAGE LAYOUT — for protected pages with sidebar
    ============================================================ */
 .app-layout {
-  display: flex;
+  display: block;
   min-height: 100vh;
 }
 
