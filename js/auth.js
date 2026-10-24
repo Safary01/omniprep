@@ -20,7 +20,7 @@ import {
   logout,
   daysUntilExam,
   formatDate,
-  updateCountdown,
+  
 } from './firebase.js';
 
 
@@ -350,4 +350,5 @@ export {
   initPage,
   renderShell,
   getInitials,
+  updateCountdown,
 };
