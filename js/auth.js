@@ -212,6 +212,15 @@ function renderShell() {
   const shell = document.getElementById('shell');
   if (!shell) return;
 
+  // Shell must take zero layout space — sidebar and overlay are position:fixed
+  shell.style.position = 'fixed';
+  shell.style.top      = '0';
+  shell.style.left     = '0';
+  shell.style.width    = '0';
+  shell.style.height   = '0';
+  shell.style.overflow = 'visible';
+  shell.style.zIndex   = '90';
+
   shell.innerHTML = `
 
     <!-- Sidebar overlay -->
