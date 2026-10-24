@@ -20,6 +20,7 @@ import {
   logout,
   daysUntilExam,
   formatDate,
+  updateCountdown,
 } from './firebase.js';
 
 
@@ -107,7 +108,47 @@ function fillSidebar(student, pageId) {
 }
 
 
-// Top COunt here
+// ============================================================
+//  COUNTDOWN — updates the topbar countdown pill every minute
+// ============================================================
+function startCountdown(examDate) {
+  updateCountdown(examDate);
+  setInterval(() => updateCountdown(examDate), 60000);
+}
+
+function updateCountdown(examDate) {
+  const pill    = document.getElementById('topbar-countdown');
+  const textEl  = document.getElementById('countdown-text');
+  if (!pill || !textEl) return;
+
+  const days = daysUntilExam(examDate);
+
+  if (days === null) {
+    pill.style.display = 'none';
+    return;
+  }
+
+  pill.style.display = 'flex';
+
+  if (days > 0) {
+    textEl.textContent = `UTME in ${days} day${days !== 1 ? 's' : ''}`;
+    // Turn red when 7 days or fewer remain
+    if (days <= 7) {
+      pill.style.background   = 'var(--red-light)';
+      pill.style.borderColor  = '#FCA5A5';
+      pill.style.color        = 'var(--red)';
+    }
+  } else if (days === 0) {
+    textEl.textContent      = 'UTME is TODAY!';
+    pill.style.background   = 'var(--red-light)';
+    pill.style.borderColor  = '#FCA5A5';
+    pill.style.color        = 'var(--red)';
+  } else {
+    textEl.textContent = 'UTME passed';
+    pill.style.display = 'none';
+  }
+}
+
 // ============================================================
 //  LOGOUT — wires all elements with data-action="logout"
 // ============================================================
