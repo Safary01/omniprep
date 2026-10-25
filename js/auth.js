@@ -117,6 +117,8 @@ function startCountdown(examDate) {
 }
 
 function updateCountdown(examDate) {
+  // Countdown pill removed from topbar — days shown on dashboard only
+  return;
   const pill    = document.getElementById('topbar-countdown');
   const textEl  = document.getElementById('countdown-text');
   if (!pill || !textEl) return;
